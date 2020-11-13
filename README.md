@@ -9,7 +9,7 @@ npm install nodemon
 
 change package.json to
 
->>>>>>>>>>>>>>>>>>>>>
+
 {
   "name": "musical-instrument-web-store",
   "version": "0.0.0",
