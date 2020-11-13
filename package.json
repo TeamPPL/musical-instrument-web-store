@@ -1,20 +1,22 @@
 {
-  "name": "hello-express",
-  "version": "0.0.0",
-  "private": true,
+  "name": "musical-instrument-web-store",
+  "version": "1.0.0",
+  "description": "web bán nhạc cụ",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TeamPPL/musical-instrument-web-store.git"
+  },
+  "author": "TeamPPL",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TeamPPL/musical-instrument-web-store/issues"
+  },
+  "homepage": "https://github.com/TeamPPL/musical-instrument-web-store#readme",
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "hbs": "~4.0.4",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.6"
+    "express": "^4.17.1"
   }
 }
