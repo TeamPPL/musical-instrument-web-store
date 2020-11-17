@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const signupController = require('../controllers/signupController');
 
 /* GET login page. */
-router.get('/', signupController.index);
+router.get('/', (req, res, next) => {
+  //render signup page
+  res.render('signup');
+});
 
 module.exports = router;
