@@ -1,145 +1,20 @@
 <!--================Home Carousel Area =================-->
-<section class="home_carousel_area">
-    <div class="home_carousel_slider owl-carousel">
-    {{#each carouselItems}}
-        <div class="item">
-            <div class="h_carousel_item">
-                <img src="{{cover}}" alt="" height="400">
-                <div class="carousel_hover">
-                    <h3>{{title}}</h3>
-                    <h4>We feature the best professional instruments</h4>
-                    <h5>Including:</h5>
-                    <p>{{description}}</p>
-                    <a class="discover_btn" href="#">discover now</a>
-                </div>
-            </div>
-        </div>
-    {{/each}}
-    </div>
-</section>
+{{>carousel}}
 <!--================End Home Carousel Area =================-->
 
-<!--================Special Offer Area =================-->
-<section class="special_offer_area">
-    <div class="container">
-        <div class="row">
-            {{#each specialOfferItems}}
-            <div class="col-lg-6">
-                <div class="special_offer_item2">
-                    {{!-- <img class="img-fluid" src={{cover}} alt=""> --}}
-                    <img class="" height="200px" src={{cover}} alt="">
 
-                    <div class="hover_text">
-                        <h4 class="special_offer_text">{{title}}</h4>
-                        <h5 class="special_offer_text2">{{content}}</h5>
-                        <a class="shop_now_btn" href="#">Shop Now</a>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-    </div>
-</section>
+<!--================Special Offer Area =================-->
+{{>specialOffer}}
 <!--================End Special Offer Area =================-->
 
+
 <!--================Latest Product isotope Area =================-->
-<section class="fillter_latest_product">
-    <div class="container">
-        <div class="single_c_title">
-            <h2>Our Latest Product</h2>
-        </div>
-        <div class="fillter_l_p_inner">
-            <ul class="fillter_l_p">
-                <li class="active" data-filter="*"><a href="#">All</a></li>
-                <li data-filter=".guitar"><a href="#">Guitars</a></li>
-                <li data-filter=".violin"><a href="#">Violins</a></li>
-                <li data-filter=".piano"><a href="#">Keyboards</a></li>
-                <li data-filter=".drum"><a href="#">Drums</a></li>
-            </ul>
-            <div class="row isotope_l_p_inner">
-            {{#each lastestProductItems}}                
-                <div class="col-lg-3 col-md-4 col-sm-6 {{filter}}">
-                    <div class="l_product_item">
-                        <div class="l_p_img">
-                            {{!-- <img class="img-fluid" src={{cover}} alt=""> --}}
-                            {{!-- <img height="480px" src={{cover}} alt=""> --}}
-                            <form method="GET" action="./detail">
-                                <input type="text" name="ID" value="{{id}}" style="display: none;"/>
-                                <input type="image" src="{{cover}}" alt="Submit" width="270" height="480">
-                            </form>
-                        </div>
-                        <div class="l_p_text">
-                            <ul>
-                                <li class="p_icon"><a href="#"><i class="icon_piechart"></i></a></li>
-                                <li><a class="add_cart_btn" href="#">Add To Cart</a></li>
-                                <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
-                            </ul>
-                            <h4>{{title}}</h4>
-                            {{#if discount}}
-                            <h5><del>${{price}}</del>  ${{discount}}</h5>
-                            {{else}}
-                            <h5>${{price}}</h5>
-                            {{/if}}
-                        </div>
-                    </div>
-                </div>                
-            {{/each}}
-            </div>
-        </div>
-    </div>
-</section>
+{{>lastestProducts}}
 <!--================End Latest Product isotope Area =================-->
 
-<!--================Product_listing Area =================-->
-<section class="product_listing_area">
-    <div class="container">
-        <div class="row p_listing_inner">
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col-lg-6 col-sm-8">
-                        <div class="p_list_text">
-                            <h3>Beginer</h3>
-                            <ul>
-                                <li><a href="#">Guitars</a></li>
-                                <li><a href="#">Violins</a></li>
-                                <li><a href="#">Pianos</a></li>
-                                <li><a href="#">Drums</a></li>
-                                <li><a href="#">Others</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-sm-4">
-                        <div class="p_list_img">
-                            <img src="img/product/p-categories-list/product-l-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="row">
-                    <div class="col-lg-6 col-sm-8 ">
-                        <div class="p_list_text">
-                            <h3>Professor</h3>
-                            <ul>
-                                <li><a href="#">Guitars</a></li>
-                                <li><a href="#">Violins</a></li>
-                                <li><a href="#">Pianos</a></li>
-                                <li><a href="#">Drums</a></li>
-                                <li><a href="#">Others</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-sm-4">
-                        <div class="p_list_img">
-                            <img src="img/product/p-categories-list/product-l-2.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--================End Product_listing Area =================-->
+<!--================Product Class Area =================-->
+{{>productClasses}}
+<!--================Product Class Area =================-->
 
 <!--================Featured Product Area =================-->
 {{!-- <section class="feature_product_area">
