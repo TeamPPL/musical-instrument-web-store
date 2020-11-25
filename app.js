@@ -7,8 +7,8 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products');
-const loginRouter = require('./routes/login');
-const signupRouter = require('./routes/signup');
+// const loginRouter = require('./routes/login');
+// const signupRouter = require('./routes/signup');
 const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
 
@@ -32,13 +32,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/login', loginRouter);
-app.use('/signup', signupRouter);
-// app.use('/products/detail/:id',function(req, res, next){
-//   console.log('Request type: ', req.params.id);
-//   next();
-// });
+app.use('/user', usersRouter);
+// app.use('/login', loginRouter);
+// app.use('/signup', signupRouter);
 app.use('/products', productsRouter);
 // app.use('/detail', detailRouter);
 
