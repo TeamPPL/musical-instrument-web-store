@@ -7,7 +7,6 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products');
-const detailRouter = require('./routes/detail');
 const loginRouter = require('./routes/login');
 const signupRouter = require('./routes/signup');
 const { handlebars } = require('hbs');
@@ -36,8 +35,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/signup', signupRouter);
+// app.use('/products/detail/:id',function(req, res, next){
+//   console.log('Request type: ', req.params.id);
+//   next();
+// });
 app.use('/products', productsRouter);
-app.use('/detail', detailRouter);
+// app.use('/detail', detailRouter);
 
 /*
 app.use('/login', (req, res) => {
