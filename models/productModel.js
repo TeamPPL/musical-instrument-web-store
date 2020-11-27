@@ -1,5 +1,19 @@
-exports.list = () => {
-    return [
+const {db} = require('../dal/dal');
+
+exports.list = async () => {
+    const productsCollection = db().collection('product');
+    let products = await productsCollection.find({}).toArray();
+    //console.log(products);
+    /*
+    products.forEach(element => {
+        element._id = element._id.toString();
+    });
+*/
+    return products;
+}
+
+/*
+return [
         {
             id: 1,
             title: 'Super Cool Guitar',
@@ -98,4 +112,4 @@ exports.list = () => {
             discount: 48
         },
     ]
-}
+*/
