@@ -9,7 +9,6 @@ let client = new MongoClient(uri, { useUnifiedTopology: true});
 let database;
 
 async function connectDB() {
-  let tmp;
   try {
     await client.connect();
     console.log('DB connected!');
