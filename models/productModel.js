@@ -36,6 +36,14 @@ exports.relatedProducts = async (id) => {
     
     return relatedProducts;
 }
+
+exports.lastestProducts = async (id) => {
+    const productsCollection = db().collection('product');
+    
+    let lastestProducts = await productsCollection.find({}).sort({uploadedDate: -1}).limit(8).toArray();
+
+    return lastestProducts;
+}
 /*
 return [
         {
