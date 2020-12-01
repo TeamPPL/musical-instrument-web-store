@@ -39,7 +39,7 @@ exports.relatedProducts = async (id) => {
 
 exports.lastestProducts = async (id) => {
     const productsCollection = db().collection('product');
-    let lastestProducts = await productsCollection.find({}).sort({uploadedDate: -1}).limit(8).toArray();
+    let lastestProducts = await productsCollection.find({}).sort({createdDate: -1}).limit(8).toArray();
     //console.log(lastestProducts);
     return lastestProducts;
 }
