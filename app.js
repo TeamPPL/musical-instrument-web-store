@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -7,8 +8,8 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products');
-// const loginRouter = require('./routes/login');
-// const signupRouter = require('./routes/signup');
+const auth = require('./authenticate/auth');
+
 const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
 
@@ -31,18 +32,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  secret: 'itsASecret'
+})
+);
+
+auth(app);
+
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
-// app.use('/login', loginRouter);
-// app.use('/signup', signupRouter);
 app.use('/products', productsRouter);
 // app.use('/detail', detailRouter);
-
-/*
-app.use('/login', (req, res) => {
-  res.render('login');
-})
-*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
