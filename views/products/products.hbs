@@ -18,7 +18,7 @@
                     <div class="showing_fillter">
                         <div class="row m0">
                             <div class="first_fillter">
-                                <h4>Showing 1 to 12 of 30 total</h4>
+                                <h4>Showing {{pageInfo.firstItemOfPage}} to {{pageInfo.lastItemOfPage}} of {{pageInfo.totalCount}} total</h4>
                             </div>
                             <div class="secand_fillter">
                                 <h4>SORT BY :</h4>
@@ -36,11 +36,13 @@
                                     <option>10</option>
                                 </select>
                             </div>
+                            <!--
                             <div class="four_fillter">
                                 <h4>View</h4>
                                 <a class="active" href="#"><i class="icon_grid-2x2"></i></a>
                                 <a href="#"><i class="icon_grid-3x3"></i></a>
                             </div>
+                            -->
                         </div>
                     </div>
                     <!--================Products & Paging Area =================-->

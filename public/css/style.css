@@ -6212,7 +6212,7 @@ i:before {
   transition: all 400ms linear 0s;
 }
 
-.pagination_area .pagination li:first-child a {
+.pagination_area .pagination li.current a {
   border: 1px solid #000002;
 }
 

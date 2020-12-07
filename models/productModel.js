@@ -43,6 +43,25 @@ exports.lastestProducts = async (id) => {
     //console.log(lastestProducts);
     return lastestProducts;
 }
+
+exports.getTotalCount = async () => {
+    const productsCollection = db().collection('product')
+    let totalNum = await productsCollection.countDocuments();
+    //console.log(totalNum);
+    return totalNum;
+}
+
+exports.getProductsAtPage = async (pageNumber, nPerPage) => {
+    const productsCollection = db().collection('product');
+    let products = await productsCollection.find({})
+        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
+        .sort({createdDate: -1})
+        .limit(nPerPage)
+        .toArray();
+    //console.log(products);
+    return products;
+}
+
 /*
 return [
         {

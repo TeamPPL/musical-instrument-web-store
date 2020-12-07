@@ -30,13 +30,32 @@
     </div>
     <nav aria-label="Page navigation example" class="pagination_area">
         <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item"><a class="page-link" href="#">6</a></li>
-        <li class="page-item next"><a class="page-link" href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+            {{#if pageInfo.isFirstPage }}
+                <!-- Do nothing -->
+            {{else}}
+                <li class="page-item next"><a class="page-link" href="?page={{pageInfo.prevPage}}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+            {{/if}}
+
+            {{#each pageInfo.pageList}}
+                {{#if this.isCurrentPage}}
+                    <li class="page-item current"><a class="page-link" href="?page={{this.index}}">{{this.index}}</a></li>
+                {{else}}
+                    <li class="page-item"><a class="page-link" href="?page={{this.index}}">{{this.index}}</a></li>
+                {{/if}}
+            {{/each}}
+            <!--
+            <li class="page-item "><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item "><a class="page-link" href="#">3</a></li>
+            <li class="page-item current"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            -->
+            {{#if pageInfo.isLastPage }}
+                <!-- Do nothing -->
+            {{else}}
+                <li class="page-item next"><a class="page-link" href="?page={{pageInfo.nextPage}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+            {{/if}}
         </ul>
     </nav>
 </div>
