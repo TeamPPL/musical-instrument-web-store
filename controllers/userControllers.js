@@ -1,6 +1,18 @@
 
 const bcrypt = require('bcrypt');
 const accountModel = require('../models/accountModel');
+const cloudinary = require('../cloudinary/cloudinary');
+const fs = require('fs');
+const formidable = require('formidable');
+
+exports.index = async (req, res, next) => {
+    let username = req.user.username;
+    console.log(username);
+    let account = await accountModel.findByUsername(username);
+
+    console.log(account);
+    res.render('user/accountInfo', {account});
+}
 
 exports.getLogin = (req, res, next) => {
     res.render('user/login');
@@ -30,11 +42,51 @@ exports.createNewAccount = async (req, res, next) => {
             "password": hash,
             "name": name,
             "phone": phone,
-            "email": email
+            "email": email,
+            "createdDate": new Date(),
+            "modifiedDate": new Date()
         };
 
         accountModel.insertOne(accountInfos);
     }
 
     next();
+}
+
+exports.updateAccountInfo = async (req, res, next) => {
+    const form = formidable({ multiples: true });
+    form.parse(req, async (err, fields, files) => {
+    if (err) {
+      next(err);
+      return;
+    }
+    if (files) {
+      let temp_path = files.cover.path;
+      let upload = await cloudinary.uploader.upload(temp_path, {folder: "imgdb"}, function(error, result) {console.log(result, error)});
+      const avatar = upload.secure_url;
+      const name = fields.name;
+      const email = fields.email;
+      const username = fields.username;
+      const phone = fields.phone;
+    
+      let updatedAccount = {
+          avatar,
+          name,
+          email,
+          username,
+          phone,
+          "modifiedDate": new Date()
+      };
+      try {
+        accountModel.updateAAccount(updatedAccount);
+        //var message="ADDED SUCCESSFULLY";
+        //res.render('products/addproduct',{productDetail,message});
+        res.redirect('/user');
+      }
+      catch(err){
+        
+      }  
+    }
+    await console.log(upload.secure_url);
+  });
 }

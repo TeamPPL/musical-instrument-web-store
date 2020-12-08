@@ -2,16 +2,16 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 
+
 router.use(passport.initialize());
 router.use(passport.session());
 
 /* controllers */
 const userController = require('../controllers/userControllers');
+const ensureAuth = require('../authenticate/ensureAuth');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.get('/', ensureAuth, userController.index);
 
 router.get('/login', userController.getLogin);
 router.get('/signup', userController.getSignup);
@@ -39,5 +39,6 @@ router.post('/signup',
   })
 );
 
+router.post('/update', ensureAuth, userController.updateAccountInfo);
 
 module.exports = router;

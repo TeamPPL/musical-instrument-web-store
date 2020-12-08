@@ -9,7 +9,7 @@ module.exports = (app) => {
     app.use(passport.session());
 
     passport.serializeUser((user, done) => {
-        console.log(user);
+        //console.log(user);
         done(null, user._id);
     });
 
@@ -29,7 +29,7 @@ module.exports = (app) => {
     passport.use(
       new LocalStrategy( async (username, password, done) => {
         let account = await accountModel.findByUsername(username);
-        console.log(account);
+        //console.log(account);
         if (account == null) 
         {
           return done(null, false);

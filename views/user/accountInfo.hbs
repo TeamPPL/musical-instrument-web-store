@@ -1,0 +1,68 @@
+
+      <!-- Sidebar Menu -->
+          <div class="container">
+            
+              <form class="login_form" action="/user/update" method="POST" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+              <div class="row">
+              <div class="col-4">
+                <div class="image">
+                  <img id="avatar" style="width: 300px;" src="{{account.avatar}}"/>
+                </div>
+                <div class="form-group">
+                    <label class="upload-label">Upload cover image:</label>
+                </div>
+                <div class="form-group">
+                    {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
+                    <div id="fakeDiv">
+                        <input type="file" id="selectedFile" name="cover" onchange="readURL(this);"/>
+                        <input type="text" id="fakeInput" readonly="readonly"/>
+                        <span onclick="document.getElementById('selectedFile').click();" id="buttonImage" >Browse</span>
+                    </div>
+                </div>
+              </div>
+              <div class="col">
+                
+                    <div class="row form-group">
+                        <input class="form-control" type="text" name="name" value="{{account.name}}" placeholder="Name">
+                    </div>
+                    <div class="row form-group">
+                        <input class="form-control" type="email" name="email" value="{{account.email}}" placeholder="Email">
+                    </div>
+                    <div class="row form-group">
+                        <input class="form-control" type="text" name="username" value="{{account.username}}" placeholder="User Name">
+                    </div>
+                    <div class="row form-group">
+                        <input class="form-control" type="text" name="phone" value="{{account.phone}}" placeholder="Phone">
+                    </div>
+                    <div class="row form-group">
+                        <button type="submit" value="submit" class="btn subs_btn form-control">Save profile</button>
+                    </div>
+              </div>
+            </div>
+
+              </form>
+          </div>
+            
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        let imagesPreview = function(input, placeToInsertImagePreview) {
+          if (input.files) {
+            let filesAmount = input.files.length;
+            for (i = 0; i < filesAmount; i++) {
+              let reader = new FileReader();
+              reader.onload = function(event) {
+                $($.parseHTML("<img>"))
+                  .attr("src", event.target.result)
+                  .appendTo(placeToInsertImagePreview);
+              };
+              reader.readAsDataURL(input.files[i]);
+            }
+          }
+        };
+        $("#selectedFile").on("change", function() {
+          imagesPreview(this, "#avatar");
+        });
+      });
+    </script>
