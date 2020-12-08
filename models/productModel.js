@@ -62,20 +62,22 @@ exports.getProductsAtPage = async (pageNumber, nPerPage) => {
     return products;
 }
 
-exports.filter = async (sorted, nPerPage, pageNumber) => {
+exports.filter = async (sorted, nPerPage, pageNumber, search) => {
     const productsCollection = db().collection('product');
+
     let sortQuery = {};
 
     if (sorted === "alphabet-asc") {
         sortQuery.title = 1;
-    } else if (sorted === "alphabet-desc") {
+    } else if (sorted === "alphabet-desc") {    
         sortQuery.title = -1;
     } else if (sorted === "lastest") {
         sortQuery.createdDate = -1;
     } else if (sorted === "oldest") {
         sortQuery.createdDate = 1;
     }
-    let products = await productsCollection.find({})
+
+    let products = await productsCollection.find({title: {'$regex' : new RegExp(search, "i") }} )
         .sort(sortQuery)
         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
         .limit(nPerPage)

@@ -38,3 +38,7 @@ exports.createNewAccount = async (req, res, next) => {
 
     next();
 }
+
+exports.accountInfo = (req, res, next) => {
+    
+}
