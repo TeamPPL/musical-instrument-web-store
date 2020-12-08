@@ -39,21 +39,14 @@ exports.insertOne = async (accountInfos) => {
 exports.updateAAccount = async (updatedAccount) => {
   const accountCollection = db().collection('account');
   let result = undefined;
+
   try {
       result = await accountCollection.findOneAndUpdate(
           {
           username: updatedAccount.username
           },
           {
-              $set :
-              {
-                avatar: updatedAccount.avatar,
-                name: updatedAccount.name,
-                email: updatedAccount.email,
-                username: updatedAccount.username,
-                phone: updatedAccount.phone,
-                modifiedDate: updatedAccount.modifiedDate
-              }
+              $set : updatedAccount
           });
   } catch (err) {
       return console.log('Database Connection Error!', err.message);
