@@ -179,7 +179,6 @@
     </div>
 </section>
 
-{{log this}}
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
 <script>
@@ -191,7 +190,7 @@
 
         $('.selectpicker').change(triggerAjaxFilter);
 
-        $('.pagination_area .pagination li a').on("click", (e) => {
+        $('#product-items-partial-displayer').on("click", '.pagination_area .pagination li a', (e) => {
             e.preventDefault();
             let classList = $(e.target).attr("class");
             let classArr = classList.split(" ");
