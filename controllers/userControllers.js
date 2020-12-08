@@ -61,26 +61,37 @@ exports.updateAccountInfo = async (req, res, next) => {
       return;
     }
     if (files) {
+      let avatar;
       let temp_path = files.cover.path;
-      let upload = await cloudinary.uploader.upload(temp_path, {folder: "imgdb"}, function(error, result) {console.log(result, error)});
-      const avatar = upload.secure_url;
+      if (files.cover.size === 0) {
+          avatar = 0;
+      } else {
+        let upload = await cloudinary.uploader.upload(temp_path, {folder: "imgdb"}, function(error, result) {
+            console.log(result, error);
+          });
+        avatar = upload.secure_url;
+      }
+      
       const name = fields.name;
       const email = fields.email;
       const username = fields.username;
       const phone = fields.phone;
     
       let updatedAccount = {
-          avatar,
           name,
           email,
           username,
           phone,
           "modifiedDate": new Date()
       };
+      if (avatar !== 0) {
+        updatedAccount.avatar = avatar;
+      }
       try {
-        accountModel.updateAAccount(updatedAccount);
+        let result = await accountModel.updateAAccount(updatedAccount);
         //var message="ADDED SUCCESSFULLY";
         //res.render('products/addproduct',{productDetail,message});
+        console.log(result);
         res.redirect('/user');
       }
       catch(err){
@@ -89,4 +100,5 @@ exports.updateAccountInfo = async (req, res, next) => {
     }
     await console.log(upload.secure_url);
   });
+
 }

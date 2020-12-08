@@ -2,6 +2,7 @@ const exphbs = require('express-handlebars');
 const fs = require('fs');
 
 const productModel = require('../models/productModel');
+const { search } = require('../routes');
 
 var hbs = exphbs.create({
     extname: 'hbs',
@@ -87,6 +88,7 @@ exports.filter = async (req, res, next) => {
     let sorted = req.body.sorted;
     let nPerPage = req.body.nPerPage;
     let pageNumber = req.body.pageNumber;
+    let searchText = req.body.search;
 
     console.log(`${sorted} ${nPerPage}`);
 
@@ -106,8 +108,8 @@ exports.filter = async (req, res, next) => {
     }
 
     //console.log(`${pageNumber}  ${nPerPage}`);
-    const productItems = await productModel.filter(sorted, nPerPage, pageNumber);
-    const totalCount = await productModel.getTotalCount();
+    const productItems = await productModel.filter(sorted, nPerPage, pageNumber, searchText);
+    const totalCount = await productModel.getTotalCount(searchText);
 
     //console.log(productItems);
 
