@@ -44,9 +44,11 @@ exports.lastestProducts = async (id) => {
     return lastestProducts;
 }
 
-exports.getTotalCount = async () => {
-    const productsCollection = db().collection('product')
-    let totalNum = await productsCollection.countDocuments();
+exports.getTotalCount = async (search) => {
+    const productsCollection = db().collection('product');
+    let products = await productsCollection.find({title: {'$regex' : new RegExp(search, "i") }})
+    //let totalNum = await productsCollection.countDocuments();
+    let totalNum = await products.count();
     //console.log(totalNum);
     return totalNum;
 }

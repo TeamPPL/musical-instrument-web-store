@@ -225,6 +225,7 @@
             }
             console.log(pageNumber);
             let data = {
+                search: $('#search-box').val(),
                 sorted: $('#sorted').children("option:selected").val(),
                 nPerPage: $('#n-per-page').children("option:selected").val(),
                 pageNumber
