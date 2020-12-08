@@ -55,7 +55,29 @@ exports.getProductsAtPage = async (pageNumber, nPerPage) => {
     const productsCollection = db().collection('product');
     let products = await productsCollection.find({})
         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
-        .sort({createdDate: -1})
+        .sort({title: 1})
+        .limit(nPerPage)
+        .toArray();
+    //console.log(products);
+    return products;
+}
+
+exports.filter = async (sorted, nPerPage, pageNumber) => {
+    const productsCollection = db().collection('product');
+    let sortQuery = {};
+
+    if (sorted === "alphabet-asc") {
+        sortQuery.title = 1;
+    } else if (sorted === "alphabet-desc") {
+        sortQuery.title = -1;
+    } else if (sorted === "lastest") {
+        sortQuery.createdDate = -1;
+    } else if (sorted === "oldest") {
+        sortQuery.createdDate = 1;
+    }
+    let products = await productsCollection.find({})
+        .sort(sortQuery)
+        .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
         .limit(nPerPage)
         .toArray();
     //console.log(products);

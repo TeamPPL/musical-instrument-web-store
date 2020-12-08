@@ -29,18 +29,18 @@
         {{/each}}
     </div>
     <nav aria-label="Page navigation example" class="pagination_area">
-        <ul class="pagination">
+        <ul class="pagination" id="pagination">
             {{#if pageInfo.isFirstPage }}
                 <!-- Do nothing -->
             {{else}}
-                <li class="page-item next"><a class="page-link" href="?page={{pageInfo.prevPage}}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                <li class="page-item prev"><a class="page-link prev" ><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
             {{/if}}
 
             {{#each pageInfo.pageList}}
                 {{#if this.isCurrentPage}}
-                    <li class="page-item current"><a class="page-link" href="?page={{this.index}}">{{this.index}}</a></li>
+                    <li class="page-item current"><a class="page-link current" >{{this.index}}</a></li>
                 {{else}}
-                    <li class="page-item"><a class="page-link" href="?page={{this.index}}">{{this.index}}</a></li>
+                    <li class="page-item"><a class="page-link" >{{this.index}}</a></li>
                 {{/if}}
             {{/each}}
             <!--
@@ -54,7 +54,7 @@
             {{#if pageInfo.isLastPage }}
                 <!-- Do nothing -->
             {{else}}
-                <li class="page-item next"><a class="page-link" href="?page={{pageInfo.nextPage}}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                <li class="page-item next"><a class="page-link next" ><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
             {{/if}}
         </ul>
     </nav>
