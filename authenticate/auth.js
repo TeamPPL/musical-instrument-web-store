@@ -35,8 +35,6 @@ module.exports = (app) => {
           return done(null, false);
         }
 
-        
-
         if (!bcrypt.compare(password, account.password)) 
         //if (password !== account.password)
         {

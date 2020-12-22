@@ -6917,3 +6917,51 @@ i:before {
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */
+
+.search-container {
+  float: right;
+}
+
+input[type=text] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border-left: none;
+  border-top: none;
+  border-bottom: solid gray;
+  border-right: none;
+}
+
+.search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border-right: none;
+  border-top: none;
+  border-bottom: solid gray;
+  border-left: none;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background: #ccc;
+}
+
+.other-services-signup-btn {
+  background-color: transparent;
+  cursor: pointer;
+  outline-color: transparent;
+}
+
+.other-services-signup-btn:active {
+  opacity: 50%;
+  outline-color: transparent;
+}
+
+.other-services-signup-btn:focus {
+  outline-color: none;
+  box-shadow: none;
+}
