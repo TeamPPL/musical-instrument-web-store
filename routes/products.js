@@ -7,4 +7,6 @@ const detailController = require('../controllers/detailController');
 router.get('/', productController.index);
 router.get('/detail/:id', detailController.index);
 
+router.post('/', productController.filter);
+
 module.exports = router;
