@@ -4,6 +4,8 @@ const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const flash = require('connect-flash');
+require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -26,6 +28,7 @@ app.engine( 'hbs', hbs( {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(flash());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,7 +36,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: 'itsASecret'
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
 })
 );
 
@@ -42,7 +48,6 @@ auth(app);
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/products', productsRouter);
-// app.use('/detail', detailRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

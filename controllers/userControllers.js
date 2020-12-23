@@ -5,6 +5,8 @@ const cloudinary = require('../cloudinary/cloudinary');
 const fs = require('fs');
 const formidable = require('formidable');
 
+const saltRounds = 10;
+
 exports.index = async (req, res, next) => {
     let username = req.user.username;
     console.log(username);
@@ -36,7 +38,7 @@ exports.createNewAccount = async (req, res, next) => {
         //Ton tai username roi
     } else {
         //Chua co username nay
-        let hash = bcrypt.hashSync(password, 10);
+        let hash = bcrypt.hashSync(password, saltRounds);
         let accountInfos = {
             "username": username,
             "password": hash,

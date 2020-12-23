@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const {db} = require('../dal/dal');
+const {db} = require('../dal/db');
 
 exports.list = async () => {
     const accountCollection = db().collection('account');
@@ -24,6 +24,19 @@ exports.findById = async (id) => {
       _id: ObjectId(id)
   });
   
+  return account;
+}
+
+exports.findAndModifyGoogle = async (info) => {
+  const accountCollection = db().collection('account');
+  let account = await accountCollection.findAndModify({
+    query: { GoogleID: info.id },
+    update: {
+      $setOnInsert: info
+    },
+    new: true,   // return new doc if one is upserted
+    upsert: true // insert the document if it does not exist
+  })
   return account;
 }
 

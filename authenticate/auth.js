@@ -2,6 +2,8 @@ const session = require("express-session");
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 const accountModel = require('../models/accountModel');
 
 module.exports = (app) => {
@@ -9,7 +11,7 @@ module.exports = (app) => {
     app.use(passport.session());
 
     passport.serializeUser((user, done) => {
-        //console.log(user);
+        console.log(user);
         done(null, user._id);
     });
 
@@ -29,14 +31,13 @@ module.exports = (app) => {
     passport.use(
       new LocalStrategy( async (username, password, done) => {
         let account = await accountModel.findByUsername(username);
-        //console.log(account);
+        
         if (account == null) 
         {
           return done(null, false);
         }
 
-        if (!bcrypt.compare(password, account.password)) 
-        //if (password !== account.password)
+        if (!bcrypt.compareSync(password, account.password))
         {
           return done(null, false);
         }
@@ -46,4 +47,21 @@ module.exports = (app) => {
         }
       })
     );
+
+    passport.use(
+      new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "https://27.74.253.176:3000/user/login/google/callback"
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        let account = await accountModel.findAndModifyGoogle(profile)
+          
+          if (account == null) 
+          {
+            return done(null, false);
+          }
+          
+      }
+  ));
 };
