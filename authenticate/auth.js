@@ -52,7 +52,7 @@ module.exports = (app) => {
       new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://27.74.253.176:3000/user/login/google/callback"
+        callbackURL: "https://music-embassy.herokuapp.com/user/login/google/callback"
       },
       async (accessToken, refreshToken, profile, done) => {
         let account = await accountModel.findAndModifyGoogle(profile)
