@@ -29,15 +29,31 @@ exports.findById = async (id) => {
 
 exports.findAndModifyGoogle = async (info) => {
   const accountCollection = db().collection('account');
-  let account = await accountCollection.findAndModify({
-    query: { GoogleID: info.id },
-    update: {
-      $setOnInsert: info
+
+  //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
+  let receivedInfo = {
+    GoogleID: info.id,
+    username: info._json.email,
+    name: info.displayName,
+    email: info._json.email,
+    avatar: info._json.picture,
+    provider: "google",
+    createdDate: new Date(),
+    modifiedDate: new Date()
+  }
+
+  let account = await accountCollection.findOneAndUpdate(
+    { GoogleID: info.id },
+    {
+      $setOnInsert: receivedInfo,
     },
-    new: true,   // return new doc if one is upserted
-    upsert: true // insert the document if it does not exist
-  })
-  return account;
+    {
+      returnOriginal: false,
+      upsert: true,
+    }
+  );
+  //console.log(account);
+  return account.value;
 }
 
 exports.insertOne = async (accountInfos) => {

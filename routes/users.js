@@ -24,7 +24,7 @@ router.post('/login', passport.authenticate('local', {
 );
 
 router.get('/login/google',
-  passport.authenticate('google', { scope: ['profile'] })
+  passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
 router.get('/login/google/callback', 

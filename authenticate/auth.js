@@ -11,7 +11,7 @@ module.exports = (app) => {
     app.use(passport.session());
 
     passport.serializeUser((user, done) => {
-        console.log(user);
+        //console.log(`${user}\n---------------------------------------------------------------------------------------------------`);
         done(null, user._id);
     });
 
@@ -39,7 +39,7 @@ module.exports = (app) => {
 
         if (!bcrypt.compareSync(password, account.password))
         {
-          return done(null, false);
+         return done(null, false);
         }
         else 
         {
@@ -52,16 +52,13 @@ module.exports = (app) => {
       new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://music-embassy.herokuapp.com/user/login/google/callback"
+        callbackURL: process.env.GOOGLE_CALLBACK_URL
       },
       async (accessToken, refreshToken, profile, done) => {
+        console.log(profile);
         let account = await accountModel.findAndModifyGoogle(profile)
-          
-          if (account == null) 
-          {
-            return done(null, false);
-          }
-          
+        console.log(account);
+        return done(null, account);
       }
   ));
 };
