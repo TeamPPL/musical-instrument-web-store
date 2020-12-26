@@ -8,12 +8,19 @@ const formidable = require('formidable');
 const saltRounds = 10;
 
 exports.index = async (req, res, next) => {
-    let username = req.user.username;
-    console.log(username);
-    let account = await accountModel.findByUsername(username);
+  let userInfo = {};
+    userInfo.isLogin = req.isAuthenticated();
+    if (req.isAuthenticated())
+    {
+         userInfo.username = req.user.username
+    }
 
-    console.log(account);
-    res.render('user/accountInfo', {account});
+  let username = req.user.username;
+  console.log(username);
+  let account = await accountModel.findByUsername(username);
+
+  console.log(account);
+  res.render('user/accountInfo', {account, userInfo});
 }
 
 exports.getLogin = (req, res, next) => {
@@ -103,4 +110,10 @@ exports.updateAccountInfo = async (req, res, next) => {
     await console.log(upload.secure_url);
   });
 
+}
+
+exports.logout = async (req, res, next) => {
+  req.logout();
+
+  res.redirect(req.get('referer'));
 }

@@ -12,6 +12,13 @@ var hbs = exphbs.create({
 });
 
 exports.index = async (req, res, next) => {
+    let userInfo = {};
+    userInfo.isLogin = req.isAuthenticated();
+    if (req.isAuthenticated())
+    {
+         userInfo.username = req.user.username
+    }
+
     let pageNumber = req.query.page;
     let nPerPage = req.query.show;
 
@@ -81,7 +88,7 @@ exports.index = async (req, res, next) => {
         pageList
     }
     //console.log(pageInfo);
-    res.render('products/products', {pageInfo, productItems});
+    res.render('products/products', {pageInfo, productItems, userInfo});
 };
 
 exports.filter = async (req, res, next) => {

@@ -15,6 +15,7 @@ router.get('/', ensureAuth, userController.index);
 
 router.get('/login', userController.getLogin);
 router.get('/signup', userController.getSignup);
+router.get('/logout', userController.logout);
 
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/user', //redirect back to personal page
