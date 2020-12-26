@@ -56,6 +56,36 @@ exports.findAndModifyGoogle = async (info) => {
   return account.value;
 }
 
+exports.findAndModifyFacebook = async (info) => {
+  const accountCollection = db().collection('account');
+
+  //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
+  let receivedInfo = {
+    FacebookID: info.id,
+    username: info.email,
+    name: info.displayName,
+    email: info.email,
+    avatar: info.picture,
+    phone: info.phone,
+    provider: "facebook",
+    createdDate: new Date(),
+    modifiedDate: new Date()
+  }
+
+  let account = await accountCollection.findOneAndUpdate(
+    { FacebookID: info.id },
+    {
+      $setOnInsert: receivedInfo,
+    },
+    {
+      returnOriginal: false,
+      upsert: true,
+    }
+  );
+  //console.log(account);
+  return account.value;
+}
+
 exports.insertOne = async (accountInfos) => {
   const accountCollection = db().collection('account');
   try {

@@ -3,6 +3,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const LocalStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 const accountModel = require('../models/accountModel');
 
@@ -55,10 +56,24 @@ module.exports = (app) => {
         callbackURL: process.env.GOOGLE_CALLBACK_URL
       },
       async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
+        //console.log(profile);
         let account = await accountModel.findAndModifyGoogle(profile)
-        console.log(account);
+        //console.log(account);
         return done(null, account);
       }
-  ));
+    ));
+
+    passport.use(new FacebookStrategy({
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ['id', 'displayName', 'photos', 'email']
+      },
+      function(accessToken, refreshToken, profile, done) {
+        console.log(profile);
+        let account = await accountModel.findAndModifyFacebook(profile);
+        //console.log(account);
+        return done(null, account);
+      }
+    ));
 };

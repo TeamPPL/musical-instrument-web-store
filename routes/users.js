@@ -30,12 +30,20 @@ router.get('/login/google',
 
 router.get('/login/google/callback', 
   passport.authenticate('google', { 
+    successRedirect: '/user',
     failureRedirect: '/login'
-  }),
-  function(req, res) {
-    // Successful authentication, redirect personal page.
-    res.redirect('/user');
-  }
+  })
+);
+
+router.get('/login/facebook',
+  passport.authenticate('facebook')
+);
+
+router.get('/login/facebook/callback', 
+  passport.authenticate('facebook', { 
+    successRedirect: '/user',
+    failureRedirect: '/login'
+  })
 );
 
 router.post('/signup', 
