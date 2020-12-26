@@ -11,7 +11,7 @@ exports.index = async (req, res, next) => {
     userInfo.isLogin = req.isAuthenticated();
     if (req.isAuthenticated())
     {
-         userInfo.username = req.user.username
+         userInfo.info = req.user
     }
     //console.log(specialOfferItems);
     // Pass data to view to display list of books

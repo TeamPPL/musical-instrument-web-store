@@ -36,7 +36,7 @@ router.get('/login/google/callback',
 );
 
 router.get('/login/facebook',
-  passport.authenticate('facebook',  { scope: ['default', 'email'] })
+  passport.authenticate('facebook',  { scope: ['email'] })
 );
 
 router.get('/login/facebook/callback', 

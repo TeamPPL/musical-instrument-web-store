@@ -9,7 +9,7 @@
                     <div class="top_header_middle">
                         <span>
                             {{#if userInfo.isLogin}}
-                                <span>Welcome back <a class="text-primary" href="/user">{{userInfo.username}}</a></span>
+                                <span>Welcome back <a class="text-primary" href="/user">{{userInfo.info.username}}  <img class="mb-4" height="25px" width="25px" src="{{userInfo.info.avatar}}" /> </a></span>
                                 <a class="text-secondary" href="/user/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
                             {{else}}
                                 <a class="text-secondary" href="/user/login">Login</a>

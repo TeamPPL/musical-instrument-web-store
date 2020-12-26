@@ -62,11 +62,10 @@ exports.findAndModifyFacebook = async (info) => {
   //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
   let receivedInfo = {
     FacebookID: info.id,
-    username: info.email ? "facebookuser" + info.id : info.email,
+    username: info._json.email === null ? "facebookuser" + info.id : info._json.email,
     name: info.displayName,
-    email: info.email,
-    avatar: info.picture,
-    phone: info.phone,
+    email: info._json.email,
+    avatar: info.photos[0].value,
     provider: "facebook",
     createdDate: new Date(),
     modifiedDate: new Date()

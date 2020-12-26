@@ -16,7 +16,7 @@ exports.index = async (req, res, next) => {
     userInfo.isLogin = req.isAuthenticated();
     if (req.isAuthenticated())
     {
-         userInfo.username = req.user.username
+         userInfo.info = req.user
     }
 
     let pageNumber = req.query.page;
