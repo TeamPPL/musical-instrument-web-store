@@ -62,7 +62,7 @@ exports.findAndModifyFacebook = async (info) => {
   //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
   let receivedInfo = {
     FacebookID: info.id,
-    username: info.email,
+    username: info.email ? "facebookuser" + info.id : info.email,
     name: info.displayName,
     email: info.email,
     avatar: info.picture,
