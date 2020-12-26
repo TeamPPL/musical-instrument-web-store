@@ -68,8 +68,7 @@ module.exports = (app) => {
       clientSecret: process.env.FACEBOOK_APP_SECRET,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
       profileFields: ['id', 'displayName', 'photos', 'email']
-      },
-      function(accessToken, refreshToken, profile, done) {
+      }, async function(accessToken, refreshToken, profile, done) {
         console.log(profile);
         let account = await accountModel.findAndModifyFacebook(profile);
         //console.log(account);
