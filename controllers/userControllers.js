@@ -8,23 +8,16 @@ const formidable = require('formidable');
 const saltRounds = 10;
 
 exports.index = async (req, res, next) => {
-  let userInfo = {};
-    userInfo.isLogin = req.isAuthenticated();
-    if (req.isAuthenticated())
-    {
-         userInfo.info = req.user
-    }
-
   let username = req.user.username;
   console.log(username);
   let account = await accountModel.findByUsername(username);
 
   console.log(account);
-  res.render('user/accountInfo', {account, userInfo});
+  res.render('user/accountInfo', {account});
 }
 
 exports.getLogin = (req, res, next) => {
-    res.render('user/login');
+  res.render('user/login', {message: req.flash('error')[0]});
 };
 
 exports.getSignup = (req, res, next) => {
@@ -114,6 +107,20 @@ exports.updateAccountInfo = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   req.logout();
-
+  res.clearCookie('remember_me');
   res.redirect(req.get('referer'));
+}
+
+exports.rememberMe = async (req, res, next) => {
+    // Issue a remember me cookie if the option was checked
+    if (!req.body.remember_me) { 
+      return next(); 
+    }
+    
+    issueToken(req.user, function(err, token) {
+      if (err) { return next(err); }
+      res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); //7 days
+      return next();
+    });
+    res.redirect('/');
 }

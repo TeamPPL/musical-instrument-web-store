@@ -3,13 +3,6 @@ const productModel = require('../models/productModel');
 const MAX_RELATED_PRODUCT_PER_PAGE = 4;
 
 exports.index = async (req, res, next) => {
-    let userInfo = {};
-    userInfo.isLogin = req.isAuthenticated();
-    if (req.isAuthenticated())
-    {
-         userInfo.info = req.user
-    }
-
     const idProduct = req.params.id;
     const productItems = await productModel.findById(idProduct);
     const allRelatedProducts = await productModel.relatedProducts(idProduct);
@@ -41,5 +34,5 @@ exports.index = async (req, res, next) => {
         return relatedProducts;
     };
 */
-    res.render('products/detail/detail', {productItems, allRelatedProducts, userInfo});
+    res.render('products/detail/detail', {productItems, allRelatedProducts});
 };

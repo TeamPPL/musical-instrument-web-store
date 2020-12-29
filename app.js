@@ -28,7 +28,6 @@ app.engine( 'hbs', hbs( {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(flash());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,6 +40,18 @@ app.use(session({
 );
 
 auth(app);
+app.use(flash());
+
+app.use((req, res, next) => {
+  let userInfo =
+    {
+      isLogin: req.isAuthenticated(),
+      info: req.user
+    }
+
+  res.locals.userInfo = userInfo;
+  next();
+});
 
 app.use('/', indexRouter);
 app.use('/user', usersRouter);

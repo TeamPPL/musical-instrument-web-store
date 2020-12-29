@@ -20,8 +20,9 @@ router.get('/logout', userController.logout);
 router.post('/login', passport.authenticate('local', {
     successRedirect: '/user', //redirect back to personal page
     failureRedirect: '/user/login',
-    failureFlash: 'Invalid username or password.'
-  })
+    failureFlash: true
+  }), 
+  userController.rememberMe
 );
 
 router.get('/login/google',
