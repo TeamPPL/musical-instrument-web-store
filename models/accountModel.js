@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const {db} = require('../dal/dal');
+const {db} = require('../dal/db');
 const cloudinary = require('../cloudinary/cloudinary');
 
 exports.list = async () => {
@@ -26,6 +26,64 @@ exports.findById = async (id) => {
   });
   
   return account;
+}
+
+exports.findAndModifyGoogle = async (info) => {
+  const accountCollection = db().collection('account');
+
+  //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
+  let receivedInfo = {
+    GoogleID: info.id,
+    username: info._json.email,
+    name: info.displayName,
+    email: info._json.email,
+    avatar: info._json.picture,
+    provider: "google",
+    createdDate: new Date(),
+    modifiedDate: new Date()
+  }
+
+  let account = await accountCollection.findOneAndUpdate(
+    { GoogleID: info.id },
+    {
+      $setOnInsert: receivedInfo,
+    },
+    {
+      returnOriginal: false,
+      upsert: true,
+    }
+  );
+  //console.log(account);
+  return account.value;
+}
+
+exports.findAndModifyFacebook = async (info) => {
+  const accountCollection = db().collection('account');
+
+  //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
+  let receivedInfo = {
+    FacebookID: info.id,
+    username: info._json.email === null ? "facebookuser" + info.id : info._json.email,
+    name: info.displayName,
+    email: info._json.email,
+    avatar: info.photos[0].value,
+    provider: "facebook",
+    createdDate: new Date(),
+    modifiedDate: new Date()
+  }
+
+  let account = await accountCollection.findOneAndUpdate(
+    { FacebookID: info.id },
+    {
+      $setOnInsert: receivedInfo,
+    },
+    {
+      returnOriginal: false,
+      upsert: true,
+    }
+  );
+  //console.log(account);
+  return account.value;
 }
 
 exports.insertOne = async (accountInfos) => {

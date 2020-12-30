@@ -8,7 +8,7 @@
                         <div class="col-lg-4">
                             <div class="login_title">
                                 <h2>log in your account</h2>
-                                <p>Log in to your account to discovery all great features in this template.</p>
+                                <p>Log in to your account to buy great musical instruments.</p>
                             </div>
                             <form class="login_form row" action="/user/login" method="POST">
                                 <div class="col-lg-12 form-group">
@@ -19,32 +19,39 @@
                                 </div>
                                 <div class="col-lg-12 form-group">
                                     <div class="creat_account">
-                                        <input type="checkbox" id="f-option" name="selector">
+                                        <input type="checkbox" id="f-option" name="remember_me" value="yes">
                                         <label for="f-option">Keep me logged in</label>
                                         <div class="check"></div>
                                     </div>
                                     <h4>Forgot your password?</h4>
                                 </div>
+                                
+                                {{#if message}}
+                                    <h6 class="col-lg-12 text-center mb-3 text-danger">{{message}}</h6>
+                                {{/if}}
                                 <div class="col-lg-12 form-group">
                                     <button type="submit" value="submit" class="btn update_btn form-control">Login</button>
                                 </div>
                             </form>
-                            <h6 class="mt-3">Don't have account? <a href="/user/signup">Create an account</a></h6>
+                            <h6 class="mt-4 text-center">Don't have account? <a href="/user/signup">Create an account</a></h6>
 
                             <span class="row">
-                                    <button class="col btn btn-primary google-btn mt-3 ml-5 mr-5">
-                                        <span>
-                                            <img class="bg-white" height="25px" width="25px" src="/img/Google__G__Logo.svg"/>
-                                            Login with Google 
-                                        </span>
+                                <a href="/user/login/google" class="col text-center mt-3 ml-5 mr-5">
+                                    <button class="btn justify-content-center other-services-signup-btn ">
+                                        <div>
+                                            <img class="mr-2" height="25px" width="25px" src="/img/Google__G__Logo.png"/>
+                                            <span>Login with Google </span>
+                                        </div>
                                     </button>
-
-                                    <button class="col btn btn-info facebook-btn mt-3 ml-5 mr-5">
+                                </a>
+                                <a href="/user/login/facebook" class="col text-center mt-3 ml-5 mr-5">
+                                    <button class="btn other-services-signup-btn">
                                         <span>
-                                            <img height="25px" width="30px" src="/img/fb-icon.png"/>
+                                            <img class="mr-2" height="25px" width="25px" src="/img/fb-icon.png"/>
                                             Login with Facebook
                                         </span>
                                     </button>
+                                </a>
                             </span>
 
                             

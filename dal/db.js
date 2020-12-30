@@ -1,10 +1,11 @@
 const { MongoClient } = require('mongodb');
 
-const url = "mongodb://localhost:3000";
-const uri = "mongodb+srv://user_num_1:1_num_user@firstcluster.srzss.mongodb.net/musical-store?retryWrites=true&w=majority"
-const dbName = 'musical-store';
+//const url = "mongodb://localhost:3000";
 
-let client = new MongoClient(uri, { useUnifiedTopology: true});
+let client = new MongoClient(
+  process.env.DB_URI, 
+  { useUnifiedTopology: true}
+);
 
 let database;
 
@@ -13,7 +14,7 @@ async function connectDB() {
     await client.connect();
     console.log('DB connected!');
     //console.log(client);
-    database = await client.db(dbName);
+    database = await client.db(process.env.DB_NAME);
   }
   catch (err) {
       return console.log('Database Connection Error!', err.message);

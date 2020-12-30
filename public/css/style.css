@@ -6950,3 +6950,19 @@ input[type=text] {
 .search-container button:hover {
   background: #ccc;
 }
+
+.other-services-signup-btn {
+  background-color: transparent;
+  cursor: pointer;
+  outline-color: transparent;
+}
+
+.other-services-signup-btn:active {
+  opacity: 50%;
+  outline-color: transparent;
+}
+
+.other-services-signup-btn:focus {
+  outline-color: none;
+  box-shadow: none;
+}

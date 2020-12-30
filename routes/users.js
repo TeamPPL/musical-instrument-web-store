@@ -15,29 +15,47 @@ router.get('/', ensureAuth, userController.index);
 
 router.get('/login', userController.getLogin);
 router.get('/signup', userController.getSignup);
-/*
-router.post('/login', (req, res, next) => {
-  console.log('LMAO!!!');
-  console.log(req.body.username);
-  next();
-}
-);
-*/
+router.get('/logout', userController.logout);
+
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/user', //redirect ve personal page
+    successRedirect: '/user', //redirect back to personal page
     failureRedirect: '/user/login',
     failureFlash: true
+  }), 
+  userController.rememberMe
+);
+
+router.get('/login/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get('/login/google/callback', 
+  passport.authenticate('google', { 
+    successRedirect: '/user',
+    failureRedirect: '/login'
+  })
+);
+
+router.get('/login/facebook',
+  passport.authenticate('facebook',  { scope: ['email'] })
+);
+
+router.get('/login/facebook/callback', 
+  passport.authenticate('facebook', { 
+    successRedirect: '/user',
+    failureRedirect: '/login'
   })
 );
 
 router.post('/signup', 
   userController.createNewAccount,
   passport.authenticate('local', {
-    successRedirect: '/user', //redirect ve personal page
+    successRedirect: '/user', //redirect back to personal page
     failureRedirect: '/user/login',
     failureFlash: true
   })
 );
+
 
 router.post('/update', ensureAuth, userController.updateAccountInfo);
 

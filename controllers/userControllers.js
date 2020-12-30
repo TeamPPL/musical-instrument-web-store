@@ -5,17 +5,19 @@ const cloudinary = require('../cloudinary/cloudinary');
 const fs = require('fs');
 const formidable = require('formidable');
 
-exports.index = async (req, res, next) => {
-    let username = req.user.username;
-    console.log(username);
-    let account = await accountModel.findByUsername(username);
+const saltRounds = 10;
 
-    console.log(account);
-    res.render('user/accountInfo', {account});
+exports.index = async (req, res, next) => {
+  let username = req.user.username;
+  console.log(username);
+  let account = await accountModel.findByUsername(username);
+
+  console.log(account);
+  res.render('user/accountInfo', {account});
 }
 
 exports.getLogin = (req, res, next) => {
-    res.render('user/login');
+  res.render('user/login', {message: req.flash('error')[0]});
 };
 
 exports.getSignup = (req, res, next) => {
@@ -36,7 +38,7 @@ exports.createNewAccount = async (req, res, next) => {
         //Ton tai username roi
     } else {
         //Chua co username nay
-        let hash = bcrypt.hashSync(password, 10);
+        let hash = bcrypt.hashSync(password, saltRounds);
         let accountInfos = {
             "username": username,
             "password": hash,
@@ -99,4 +101,24 @@ exports.updateAccountInfo = async (req, res, next) => {
     await console.log(upload.secure_url);
   });
 
+}
+
+exports.logout = async (req, res, next) => {
+  req.logout();
+  res.clearCookie('remember_me');
+  res.redirect(req.get('referer'));
+}
+
+exports.rememberMe = async (req, res, next) => {
+    // Issue a remember me cookie if the option was checked
+    if (!req.body.remember_me) { 
+      return next(); 
+    }
+    
+    issueToken(req.user, function(err, token) {
+      if (err) { return next(err); }
+      res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); //7 days
+      return next();
+    });
+    res.redirect('/');
 }

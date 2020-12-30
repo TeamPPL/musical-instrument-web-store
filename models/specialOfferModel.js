@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const {db} = require('../dal/dal');
+const {db} = require('../dal/db');
 
 exports.list = async () => {
     const specialOfferCollection = db().collection('special-offer');
