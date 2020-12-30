@@ -66,9 +66,7 @@ exports.updateAccountInfo = async (req, res, next) => {
       if (files.cover.size === 0) {
           avatar = 0;
       } else {
-        let upload = await cloudinary.uploader.upload(temp_path, {folder: "imgdb"}, function(error, result) {
-            console.log(result, error);
-          });
+        let upload = await accountModel.updateAvatar(temp_path);
         avatar = upload.secure_url;
       }
       

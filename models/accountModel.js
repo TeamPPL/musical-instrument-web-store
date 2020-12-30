@@ -1,5 +1,6 @@
 const ObjectId = require('mongodb').ObjectId;
 const {db} = require('../dal/dal');
+const cloudinary = require('../cloudinary/cloudinary');
 
 exports.list = async () => {
     const accountCollection = db().collection('account');
@@ -52,4 +53,11 @@ exports.updateAAccount = async (updatedAccount) => {
       return console.log('Database Connection Error!', err.message);
   }
   return result;
+}
+
+exports.updateAvatar = async (temp_path) => {
+  var upload = await cloudinary.uploader.upload(temp_path, {folder: "imgdb"}, function(error, result) {
+    console.log(result, error);
+  });
+  return upload;
 }
