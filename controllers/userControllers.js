@@ -4,6 +4,8 @@ const accountModel = require('../models/accountModel');
 const cloudinary = require('../cloudinary/cloudinary');
 const fs = require('fs');
 const formidable = require('formidable');
+const { report } = require('../routes');
+const storeToken = require('../authenticate/storeToken');
 
 const saltRounds = 10;
 
@@ -116,11 +118,13 @@ exports.rememberMe = async (req, res, next) => {
     if (!req.body.remember_me) { 
       return next(); 
     }
-    
-    issueToken(req.user, function(err, token) {
+    //console.log(req.body.remember_me);
+    console.dir(req.app.locals.tokens);
+    storeToken.issueToken(req.app, req.user, function(err, token) {
       if (err) { return next(err); }
       res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); //7 days
+      console.dir(req.app.locals.tokens);
+      res.redirect(req.get('referer'));
       return next();
     });
-    res.redirect('/');
 }
