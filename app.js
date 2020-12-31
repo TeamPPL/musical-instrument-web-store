@@ -11,6 +11,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products');
 const auth = require('./authenticate/auth');
+const checkoutRouter = require('./routes/checkout');
 
 const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
@@ -56,6 +57,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/products', productsRouter);
+app.use('/cart', checkoutRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

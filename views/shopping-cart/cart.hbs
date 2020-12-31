@@ -18,25 +18,7 @@
                             </thead>
                             <form method="POST">
                                 <tbody id="cart_items">
-                                    <tr class="cart-rows">
-                                        <button type="submit" value="asdas">
-                                        <th scope="row">
-                                            <img src="../img/icon/close-icon.png" alt="" class="btn-remove">
-                                        </th>
-                                        <td>
-                                            <div class="media">
-                                                <div class="d-flex">
-                                                    <img src="../img/product/cart-product/cart-1.jpg" alt="">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h4>Mens Nike Bag</h4>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td><p>$150</p></td>
-                                        <td><input class="cart-quantity" id="quantity" type="number" value="1"></td>
-                                        <td><p>$150</p></td>
-                                    </tr>
+                                    {{#each cartItems}}
                                     <tr class="cart-rows">
                                         <th scope="row">
                                             <img src="../img/icon/close-icon.png" alt="" class="btn-remove">
@@ -44,17 +26,18 @@
                                         <td>
                                             <div class="media">
                                                 <div class="d-flex">
-                                                    <img src="../img/product/cart-product/cart-2.jpg" alt="">
+                                                    <img src="{{item.cover}}" width="40px" height="60px" alt="">
                                                 </div>
                                                 <div class="media-body">
-                                                    <h4>Mens Nike Bag</h4>
+                                                    <h4>{{item.title}}</h4>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td><p>$150</p></td>
-                                        <td><input class="cart-quantity" type="number" value="1"></td>
-                                        <td><p>$250</p></td>
+                                        <td><p>${{item.price}}</p></td>
+                                        <td><input class="cart-quantity" id="quantity" type="number" value="{{qty}}"></td>
+                                        <td><p>${{price}}</p></td>
                                     </tr>
+                                    {{/each}}
                                 </tbody>
                             </form>
                         </table>
