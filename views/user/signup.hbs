@@ -7,29 +7,30 @@
                         <div class="col-lg-8">
                             <div class="login_title">
                                 <h2>create account</h2>
-                                <p>Follow the steps below to create email account enjoy the great mail.com emailing experience. Vivamus tempus risus vel felis condimentum, non vehicula est iaculis.</p>
+                                <p>Fill in all the information needed to create an account.</p>
                             </div>
-                            <form class="login_form row" action="/user/signup" method="POST">
+                            <ul id="alert-messages"></ul>
+                            <form id="signupForm" class="login_form row" action="/user/signup" method="POST">
                                 <div class="col-lg-6 form-group">
                                     <input class="form-control" type="text" name="name" placeholder="Name">
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <input class="form-control" type="email" name="email" placeholder="Email">
+                                    <input id="email" class="form-control" style="margin-top: 8px;" type="email" name="email" placeholder="Email">
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <input class="form-control" type="text" name="username" placeholder="User Name">
+                                    <input id="username" class="form-control" type="text" name="username" placeholder="User Name">
                                 </div>
                                 <div class="col-lg-6 form-group">
                                     <input class="form-control" type="text" name="phone" placeholder="Phone">
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <input class="form-control" type="password" name="password" placeholder="Password">
+                                    <input id="pass" class="form-control" type="password" name="password" placeholder="Password">
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <input class="form-control" type="password" placeholder="Re-Password">
+                                    <input id="repass" class="form-control" type="password" placeholder="Re-Password">
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <button type="submit" value="submit" class="btn subs_btn form-control">register now</button>
+                                    <button id="submitBtn" class="btn subs_btn form-control">register now</button>
                                 </div>
                             </form>
                         </div>
@@ -39,3 +40,113 @@
             </div>
         </section>
         <!--================End login Area =================-->
+
+        <script src="/js/jquery-3.2.1.min.js"></script>
+        <script>
+        $(document).ready( function(){
+        
+            function validateEmail(email) {
+                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+/*
+            $('#email').focusout(clearAlerts);
+            $('#username').focusout(clearAlerts);
+            $('#pass').focusout(clearAlerts);
+            $('#repass').focusout(clearAlerts);
+
+
+            $('#email').focusout(triggerIfAvailableEmailCheck);
+            $('#email').focusout(validate);
+            $('#username').focusout(triggerIfAvailableUsernameCheck);
+            $('#username').focusout(validate);
+
+            $('#pass').focusout(checkPassword);
+            $('#repass').focusout(checkPassword);
+            $('#pass').focusout(triggerValidCheck);
+            $('#repass').focusout(triggerValidCheck);
+            $('#pass').focusout(validate);
+            $('#repass').focusout(validate);
+*/
+            function checkPassword() {
+                let pass = $('#pass').val();
+                let repass = $('#repass').val();
+
+                if (pass === "")
+                    insertNewAlert("Password cannot be empty!");
+                if (repass === "")
+                    insertNewAlert("Re-Password cannot be empty!");
+
+                if (pass !== repass)
+                    insertNewAlert("Re-Password doesn't match Password!");
+
+                return;
+            }
+
+            function insertNewAlert(message) {
+                let node = document.createElement("LI");
+                node.setAttribute("class", "alert alert-danger");
+                node.innerText = message;
+                $("#alert-messages").append(node);
+            }
+
+            function clearAlerts() {
+                $("#alert-messages").html("");
+                return;
+            }
+
+            function validate() {
+                let email = $('#email').val();
+
+                if(email === "")
+                    return;
+                if (validateEmail(email))
+                    return;
+                insertNewAlert("Email is not valid!");
+                return;
+            }
+
+            function triggerIfAvailableEmailCheck() {
+                let data = {
+                    email: $('#email').val()
+                }
+                sendRequest(data);
+                return;
+            }
+
+            function triggerIfAvailableUsernameCheck() {
+                let data = {
+                    username: $('#username').val()
+                }
+                sendRequest(data);
+                return;
+            }
+            
+            function sendRequest(data) {
+                $.post('/user/signup/checkdata', data, (result, status) => {
+                result.messageList.forEach(mess => {
+                        insertNewAlert(mess);
+                    });
+                });
+                return;
+            }
+
+            $('#submitBtn').click(validateForm);
+
+            function validateForm() {
+                //event.preventDefault();
+                clearAlerts();
+                checkPassword();
+                triggerIfAvailableEmailCheck();
+                triggerIfAvailableUsernameCheck();
+                validate();
+
+                let count = $("#alert-messages").children().length;
+                console.log(count);
+                if (count > 0 )
+                    return false;
+                $('#signupForm').submit();
+            }
+
+        });
+</script>

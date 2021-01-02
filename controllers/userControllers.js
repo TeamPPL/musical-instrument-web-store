@@ -6,6 +6,7 @@ const fs = require('fs');
 const formidable = require('formidable');
 const { report } = require('../routes');
 const storeToken = require('../authenticate/storeToken');
+const { stringify } = require('querystring');
 
 const saltRounds = 10;
 
@@ -127,4 +128,36 @@ exports.rememberMe = async (req, res, next) => {
       res.redirect(req.get('referer'));
       return next();
     });
+}
+
+exports.checkSignupData = async (req, res, next) => {
+  let email = req.body.email;
+  let username = req.body.username;
+  let messageList = [];
+  
+  if (email === ""){
+    messageList.push("Email cannot be empty!!!");
+  }
+
+  if (username === ""){
+    messageList.push("Username cannot be empty!!!");
+  }
+
+  if (email !== "" && username !== "") {
+    let usernameList = await accountModel.findByUsername(username);
+
+    if (usernameList)
+    {
+      messageList.push("This username is already exist!");
+    }
+
+    let emailList = await accountModel.findByEmail(email);
+
+    if (emailList)
+    {
+      messageList.push("This email is already exist!");
+    }
+  }
+
+  res.send({messageList});
 }

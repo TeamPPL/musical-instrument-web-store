@@ -56,6 +56,7 @@ router.post('/signup',
   })
 );
 
+router.post('/signup/checkdata', userController.checkSignupData)
 
 router.post('/update', ensureAuth, userController.updateAccountInfo);
 
