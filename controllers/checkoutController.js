@@ -2,7 +2,9 @@ const { param } = require("../routes");
 const productModel = require('../models/productModel');
 
 exports.index = async (req, res, next) =>{
-    res.render('shopping-cart/cart');
+    const cart = new Cart(req.session.cart? req.session.cart : {});
+    let cartItems = cart.generateArray();
+    res.render('shopping-cart/cart', {cartItems});
 }
 
 function Cart(oldCart) {
@@ -36,18 +38,13 @@ exports.addToCart = async (req, res, next) => {
 
     const productItem = await productModel.findById(id);
     cart.add(productItem, productItem._id);
+
+    req.app.locals.cartCount = cart.totalQty;
+
     req.session.cart = cart;
     let cartItems = cart.generateArray();
-    //console.log(cartItems);
 
-    // let cart1 = {
-    //     title:"hello"
-    // }
-    // let cart2 = {
-    //     title: "hi"
-    // }
-    // const productItems = await specialOfferModel.list();
-    // var cartItems = [cart1,cart2];
     console.log(cartItems);
-     res.render('shopping-cart/cart', {cartItems});
+    //res.render('shopping-cart/cart', {cartItems});
+     res.redirect('/');
 }

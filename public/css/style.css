@@ -917,8 +917,7 @@ i:before {
   position: relative;
 }
 
-.cart_cart a:before {
-  content: "0";
+.cart_count {
   height: 20px;
   width: 20px;
   border-radius: 50%;
