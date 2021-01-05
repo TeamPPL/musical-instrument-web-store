@@ -21,7 +21,7 @@
                                     {{#each cartItems}}
                                     <tr class="cart-rows">
                                         <th scope="row">
-                                            <img src="../img/icon/close-icon.png" alt="" class="btn-remove">
+                                            <img src="../img/icon/close-icon.png" alt="" id="{{item._id}}" class="btn-remove">
                                         </th>
                                         <td>
                                             <div class="media">
@@ -94,4 +94,6 @@
     </div>
 </section>
 <!--================End Shopping Cart Area =================-->
-<script src="/js/checkout.js"></script>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+<script src="/js/cart.js"></script>
