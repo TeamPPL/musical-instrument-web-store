@@ -1,5 +1,6 @@
 //const { param, checkout } = require("../routes");
 const productModel = require('../models/productModel');
+const checkoutModel = require('../models/checkoutModel');
 const fs = require('fs');
 
 exports.index = async (req, res, next) =>{
