@@ -2,7 +2,6 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 
-
 router.use(passport.initialize());
 router.use(passport.session());
 
@@ -16,6 +15,8 @@ router.get('/', ensureAuth, userController.index);
 router.get('/login', userController.getLogin);
 router.get('/signup', userController.getSignup);
 router.get('/logout', userController.logout);
+router.get('/forgot', userController.renderForgetPassword);
+router.get('/reset/:token', userController.renderResetPassword);
 
 router.post('/login', passport.authenticate('local', {
     //successRedirect: '/user', //redirect back to personal page
@@ -59,5 +60,9 @@ router.post('/signup',
 router.post('/signup/checkdata', userController.checkSignupData)
 
 router.post('/update', ensureAuth, userController.updateAccountInfo);
+
+router.post('/forgot', userController.sendEmailResetPassword);
+
+router.post('/reset/:token', userController.resetPassword);
 
 module.exports = router;
