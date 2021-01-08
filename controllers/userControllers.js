@@ -54,7 +54,8 @@ exports.createNewAccount = async (req, res, next) => {
             "phone": phone,
             "email": email,
             "createdDate": new Date(),
-            "modifiedDate": new Date()
+            "modifiedDate": new Date(),
+            "isActivated": false
         };
 
         accountModel.insertOne(accountInfos);
@@ -122,7 +123,7 @@ exports.logout = async (req, res, next) => {
 exports.rememberMe = async (req, res, next) => {
     // Issue a remember me cookie if the option was checked
     if (!req.body.remember_me) { 
-      return next(); 
+      res.redirect('/user');
     }
     //console.log(req.body.remember_me);
     console.dir(req.app.locals.tokens);
@@ -245,7 +246,7 @@ exports.resetPassword = async (req, res, next) => {
   }
   //Hash password and save to DB.
   let hash = bcrypt.hashSync(pass, saltRounds);
-  let account = await accountModel.updatePassword(token, pass);
+  let account = await accountModel.updatePassword({resetPasswordToken: token}, hash);
   
   if (account)
   {
@@ -261,6 +262,49 @@ exports.resetPassword = async (req, res, next) => {
     //Error.
     req.flash("error", "Password changed failed!");
     res.redirect('/error');
+  }
+
+}
+
+exports.changePassword = async (req, res, next) => {
+  const currentPassword = req.body.currentPassword;
+  const newPassword = req.body.newPassword;
+  const comfirmNewPassword = req.body.reNewPassword;
+
+  const username = req.user.username;
+  const account = await accountModel.findByUsername(username);
+
+  if (account)
+  {
+    if (!bcrypt.compareSync(currentPassword, account.password))
+    {
+      req.flash("error", "Current password doesn't match!");
+      res.redirect(req.get('referer'));
+    }
+    
+    //Check is password and re-password are the same?
+    if (newPassword != comfirmNewPassword)
+    {
+      req.flash("error", "New Password and Comfirm New Password must be the same!");
+      res.redirect(req.get('referer'));
+    }
+        
+  }
+  //Hash password and save to DB.
+  let hash = bcrypt.hashSync(newPassword, saltRounds);
+  let accountReturn = await accountModel.updatePassword({username: username}, hash);
+  
+  if (accountReturn)
+  {
+    //Change pass successfull.
+
+    req.flash("message-info", "Password changed successfully!");
+    res.redirect(req.get('referer'));
+  }
+  else {
+    //Error.
+    req.flash("error", "Password changed failed!");
+    res.redirect(req.get('referer'));
   }
 
 }

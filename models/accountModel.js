@@ -148,15 +148,13 @@ exports.findByResetToken = async (token) => {
   return account;
 }
 
-exports.updatePassword = async (token, hashedPass) => {
+exports.updatePassword = async (identifier, hashedPass) => {
   const accountCollection = db().collection('account');
   let result = undefined;
 
   try {
       result = await accountCollection.findOneAndUpdate(
-          {
-            resetPasswordToken: token
-          },
+          identifier,
           {
             $set : {
               password: hashedPass
