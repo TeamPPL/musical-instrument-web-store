@@ -1,14 +1,19 @@
 
-const bcrypt = require('bcrypt');
-const accountModel = require('../models/accountModel');
-const cloudinary = require('../cloudinary/cloudinary');
 const fs = require('fs');
 const formidable = require('formidable');
+const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const mailgun = require('mailgun-js');
+
+const accountModel = require('../models/accountModel');
+const cloudinary = require('../cloudinary/cloudinary');
 const { report } = require('../routes');
 const storeToken = require('../authenticate/storeToken');
 const { stringify } = require('querystring');
+const utils = require('../authenticate/utils');
 
 const saltRounds = 10;
+const resetTokenExpireTime = 3600000; //1 hours
 
 exports.index = async (req, res, next) => {
   let username = req.user.username;
@@ -20,7 +25,7 @@ exports.index = async (req, res, next) => {
 }
 
 exports.getLogin = (req, res, next) => {
-  res.render('user/login', {message: req.flash('error')[0]});
+  res.render('user/login');//, {message: req.flash('error')});
 };
 
 exports.getSignup = (req, res, next) => {
@@ -49,7 +54,8 @@ exports.createNewAccount = async (req, res, next) => {
             "phone": phone,
             "email": email,
             "createdDate": new Date(),
-            "modifiedDate": new Date()
+            "modifiedDate": new Date(),
+            "isActivated": false
         };
 
         accountModel.insertOne(accountInfos);
@@ -115,7 +121,7 @@ exports.logout = async (req, res, next) => {
 exports.rememberMe = async (req, res, next) => {
     // Issue a remember me cookie if the option was checked
     if (!req.body.remember_me) { 
-      return next(); 
+      res.redirect('/user');
     }
     //console.log(req.body.remember_me);
     console.dir(req.app.locals.tokens);
@@ -158,4 +164,145 @@ exports.checkSignupData = async (req, res, next) => {
   }
 
   res.send({messageList});
+}
+
+exports.renderForgetPassword = async (req, res, next) => {
+  res.render('user/forgetPassword');
+}
+
+exports.sendEmailResetPassword = async (req, res, next) => {
+  const email = req.body.email
+  const user = await accountModel.findByEmail(email);
+  console.log(user);
+  if (!user) {
+    req.flash('error', 'This email address is not exists.');
+    return res.redirect('/user/forgot');
+  }
+  const token = crypto.randomBytes(32).toString('hex');
+  let tokenInfos = {
+    resetPasswordToken : token,
+    resetPasswordExpires : Date.now(),
+  }
+
+  accountModel.updateResetToken(email, tokenInfos);
+    
+  const mg = mailgun({
+    apiKey: process.env.MAILGUN_API_KEY, 
+    domain: process.env.MAILGUN_DOMAIN
+  });
+
+  let data = {
+    from: 'no-reply-musicembassy@musicembassy.com',
+    to: email,
+    subject: 'Music Embassy Account Password Reset',
+    text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+    'http://' + req.headers.host + '/user/reset/' + token + '\n\n' +
+    'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+  };
+
+  mg.messages().send(data, (err, body) => {
+    if (err) {
+      req.flash('error', 'Unable to send email.');
+      next(err);
+    }
+
+    req.flash('message-info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+    res.redirect('/user/forgot');
+  });         
+}
+
+exports.renderResetPassword = async (req, res, next) => {
+  const token = req.params.token;
+  const account = await accountModel.findByResetToken(token);
+
+  //Find token in DB.
+  if (!account) {
+    req.flash("error", "Token is not available!");
+    res.redirect('/error');
+  }
+  //Check if token is expired or not?
+  if (Date.now() - account.resetPasswordExpires > resetTokenExpireTime)
+  {
+    req.flash("error", "Reset link expired!");
+    res.redirect('/error');
+  }
+
+  res.render('user/resetPassword', {token});
+}
+
+exports.resetPassword = async (req, res, next) => {
+  const pass = req.body.password;
+  const repass = req.body.repassword;
+  const token = req.params.token;
+
+  //Check is password and re-password are the same?
+  if (pass != repass)
+  {
+    req.flash("error", "Password and Re-Password must be the same!");
+    return res.redirect(req.get('referer'),);
+  }
+  //Hash password and save to DB.
+  let hash = bcrypt.hashSync(pass, saltRounds);
+  let account = await accountModel.updatePassword({resetPasswordToken: token}, hash);
+  
+  if (account)
+  {
+    //Change pass successfull.
+
+    //Mark token so user can't use this link to change password anymore.
+    await accountModel.markTokenAsDone(token);
+
+    req.flash("message-info", "Password changed successfully!");
+    res.redirect('/user/login');
+  }
+  else {
+    //Error.
+    req.flash("error", "Password changed failed!");
+    res.redirect('/error');
+  }
+
+}
+
+exports.changePassword = async (req, res, next) => {
+  const currentPassword = req.body.currentPassword;
+  const newPassword = req.body.newPassword;
+  const comfirmNewPassword = req.body.reNewPassword;
+
+  const username = req.user.username;
+  const account = await accountModel.findByUsername(username);
+
+  if (account)
+  {
+    if (!bcrypt.compareSync(currentPassword, account.password))
+    {
+      req.flash("error", "Current password doesn't match!");
+      res.redirect(req.get('referer'));
+    }
+    
+    //Check is password and re-password are the same?
+    if (newPassword != comfirmNewPassword)
+    {
+      req.flash("error", "New Password and Comfirm New Password must be the same!");
+      res.redirect(req.get('referer'));
+    }
+        
+  }
+  //Hash password and save to DB.
+  let hash = bcrypt.hashSync(newPassword, saltRounds);
+  let accountReturn = await accountModel.updatePassword({username: username}, hash);
+  
+  if (accountReturn)
+  {
+    //Change pass successfull.
+
+    req.flash("message-info", "Password changed successfully!");
+    res.redirect(req.get('referer'));
+  }
+  else {
+    //Error.
+    req.flash("error", "Password changed failed!");
+    res.redirect(req.get('referer'));
+  }
+
 }

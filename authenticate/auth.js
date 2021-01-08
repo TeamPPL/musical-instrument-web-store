@@ -93,7 +93,7 @@ module.exports = (app) => {
           console.dir(account);
           if (account == null) 
           {
-            return done(null, false);
+            return done(null, false, {message: "This username doesn't exist!"});
           }
           else 
           {

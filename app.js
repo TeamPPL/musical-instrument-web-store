@@ -61,6 +61,15 @@ app.use((req, res, next) => {
     }
 
   res.locals.userInfo = userInfo;
+
+  let message = {
+    info: req.flash('message-info'),
+    warning: req.flash('message-warning'),
+    danger: req.flash('message-danger'),
+    error: req.flash('error'),
+  }
+  console.log(message);
+  res.locals.message = message;
   next();
 });
 
