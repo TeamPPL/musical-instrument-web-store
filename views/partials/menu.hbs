@@ -31,9 +31,17 @@
                     <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 </ul>
                 <ul class="navbar-nav justify-content-end">
-                    <li class="search_icon"><a href="#"><i class="icon-magnifier icons"></i></a></li>
+                    <li class="search_icon"><a href="/product"><i class="icon-magnifier icons"></i></a></li>
                     <li class="user_icon"><a href="/user/login"><i class="icon-user icons"></i></a></li>
-                    <li class="cart_cart"><a href="#"><i class="icon-handbag icons"></i></a></li>
+                    <li class="cart_cart" id="cart_info" >
+                        <a href="/cart"><i class="icon-handbag icons">
+                            {{#if cartCount}}
+                            <span class="cart_count" id="go_to_cart">
+                                {{cartCount}}
+                            </span>
+                            {{/if}}
+                        </i></a>
+                    </li>
                 </ul>
             </div>
         </nav>
