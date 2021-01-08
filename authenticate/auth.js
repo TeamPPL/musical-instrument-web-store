@@ -6,34 +6,13 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const RememberMeStrategy = require('passport-remember-me').Strategy;
 
-const utils = require('./utils');
+const storeToken = require('./storeToken');
 const accountModel = require('../models/accountModel');
 
 module.exports = (app) => {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(passport.authenticate('remember-me'));
-
-    var tokens = {}
-
-    function consumeRememberMeToken(token, fn) {
-      let uid = tokens[token];
-      delete tokens[token];
-      return fn(null, uid);
-    }
-
-    function saveRememberMeToken(token, uid, fn) {
-      tokens[token] = uid;
-      return fn();
-    }
-
-    function issueToken(user, done) {
-      let token = utils.randomString(64);
-      saveRememberMeToken(token, user.id, function(err) {
-        if (err) { return done(err); }
-        return done(null, token);
-      });
-    }
 
     passport.serializeUser((user, done) => {
         done(null, user._id);
@@ -101,14 +80,17 @@ module.exports = (app) => {
 
     passport.use(new RememberMeStrategy(
       async (token, done) => {
-        consumeRememberMeToken(token, async (err, uid) => {
+        console.log('token: ')
+        console.dir(token);
+        storeToken.consumeRememberMeToken(app, token, async (err, uid) => {
+          console.dir(uid);
           if (err) 
             return done(err);
           if (!uid) 
             return done(null, false);
 
           let account = await accountModel.findById(uid);
-      
+          console.dir(account);
           if (account == null) 
           {
             return done(null, false);
@@ -119,6 +101,12 @@ module.exports = (app) => {
           }
         })
       },
-      issueToken
+      (app, user, done) => {
+        let token = utils.randomString(64);
+        storeToken.saveRememberMeToken(app, token, user._id, function(err) {
+          if (err) { return done(err); }
+          return done(null, token);
+        });
+      }
     ));
 };

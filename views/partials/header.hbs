@@ -9,7 +9,7 @@
                     <div class="top_header_middle">
                         <span>
                             {{#if userInfo.isLogin}}
-                                <span>Welcome back, <a class="text-primary" href="/user">{{userInfo.info.username}}  <img style="border-radius: 7px;margin-top: 0px" height="25px" width="25px" src="{{userInfo.info.avatar}}" /> </a></span>
+                                <span>Welcome back, <a class="text-primary" href="/user">{{userInfo.info.username}}  {{#if userInfo.info.avatar}}<img style="border-radius: 7px;margin-top: 0px" height="25px" width="25px" src="{{userInfo.info.avatar}}" /> {{/if}} </a></span>
                                 <a class="text-secondary" href="/user/logout">Logout <i class="fas fa-sign-out-alt"></i></a>
                             {{else}}
                                 <a class="text-secondary" href="/user/login">Login</a>

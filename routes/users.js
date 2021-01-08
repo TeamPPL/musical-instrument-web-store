@@ -18,7 +18,7 @@ router.get('/signup', userController.getSignup);
 router.get('/logout', userController.logout);
 
 router.post('/login', passport.authenticate('local', {
-    successRedirect: '/user', //redirect back to personal page
+    //successRedirect: '/user', //redirect back to personal page
     failureRedirect: '/user/login',
     failureFlash: true
   }), 
@@ -56,6 +56,7 @@ router.post('/signup',
   })
 );
 
+router.post('/signup/checkdata', userController.checkSignupData)
 
 router.post('/update', ensureAuth, userController.updateAccountInfo);
 

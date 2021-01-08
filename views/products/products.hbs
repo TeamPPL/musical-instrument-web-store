@@ -15,13 +15,9 @@
         <div class="categories_main_inner">
             <div class="row row_disable">
                 <div class="col-lg-9 float-md-right">
-                    <div class="search-container">
-                        <input id="search-box" type="text" placeholder="Search.." name="searchText">
-                        <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
-                    </div>
-                    <div class="showing_fillter">
+                    <div id="scrolling-anchor"  class="showing_fillter">
                         <div class="row m0">
-                            <div class="first_fillter">
+                            <div id="currentPageInfo" class="first_fillter">
                                 <h4>Showing {{pageInfo.firstItemOfPage}} to {{pageInfo.lastItemOfPage}} of {{pageInfo.totalCount}} total</h4>
                             </div>
                             <div class="secand_fillter">
@@ -41,16 +37,18 @@
                                     <option value="24">24</option>
                                 </select>
                             </div>
-                            <!--
-                            <div class="four_fillter">
-                                <h4>View</h4>
-                                <a class="active" href="#"><i class="icon_grid-2x2"></i></a>
-                                <a href="#"><i class="icon_grid-3x3"></i></a>
+                            <div class="search-container input-group">
+                                <input id="search-box" class="form-control" type="text" placeholder="Search.." name="searchText">
+                                <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
                             </div>
-                            -->
+                    <!--================Products & Paging Area =================-->
                         </div>
                     </div>
-                    <!--================Products & Paging Area =================-->
+
+                    <div id="loader" class="row m0 d-flex justify-content-center" style="visibility: hidden; position: absolute;">
+                        <img src="img/loading.gif"/>
+                    </div>
+                        
                     <div id="product-items-partial-displayer" >
                         {{>productItems}}
                     </div>
@@ -204,6 +202,11 @@
 
         $('#product-items-partial-displayer').on("click", '.pagination_area .pagination li a', (e) => {
             e.preventDefault();
+            //Scroll to top
+            $('body,html').animate({
+                scrollTop: $("#scrolling-anchor").offset().top - 50,
+            }, 700);   
+
             let classList = $(e.target).attr("class");
             let classArr = classList.split(" ");
             let pageNumber;
@@ -247,48 +250,82 @@
         
         function sendRequest(data) {
             $.post('/products', data, (result, status) => {
-                //alert("Data: " + data + "\nStatus: " + status);
-                //console.log(data);
-                //Handlebars.registerPartial('productItems', '{{productItems}}');
-                //productItems = data.productItems;
+                //console.log(status);
+                //let source   = result.partials;
+                let sourceProductsItem = `<div class="categories_product_area">
+                                <div class="row">
+                                    \{\{#each productItems\}\}
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="l_product_item">
+                                            <div class="l_p_img">
+                                                <a href="/products/detail/\{\{_id\}\}" ><img src="\{\{cover\}\}" width="270" height="480"></a>
+                                            </div>
+                                            <div class="l_p_text">
+                                                <ul>
+                                                    <li class="p_icon"><a href="#"><i class="icon_piechart"></i></a></li>
+                                                    <li><a class="add_cart_btn" href="#">Add To Cart</a></li>
+                                                    <li class="p_icon"><a href="#"><i class="icon_heart_alt"></i></a></li>
+                                                </ul>
+                                                <h4>\{\{title\}\}</h4>
+                                                \{\{#if discount\}\}
+                                                    <h5><del>\$\{\{price\}\}</del>  \$\{\{discount\}\}</h5>
+                                                \{\{else\}\}
+                                                    <h5>\$\{\{price\}\}</h5>
+                                                \{\{/if\}\}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    \{\{/each\}\}
+                                </div>
+                                <nav aria-label="Page navigation example" class="pagination_area">
+                                    <ul class="pagination" id="pagination">
+                                        \{\{#if pageInfo.isFirstPage \}\}
+                                            <!-- Do nothing -->
+                                        \{\{else\}\}
+                                            <li class="page-item prev"><a class="page-link prev" ><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                                        \{\{/if\}\}
 
-                //let productItemsPartial = Handlebars.partials[productItems];
-                //console.log(productItemsPartial);
-                //$('#product-items-partial-displayer').html(productItemsPartial(result));
-                console.log(status);
-                let source   = result.partials;
-                
-                console.log(source);
-                let template = Handlebars.compile(source);
-                //console.log(template);
-                let htmlCompiled = template(result);
-                //let htmlCompiled = Handlebars.template(template);
-                //console.log(htmlCompiled);
-                // you will now have some html that you will need to insert into your page
-                document.getElementById("product-items-partial-displayer").innerHTML = htmlCompiled;
+                                        \{\{#each pageInfo.pageList\}\}
+                                            \{\{#if this.isCurrentPage\}\}
+                                                <li class="page-item current"><a class="page-link current" >\{\{this.index\}\}</a></li>
+                                            \{\{else\}\}
+                                                <li class="page-item"><a class="page-link" >\{\{this.index\}\}</a></li>
+                                            \{\{/if\}\}
+                                        \{\{/each\}\}
+                                        \{\{#if pageInfo.isLastPage \}\}
+                                            <!-- Do nothing -->
+                                        \{\{else\}\}
+                                            <li class="page-item next"><a class="page-link next" ><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                                        \{\{/if\}\}
+                                    </ul>
+                                </nav>
+                            </div>`;
+                let sourceCurrentPageInfo = `<h4>Showing \{\{pageInfo.firstItemOfPage\}\} to \{\{pageInfo.lastItemOfPage\}\} of \{\{pageInfo.totalCount\}\} total</h4>`
+                //console.log(source);
+                let templateProductsItem = Handlebars.compile(sourceProductsItem);
+                let templateCurrentPageInfo = Handlebars.compile(sourceCurrentPageInfo);
+
+                let htmlProductsItemCompiled = templateProductsItem(result);
+                let htmlCurrentPageInfoCompiled = templateCurrentPageInfo(result);
+
+                document.getElementById("product-items-partial-displayer").innerHTML = htmlProductsItemCompiled;
+                document.getElementById("currentPageInfo").innerHTML = htmlCurrentPageInfoCompiled;
                 
             });
             return;
         }
-    });
 
-    //});
-    /*
-    function submitForm() {
-        form = document.getElementById('fillter-form');
-        console.log(form);
-        form.submit();
-    }
-    */
+        $(document).ajaxStart(() => {
+            document.getElementById("product-items-partial-displayer").innerHTML = "";
+            // Show image container
+            $("#loader").css("visibility", "visible");
+            $("#loader").css("position", "relative");
+        });
+        $(document).ajaxComplete(() => {
+            // Hide image container
+            $("#loader").css("visibility", "hidden");
+            $("#loader").css("position", "absolute");
+        });
+    });
 </script>
 <!--================End Categories Product Area =================-->
-
-<!--
-    
-            <form method="GET" action="/products" id="fillter-form">
-                    <script id="product-items-partial" type="text/x-handlebars-template">
-                    </script>
-                    
-                    <div id="product-items-partial-displayer" >
-                    </div>
-                    -->

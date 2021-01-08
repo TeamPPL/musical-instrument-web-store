@@ -35,13 +35,23 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+      secure: false,
+      maxAge: 3600000 //1 hour
+  }
 })
 );
+
+//Remember me tokens
+app.locals.tokens = {}
 
 auth(app);
 app.use(flash());
 
+//global user info on header bar
 app.use((req, res, next) => {
   let userInfo =
     {

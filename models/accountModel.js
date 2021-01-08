@@ -28,6 +28,15 @@ exports.findById = async (id) => {
   return account;
 }
 
+exports.findByEmail = async (email) => {
+  const accountCollection = db().collection('account');
+  let account = await accountCollection.findOne({
+      email: email
+  });
+  
+  return account;
+}
+
 exports.findAndModifyGoogle = async (info) => {
   const accountCollection = db().collection('account');
 
