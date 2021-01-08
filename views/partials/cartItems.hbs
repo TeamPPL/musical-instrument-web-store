@@ -1,0 +1,20 @@
+{{#each cartItems}}
+<tr class="cart-rows">
+    <th scope="row">
+        <img src="../img/icon/close-icon.png" alt="" id="{{item._id}}" class="btn-remove">
+    </th>
+    <td>
+        <div class="media">
+            <div class="d-flex">
+                <img src="{{item.cover}}" width="40px" height="60px" alt="">
+            </div>
+            <div class="media-body">
+                <h4>{{item.title}}</h4>
+            </div>
+        </div>
+    </td>
+    <td><p>${{item.price}}</p></td>
+    <td><input class="cart-quantity" id="quantity" type="number" value="{{qty}}"></td>
+    <td><p>${{price}}</p></td>
+</tr>
+{{/each}}

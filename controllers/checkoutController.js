@@ -1,5 +1,6 @@
-const { param, checkout } = require("../routes");
+//const { param, checkout } = require("../routes");
 const productModel = require('../models/productModel');
+const fs = require('fs');
 
 exports.index = async (req, res, next) =>{
     const cart = new Cart(req.session.cart? req.session.cart : {});
@@ -87,7 +88,10 @@ exports.removeCart = async (req,res,next)=>{
     cart.remove(id);
     req.app.locals.cartCount = cart.totalQty;
 
+    let cartPartial = fs.readFileSync('./views/partials/cartItems.hbs', {encoding:'utf8', flag:'r'});
+    let menuPartial = fs.readFileSync('./views/partials/menu.hbs', {encoding:'utf8', flag:'r'});
     let cartItems = cart.generateArray();
 
-     res.redirect('/cart');;
+    let cartCount = cart.totalQty;
+    res.send({cartPartial, cartItems, menuPartial, cartCount});
 }
