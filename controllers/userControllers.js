@@ -3,7 +3,6 @@ const fs = require('fs');
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const mailgun = require('mailgun-js');
 
 const accountModel = require('../models/accountModel');
 const cloudinary = require('../cloudinary/cloudinary');
@@ -11,6 +10,7 @@ const { report } = require('../routes');
 const storeToken = require('../authenticate/storeToken');
 const { stringify } = require('querystring');
 const utils = require('../authenticate/utils');
+const mailTransporter = require('../mailer/mailer');
 
 const saltRounds = 10;
 const resetTokenExpireTime = 3600000; //1 hours
@@ -41,9 +41,11 @@ exports.createNewAccount = async (req, res, next) => {
 
     let account = await accountModel.findByUsername(username);
 
-    if (account !== null) 
+    if (account) 
     {
-        //Ton tai username roi
+        //Account already exist, checked with ajax but still recheck here
+        req.flash("error", "Username already exist!");
+        res.redirect(req.get("referer"));
     } else {
         //Chua co username nay
         let hash = bcrypt.hashSync(password, saltRounds);
@@ -55,13 +57,77 @@ exports.createNewAccount = async (req, res, next) => {
             "email": email,
             "createdDate": new Date(),
             "modifiedDate": new Date(),
-            "isActivated": false
+            "isActivated": false,
+            "isLocked": false,
         };
 
         accountModel.insertOne(accountInfos);
     }
 
-    next();
+    //Create token
+    const token = crypto.randomBytes(32).toString('hex');
+    let tokenInfos = {
+      activateToken : token
+    }
+
+    accountModel.updateToken(email, tokenInfos);
+
+    //Send activated mail!
+
+    let data = {
+      from: 'No-Reply Music Embassy <no-reply-musicembassy@musicembassy.com>',
+      to: email,
+      subject: 'Music Embassy Account Activation',
+      html: `<h3>Welcome to Music Embassy!</h3> <br>
+        <p>You are receiving this because you have registered to Music Embassy.</p>
+        <p>Please click on the following link, or paste this into your browser to activate your account:</p>
+        <a href="http://${req.headers.host}/user/activate/${token}"> Activate account </a>
+        <p>Best wishes.<p>`,
+    };
+
+    mailTransporter.transporter.sendMail(data, function(error, info){
+      if (error) {
+        console.log(error);
+
+        //Delete error account
+        accountModel.removeAccount({username: username});
+
+        req.flash('error', 'Unable to send email.');
+        res.redirect('/error');
+      } else {
+        req.flash('message-info', 'An e-mail has been sent to ' + email + ' with further instructions.');
+        res.redirect('/user/login');
+      }
+    });
+  
+}
+
+exports.activateAccount = async (req, res, next) => {
+  const token = req.params.token;
+
+  let account = await accountModel.findByActivateToken(token);
+  
+  if (account)
+  {
+
+    if (account.isActivated)
+    {
+      req.flash("message-info", "Your account is already activated!");
+      res.redirect('/user/login');
+    }
+
+    //Mark account as activated
+    await accountModel.markTokenAsActivated(token);
+
+    req.flash("message-info", "Account activate successfully!");
+    res.redirect('/user/login');
+  }
+  else {
+    //Error.
+    req.flash("error", "Token expired!");
+    res.redirect('/error');
+  }
+
 }
 
 exports.updateAccountInfo = async (req, res, next) => {
@@ -137,14 +203,15 @@ exports.rememberMe = async (req, res, next) => {
 exports.checkSignupData = async (req, res, next) => {
   let email = req.body.email;
   let username = req.body.username;
-  let messageList = [];
-  
+
+  //Return status: -1 - empty input, 0 - account already exist, 1 - free to use email/username
+
   if (email === ""){
-    messageList.push("Email cannot be empty!!!");
+    res.send({status: -1});
   }
 
   if (username === ""){
-    messageList.push("Username cannot be empty!!!");
+    res.send({status: -1});
   }
 
   if (email !== "" && username !== "") {
@@ -152,18 +219,18 @@ exports.checkSignupData = async (req, res, next) => {
 
     if (usernameList)
     {
-      messageList.push("This username is already exist!");
+      res.send({status: 0});
     }
 
     let emailList = await accountModel.findByEmail(email);
 
     if (emailList)
     {
-      messageList.push("This email is already exist!");
+      res.send({status: 0});
     }
   }
 
-  res.send({messageList});
+  res.send({status: 1});
 }
 
 exports.renderForgetPassword = async (req, res, next) => {
@@ -184,13 +251,8 @@ exports.sendEmailResetPassword = async (req, res, next) => {
     resetPasswordExpires : Date.now(),
   }
 
-  accountModel.updateResetToken(email, tokenInfos);
+  accountModel.updateToken(email, tokenInfos);
     
-  const mg = mailgun({
-    apiKey: process.env.MAILGUN_API_KEY, 
-    domain: process.env.MAILGUN_DOMAIN
-  });
-
   let data = {
     from: 'no-reply-musicembassy@musicembassy.com',
     to: email,
@@ -201,10 +263,10 @@ exports.sendEmailResetPassword = async (req, res, next) => {
     'If you did not request this, please ignore this email and your password will remain unchanged.\n',
   };
 
-  mg.messages().send(data, (err, body) => {
+  mailTransporter.transporter.sendMail(data, (err, info) => {
     if (err) {
       req.flash('error', 'Unable to send email.');
-      next(err);
+      res.redirect('/error');
     }
 
     req.flash('message-info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');

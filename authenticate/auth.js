@@ -35,19 +35,33 @@ module.exports = (app) => {
       new LocalStrategy( async (username, password, done) => {
         let account = await accountModel.findByUsername(username);
         
+        //Account doesn't exist
         if (account == null) 
         {
           return done(null, false, {message: "This username doesn't exist!"});
         }
 
+        //Check password
         if (!bcrypt.compareSync(password, account.password))
         {
+          //Incorrect
          return done(null, false, {message: "Incorrect password!"});
         }
-        else 
+        //Correct
+
+        //If account hasn't been activated
+        if (!account.isActivated)
         {
-          return done(null, account);
+          return done(null, false, {message: "Your account is not activated yet!"})
         }
+
+        //Check if the account is locked by admin
+        if (account.isLocked)
+        {
+          return done(null, false, {message: "Your account has been locked. <a href=\"/contact\">Contact</a> admin to resolve this!"})
+        }
+
+        return done(null, account);
       })
     );
 

@@ -129,7 +129,7 @@ exports.updateAvatar = async (temp_path) => {
   return upload;
 }
 
-exports.updateResetToken = async (email, tokenInfos) => {
+exports.updateToken = async (email, tokenInfos) => {
   const accountCollection = db().collection('account');
   let result = undefined;
 
@@ -151,6 +151,15 @@ exports.findByResetToken = async (token) => {
   const accountCollection = db().collection('account');
   let account = await accountCollection.findOne({
     resetPasswordToken : token
+  });
+  
+  return account;
+}
+
+exports.findByActivateToken = async (token) => {
+  const accountCollection = db().collection('account');
+  let account = await accountCollection.findOne({
+    activateToken : token
   });
   
   return account;
@@ -191,5 +200,34 @@ exports.markTokenAsDone = async (token) => {
   } catch (err) {
       return console.log('Database Connection Error!', err.message);
   }
+  return result;
+}
+
+exports.markTokenAsActivated = async (token) => {
+  const accountCollection = db().collection('account');
+  let result = undefined;
+
+  try {
+      result = await accountCollection.findOneAndUpdate(
+          {
+            activateToken: token
+          },
+          {
+            $set : {
+              isActivated: true
+            }
+          });
+  } catch (err) {
+      return console.log('Database Connection Error!', err.message);
+  }
+  return result;
+}
+
+exports.removeAccount = async (query) => {
+  const accountCollection = db().collection('account');
+  let result = await accountCollection.deleteOne({
+    query
+  });
+  
   return result;
 }

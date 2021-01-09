@@ -4,25 +4,25 @@
     <div class="col-lg-6">
       {{#if message.info}}
         {{#each message.info}}
-          <h6 class="col-lg-12 text-center mb-3 alert alert-info">{{this}}</h6>
+          <p class="col-lg-12 text-center mb-3 alert alert-info">{{this}}</p>
         {{/each}}
       {{/if}}
 
       {{#if message.warning}}
         {{#each message.warning}}
-          <h6 class="col-lg-12 text-center mb-3 alert alert-warning">{{this}}</h6>
+          <p class="col-lg-12 text-center mb-3 alert alert-warning">{{this}}</p>
         {{/each}}
       {{/if}}
 
       {{#if message.danger}}
         {{#each message.danger}}
-          <h6 class="col-lg-12 text-center mb-3 alert alert-danger">{{this}}</h6>
+          <p class="col-lg-12 text-center mb-3 alert alert-danger">{{this}}</p>
         {{/each}}
       {{/if}}
 
       {{#if message.error}}
           {{#each message.error}}
-            <h6 class="col-lg-12 text-center mb-3 alert alert-danger">{{this}}</h6>
+            <p class="col-lg-12 text-center mb-3 alert alert-danger">{{this}}</p>
           {{/each}}
       {{/if}}
     </div>
