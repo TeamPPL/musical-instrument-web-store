@@ -13,9 +13,17 @@
             </div>
         </div>
     </td>
+    {{#if item.discount}}
+    <td style="font-size: 16px; color:red"><del style="font-size: 12px; color:black">${{item.price}}</del>  ${{minus item.price item.discount}}</td>
+    {{else}}
     <td><p class="item_price">${{item.price}}</p></td>
-    <td>{{#if item.discount}}<p class="item_discount">${{item.discount}}</p> {{/if}}</td>
+    {{/if}}
+    <!--td>{{#if item.discount}}<p class="item_discount">${{item.discount}}</p> {{/if}}</td-->
     <td><input class="cart-quantity" id="{{item._id}}" type="number" value="{{qty}}"></td>
     <td><p class="item_total_price">${{price}}</p></td>
 </tr>
 {{/each}}
+<tr>
+    <th style="font-size:20px" colspan="4" scope="col">Total:</th>
+    <th style="font-size:20px" scope="col">${{totalPrice}}</th>
+</tr>

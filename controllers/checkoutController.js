@@ -5,8 +5,11 @@ const fs = require('fs');
 
 exports.index = async (req, res, next) =>{
     const cart = new Cart(req.session.cart? req.session.cart : {});
+    await cart.updateData();
     let cartItems = cart.generateArray();
-    res.render('shopping-cart/cart', {cartItems});
+    let totalPrice = cart.totalPrice;
+
+    res.render('shopping-cart/cart', {cartItems, totalPrice});
 }
 
 function Cart(oldCart) {
@@ -14,15 +17,28 @@ function Cart(oldCart) {
     this.totalQty = oldCart.totalQty || 0;
     this.totalPrice = oldCart.totalPrice || 0;
 
-    this.add = function(item, id) {
+    this.updateData = async function() {
+        for (var item_id in this.items){
+            console.log(item_id);
+            let product = await productModel.findById(item_id);
+            this.items[item_id].item = await product;
+            this.items[item_id].price = (parseFloat(this.items[item_id].item.price) - parseFloat(this.items[item_id].item.discount?this.items[item_id].item.discount:0)) * parseInt(this.items[item_id].qty);
+        }
+        //this.updateQuantity();
+    }
+
+    this.add = async function(item, id) {
+        //item = await productModel.findById(id);
         let storedItem = this.items[id];
         if (!storedItem){
             storedItem = this.items[id] = {item: item, qty: 0, price: 0};
         }
         storedItem.qty++;
-        storedItem.price = (parseFloat(storedItem.item.price) - parseFloat(storedItem.item.discount?storedItem.item.discount:0)) * parseInt(storedItem.qty);
-
+        await this.updateData();
+        //storedItem.item = item;
+        // storedItem.price = (parseFloat(storedItem.item.price) - parseFloat(storedItem.item.discount?storedItem.item.discount:0)) * parseInt(storedItem.qty);
         this.updateQuantity();
+        console.log(this.items);
     }
 
     this.updateQuantity = function(){
@@ -35,20 +51,21 @@ function Cart(oldCart) {
         }
         this.totalPrice = total;
         this.totalQty = new_quantity;
-        console.log(this.totalPrice);
     }
 
-    this.update = function(id, new_quantity) {
+    this.update = async function(id, new_quantity) {
+        await this.updateData();
         this.items[id].qty = parseInt(new_quantity);
         this.items[id].price = (parseFloat(this.items[id].item.price) - parseFloat(this.items[id].item.discount?this.items[id].item.discount:0))* this.items[id].qty;
+        this.updateData();
         this.updateQuantity();
     }
 
-    this.remove = function(id){
+    this.remove = async function(id){
+        await this.updateData();
         delete this.items[id];
         this.updateQuantity();
     }
-
 
     this.generateArray = function() {
         let arr = [];
@@ -64,15 +81,14 @@ exports.addToCart = async (req, res, next) => {
     const cart = new Cart(req.session.cart? req.session.cart : {});
 
     const productItem = await productModel.findById(id);
-    cart.add(productItem, productItem._id);
-
+    await cart.add(productItem, productItem._id);
     req.app.locals.cartCount = cart.totalQty;
 
     req.session.cart = cart;
     let cartItems = cart.generateArray();
-
+    let totalPrice = cart.totalPrice;
     console.log(cartItems);
-    //res.render('shopping-cart/cart', {cartItems});
+    //res.render('shopping-cart/cart', {cartItems, totalPrice});
      res.redirect('/');
 }
 
@@ -82,21 +98,24 @@ exports.updateCart = async (req,res,next)=>{
     const cart = new Cart(req.session.cart? req.session.cart : {});
 
     if (mode == 0){
-        cart.remove(id);
+        await cart.remove(id);
     }
     else if (mode == 1){
         const qty= req.body.qty;
-        cart.update(id,qty);
+        await cart.update(id,qty);
+        console.log(qty);
     }
     else {
         res.send('Error 500');
     }
-
+    req.session.cart = cart;
     req.app.locals.cartCount = cart.totalQty;
 
     let cartPartial = fs.readFileSync('./views/partials/cartItems.hbs', {encoding:'utf8', flag:'r'});
     let cartItems = cart.generateArray();
 
     let cartCount = cart.totalQty;
-    res.send({cartPartial, cartItems, cartCount});
+    let totalPrice = cart.totalPrice;
+
+    res.send({cartPartial, cartItems, cartCount, totalPrice});
 }

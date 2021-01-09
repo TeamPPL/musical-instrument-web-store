@@ -7,6 +7,8 @@ $(document).on('click', '.btn-remove', function() {
     return;
 });
 
+Handlebars.registerHelper("minus", function(a,b) {return a - b;});
+
 function sendRequest(data) {
     $.post('/cart', data, (result, status) => {
         let cartSource   = result.cartPartial;
