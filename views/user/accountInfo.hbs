@@ -5,13 +5,11 @@
               <form class="login_form" action="/user/update" method="POST" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
               <div class="row">
               <div class="col-4">
-                <div class="image">
-                  <img id="avatar" style="width: 100px;" src="{{account.avatar}}"/>
+                <div class="avatar">
+                  <img id="avatar" style="width: 150px; height: 150px;" src="{{account.avatar}}"/>
                 </div>
                 <div class="form-group">
                     <label class="upload-label">Upload cover image:</label>
-                </div>
-                <div class="form-group">
                     {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
                     <div id="fakeDiv">
                         <input type="file" id="selectedFile" name="cover" onchange="readURL(this);"/>
