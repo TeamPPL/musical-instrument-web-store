@@ -13,8 +13,9 @@
             </div>
         </div>
     </td>
-    <td><p>${{item.price}}</p></td>
-    <td><input class="cart-quantity" id="quantity" type="number" value="{{qty}}"></td>
-    <td><p>${{price}}</p></td>
+    <td><p class="item_price">${{item.price}}</p></td>
+    <td>{{#if item.discount}}<p class="item_discount">${{item.discount}}</p> {{/if}}</td>
+    <td><input class="cart-quantity" id="{{item._id}}" type="number" value="{{qty}}"></td>
+    <td><p class="item_total_price">${{price}}</p></td>
 </tr>
 {{/each}}

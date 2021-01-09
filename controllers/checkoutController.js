@@ -20,17 +20,9 @@ function Cart(oldCart) {
             storedItem = this.items[id] = {item: item, qty: 0, price: 0};
         }
         storedItem.qty++;
-        storedItem.price = parseInt(storedItem.item.price) * storedItem.qty;
-        
-        // let new_quantity = 0;   
-        // for (var item_id in this.items){
-        //     new_quantity +=this.items[item_id].qty;
-        // }
-        // this.totalQty = new_quantity;
+        storedItem.price = (parseFloat(storedItem.item.price) - parseFloat(storedItem.item.discount?storedItem.item.discount:0)) * parseInt(storedItem.qty);
 
         this.updateQuantity();
-
-        //this.totalPrice += parseInt(storedItem.item.price);
     }
 
     this.updateQuantity = function(){
@@ -38,17 +30,19 @@ function Cart(oldCart) {
         let total = 0;  
         for (var item_id in this.items){
             let qty = this.items[item_id].qty;
-            total += this.items[item_id].price * qty;
+            total += this.items[item_id].price;
             new_quantity += qty;
         }
         this.totalPrice = total;
         this.totalQty = new_quantity;
+        console.log(this.totalPrice);
     }
 
-    // this.update = function(id, new_quantity) {
-    //     this.items[id].qty = new_quantity;
-    //     this.items[id].price = parseInt(this.items[id].item.price) * this.items[id].qty;
-    // }
+    this.update = function(id, new_quantity) {
+        this.items[id].qty = parseInt(new_quantity);
+        this.items[id].price = (parseFloat(this.items[id].item.price) - parseFloat(this.items[id].item.discount?this.items[id].item.discount:0))* this.items[id].qty;
+        this.updateQuantity();
+    }
 
     this.remove = function(id){
         delete this.items[id];
@@ -82,17 +76,27 @@ exports.addToCart = async (req, res, next) => {
      res.redirect('/');
 }
 
-exports.removeCart = async (req,res,next)=>{
+exports.updateCart = async (req,res,next)=>{
+    const mode = parseInt(req.body.mode);
     const id = req.body.id;
     const cart = new Cart(req.session.cart? req.session.cart : {});
 
-    cart.remove(id);
+    if (mode == 0){
+        cart.remove(id);
+    }
+    else if (mode == 1){
+        const qty= req.body.qty;
+        cart.update(id,qty);
+    }
+    else {
+        res.send('Error 500');
+    }
+
     req.app.locals.cartCount = cart.totalQty;
 
     let cartPartial = fs.readFileSync('./views/partials/cartItems.hbs', {encoding:'utf8', flag:'r'});
-    let menuPartial = fs.readFileSync('./views/partials/menu.hbs', {encoding:'utf8', flag:'r'});
     let cartItems = cart.generateArray();
 
     let cartCount = cart.totalQty;
-    res.send({cartPartial, cartItems, menuPartial, cartCount});
+    res.send({cartPartial, cartItems, cartCount});
 }

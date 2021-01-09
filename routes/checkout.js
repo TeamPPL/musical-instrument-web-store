@@ -8,6 +8,6 @@ const homeCarouselController = require('../controllers/homeCarouselController');
 router.get('/', checkoutController.index);
 
 router.get('/add-to-cart/:id', checkoutController.addToCart);
-router.post('/', checkoutController.removeCart);
+router.post('/', checkoutController.updateCart);
 
 module.exports = router;
