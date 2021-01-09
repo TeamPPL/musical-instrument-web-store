@@ -189,6 +189,7 @@
         Handlebars.registerHelper("log", function(something) {
         console.log(something);
         });
+        Handlebars.registerHelper("minus", function(a,b) {return a - b;});
 
         $('.selectpicker').change(triggerAjaxFilter);
         $("#search-button").click(triggerAjaxFilter);
