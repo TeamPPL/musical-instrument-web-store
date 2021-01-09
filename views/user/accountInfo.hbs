@@ -45,24 +45,24 @@
             
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        let imagesPreview = function(input, placeToInsertImagePreview) {
-          if (input.files) {
-            let filesAmount = input.files.length;
-            for (i = 0; i < filesAmount; i++) {
-              let reader = new FileReader();
-              reader.onload = function(event) {
-                $($.parseHTML("<img>"))
-                  .attr("src", event.target.result)
-                  .appendTo(placeToInsertImagePreview);
-              };
-              reader.readAsDataURL(input.files[i]);
-            }
-          }
-        };
-        $("#selectedFile").on("change", function() {
-          imagesPreview(this, "#avatar");
-        });
-      });
-    </script>
+<script>
+
+$('#selectedFile').change(function () {
+  var a = $('#selectedFile').val().toString().split('\\');
+  $('#fakeInput').val(a[a.length -1]);
+});
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $('#avatar')
+        .attr('src', e.target.result)
+        .width(150)
+        .height(150);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+</script>
