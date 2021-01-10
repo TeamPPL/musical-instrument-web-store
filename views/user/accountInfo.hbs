@@ -52,6 +52,7 @@
 
 <div class="container">
   <form class="login_form" action="/user/update" method="POST" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
+    <h2 class="text-center mb-4">PERSONAL INFO</h2>
     <div class="row">
       <div class="col-4 mr-5">
         <label class="upload-label">Profile picture</label>
@@ -74,15 +75,19 @@
         
       <div class="col">
           <div class="row form-group">
+              <label style="margin-bottom: 0px;" for="name">Your Name: </label>
               <input class="form-control" type="text" name="name" value="{{account.name}}" placeholder="Name" data-toggle="tooltip" data-placement="top" title="Name">
           </div>
           <div class="row form-group">
-              <input class="form-control" type="email" name="email" value="{{account.email}}" placeholder="Email" data-toggle="tooltip" data-placement="top" title="Email">
+              <label style="margin-bottom: 0px;" for="email">Email: </label>
+              <input disabled class="form-control" type="email" name="email" value="{{account.email}}" placeholder="Email" data-toggle="tooltip" data-placement="top" title="You cannot change your registered email. If you wish to do so, please contact admin for help!">
           </div>
           <div class="row form-group">
+              <label style="margin-bottom: 0px;" for="username">Username: </label>
               <input class="form-control" type="text" name="username" value="{{account.username}}" placeholder="User Name" data-toggle="tooltip" data-placement="top" title="Username">
           </div>
           <div class="row form-group">
+              <label for="phone">Phone number: </label>
               <input class="form-control" type="text" name="phone" value="{{account.phone}}" placeholder="Phone number" data-toggle="tooltip" data-placement="top" title="Phone number">
           </div>
           <div class="row form-group">
@@ -96,14 +101,16 @@
   <div class="row mt-6" style="margin-top: 30px;">
     <div class="col-4 mr-5"></div>
     <form id="signupForm" class="login_form col" action="/user/change-password" method="POST">
-      <h6 class="mb-4">Change password: </h6>
       <div class="row form-group">
+          <label for="currentPassword">Current Password: </label>
           <input id="pass" class="form-control" type="password" name="currentPassword" placeholder="Current Password" data-toggle="tooltip" data-placement="top" title="Current Password">
       </div>
       <div class="row form-group">
+          <label for="newPassword">New Password: </label>
           <input id="pass" class="form-control" type="password" name="newPassword" placeholder="New Password" data-toggle="tooltip" data-placement="top" title="New Password">
       </div>
       <div class="row form-group">
+          <label for="reNewPassword">Comfirm New Password: </label>
           <input id="repass" class="form-control" type="password" name="reNewPassword" placeholder="Comfirm New Password" data-toggle="tooltip" data-placement="top" title="Comfirm New Password">
       </div>
       <div class="row form-group">
