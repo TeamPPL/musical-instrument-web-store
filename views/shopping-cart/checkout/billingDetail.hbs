@@ -8,14 +8,14 @@
                         <p>Fill in all the information needed to place an order.</p>
                     </div>
                     <ul id="alert-messages"></ul>
-                    <form id="billingForm" class="login_form row" action="/user/signup" method="POST">
+                    <form id="billingForm" class="login_form row" action="/cart/receipt" method="POST">
                         <div class="col-lg-12 form-group">
                             <label>Full name: </label>
-                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{User.name}}" required>
+                            <input id="name" class="form-control" type="text" name="name" placeholder="Name" value="{{User.name}}" required>
                         </div>
                         <div class="col-lg-6 form-group">
-                            <label>phone: </label>
-                            <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{User.phone}}" required>
+                            <label>Phone: </label>
+                            <input id="phone" class="form-control" type="text" name="phone" placeholder="Phone" value="{{User.phone}}" required>
                         </div>
                         <div class="col-lg-6 form-group">
                             <label>Email: </label>
@@ -24,7 +24,7 @@
 
                         <div class="col-lg-4 form-group">
                             <label>Country: </label>
-                            <select class="form-control" type="" name="country" required>
+                            <select id="country-selector" class="form-control" type="" name="country" required>
                                 <option>
                                     <option value="other">Other</option>
                                     <option value="america">America</option>
@@ -35,28 +35,42 @@
 
                         <div class="col-lg-4 form-group">
                             <label>State/Province: </label>
-                            <input class="form-control" type="text" name="state" placeholder="State/Province" required>
+                            <input id="state" class="form-control" type="text" name="state" placeholder="State/Province" required>
                         </div>
 
                         <div class="col-lg-4 form-group">
                             <label>City: </label>
-                            <input class="form-control" type="text" name="city" placeholder="City" required>
+                            <input id="city" class="form-control" type="text" name="city" placeholder="City" required>
                         </div>
 
                         <div class="col-lg-12 form-group">
                             <label>Address: </label>
-                            <input class="form-control" type="text" name="address" placeholder="house number, street, town/area..." required>
+                            <input id="address" class="form-control" type="text" name="address" placeholder="house number, street, town/area..." required>
                         </div>
 
-                        
+                        <div class="col-lg-12 login_title">
+                            <h2>Payments</h2>
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="radio" id="payment_delivery" name="payment" value="payment_delivery">
+                            <label for="payment_delivery" style="font-size: 20px;">Payment on delivery</label>
+                        </div>
+                        <div class="col-lg-6">
+                            <input type="radio" id="payment_visa" name="payment" value="payment_visa" required>
+                            <label for="payment_visa" style="font-size: 20px;">Payment via Visa</label>
+                        </div>
+
                         <div class="col-lg-6 form-group">
-                            <button id="submitBtn" class="btn subs_btn form-control">register now</button>
+                            <button id="order-button" class="btn subs_btn form-control" style="margin-top: 20px">Place Order</button>
                         </div>
                     </form>
                 </div>
                 <div class="col">
                     <div>
-                        <div class="cart_product_list">
+                        <div>
+                            <a class="btn btn-primary" href="/cart">Back To Cart</a>
+                        </div>
+                        <div class="cart_product_list" id="cart_product_list">
                             <h3 class="cart_single_title">Your Cart</h3>
                             <div class="table-responsive-md">
                                 <table class="table-order">
@@ -76,19 +90,30 @@
                                         </tr>
                                         {{/each}}
                                         <tr>
-                                            <td colspan="1" scope="col">Sumary:</td>
-                                            <td class="table-2nd-col" style="font-size:14px;font-weight:300" scope="col">${{totalPrice}}</td>
+                                            <td colspan="1" style="font-size:14px;font-weight:500" scope="col">Sumary:</td>
+                                            <td id="total_price" class="table-2nd-col" style="font-size:14px;font-weight:500" scope="col">${{totalPrice}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1" style="font-size:14px;font-weight:500" scope="col">Shipping fee</td>
+                                            <td id="shipping_fee" class="table-2nd-col" style="font-size:14px;font-weight:500" scope="col">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="1" style="font-size:16px;font-weight:600;color:orangered" scope="col">Total payment</td>
+                                            <td id="total_payment" class="table-2nd-col" style="font-size:16px;font-weight:600;color:orangered" scope="col">-</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div>
-                            <a class="btn btn-primary" href="/cart">Back To Cart</a>
-                        </div>
                     </div>
                 </div>
+            <div id="dialog">
+
+            </div>
             </div>
         </div>
     </div>
 </section>
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
+<script src="/js/receipt.js"></script>

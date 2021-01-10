@@ -2,6 +2,7 @@
 const productModel = require('../models/productModel');
 const checkoutModel = require('../models/checkoutModel');
 const fs = require('fs');
+const { session } = require('passport');
 
 exports.index = async (req, res, next) =>{
     if (req.session.cart == undefined || req.app.locals.cartCount == 0 || req.app.locals.cartCount == undefined){
@@ -130,10 +131,10 @@ exports.updateCart = async (req,res,next)=>{
 
 exports.billingDetail = async(req, res, next) => {              
 
-    // if (req.user == undefined){
-    //      res.redirect('/user/login');
-    //      return;
-    // }
+    if (req.user == undefined){
+         res.redirect('/user/login');
+         return;
+    }
     const cart = new Cart(req.session.cart? req.session.cart : {});
     cart.updateData();
     let cartItems = cart.generateArray();
@@ -146,4 +147,40 @@ exports.billingDetail = async(req, res, next) => {
         email: userInfo.email
     }
     res.render('shopping-cart/checkout/billingDetail',{cartItems, User: user, totalPrice});
+}
+
+exports.billingDetailUpdate = (req, res, next) => {
+    const country_index = req.body.country;
+    let shipping_fee = 0;
+    if (country_index == 1){
+        shipping_fee = 30;
+    }
+    else if (country_index == 2) {
+        shipping_fee = 5;
+    }
+    else if (country_index == 3) {
+        shipping_fee = 3;
+    }
+
+    console.log(shipping_fee);
+    res.send({shipping_fee});
+}
+
+exports.addReceipt = (req, res, next) => {
+    const cart = new Cart(req.session.cart? req.session.cart : {});
+    let orderItems = cart.generateArray();
+    let total = cart.totalPrice;
+
+    let newReceipt ={
+        userId: req.user._id,
+        info: req.body,
+        createdDate: new Date(),
+        status: 0,
+        totalPrice: total,
+        detail: orderItems
+    }
+  
+    console.log(newReceipt);
+    checkoutModel.insertOne(newReceipt);
+    redirect('/');
 }

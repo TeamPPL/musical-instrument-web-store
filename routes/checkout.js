@@ -10,5 +10,7 @@ router.get('/', checkoutController.index);
 router.get('/add-to-cart/:id', checkoutController.addToCart);
 router.post('/', checkoutController.updateCart);
 router.get('/checkout', checkoutController.billingDetail);
+router.post('/checkout', checkoutController.billingDetailUpdate);
+router.post('/receipt', checkoutController.addReceipt);
 
 module.exports = router;
