@@ -25,7 +25,13 @@ exports.index = async (req, res, next) => {
 }
 
 exports.getLogin = (req, res, next) => {
-  res.render('user/login');//, {message: req.flash('error')});
+
+  //Check isAuthenticated
+  if (req.isAuthenticated())
+  {
+    res.redirect('/user');
+  }
+  res.render('user/login');
 };
 
 exports.getSignup = (req, res, next) => {
@@ -138,6 +144,28 @@ exports.updateAccountInfo = async (req, res, next) => {
       return;
     }
     if (files) {
+      const name = fields.name;
+      const email = fields.email;
+      const username = fields.username;
+      const phone = fields.phone;
+
+      //Check available username
+      let isAvailableUsernameAccount = await accountModel.findByUsername(username);
+
+      if (isAvailableUsernameAccount && username !== req.user.username)
+      {
+        req.flash("error", "Username already exist!");
+        res.redirect(req.get('referer'));
+      }
+
+      //Check email change
+      if (email !== req.user.email)
+      {
+        req.flash("error", "You cannot change your registered email. If you wish to do so, please contact admin for help!");
+        res.redirect(req.get('referer'));
+      }
+
+      //Upload image
       let avatar;
       let temp_path = files.cover.path;
       if (files.cover.size === 0) {
@@ -147,14 +175,10 @@ exports.updateAccountInfo = async (req, res, next) => {
         avatar = upload.secure_url;
       }
       
-      const name = fields.name;
-      const email = fields.email;
-      const username = fields.username;
-      const phone = fields.phone;
     
       let updatedAccount = {
           name,
-          email,
+          //email,
           username,
           phone,
           "modifiedDate": new Date()
@@ -162,6 +186,7 @@ exports.updateAccountInfo = async (req, res, next) => {
       if (avatar !== 0) {
         updatedAccount.avatar = avatar;
       }
+
       try {
         let result = await accountModel.updateAAccount(updatedAccount);
         //var message="ADDED SUCCESSFULLY";

@@ -40,7 +40,6 @@ exports.findByEmail = async (email) => {
 exports.findAndModifyGoogle = async (info) => {
   const accountCollection = db().collection('account');
 
-  //console.log(`${info} \n-------------------------------------------------------------\n ${email} `);
   let receivedInfo = {
     GoogleID: info.id,
     username: info._json.email,
@@ -52,8 +51,21 @@ exports.findAndModifyGoogle = async (info) => {
     modifiedDate: new Date()
   }
 
+  //Already sign up with this email.
+  let isAccountAvailable = await accountCollection.findOne(
+    {email: info._json.email}
+  );
+
+  //If already available this account, sign in with it.
+  if (isAccountAvailable)
+  {
+    return isAccountAvailable;
+  }
+
   let account = await accountCollection.findOneAndUpdate(
-    { GoogleID: info.id },
+    {
+      GoogleID: info.id 
+    },
     {
       $setOnInsert: receivedInfo,
     },
@@ -62,7 +74,7 @@ exports.findAndModifyGoogle = async (info) => {
       upsert: true,
     }
   );
-  //console.log(account);
+  
   return account.value;
 }
 
@@ -79,6 +91,17 @@ exports.findAndModifyFacebook = async (info) => {
     provider: "facebook",
     createdDate: new Date(),
     modifiedDate: new Date()
+  }
+
+  //Already sign up with this email.
+  let isAccountAvailable = await accountCollection.findOne(
+    {email: info._json.email}
+  );
+
+  //If already available this account, sign in with it.
+  if (isAccountAvailable)
+  {
+    return isAccountAvailable;
   }
 
   let account = await accountCollection.findOneAndUpdate(
