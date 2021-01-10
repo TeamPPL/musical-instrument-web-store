@@ -25,7 +25,13 @@ exports.index = async (req, res, next) => {
 }
 
 exports.getLogin = (req, res, next) => {
-  res.render('user/login');//, {message: req.flash('error')});
+
+  //Check isAuthenticated
+  if (req.isAuthenticated())
+  {
+    res.redirect('/user');
+  }
+  res.render('user/login');
 };
 
 exports.getSignup = (req, res, next) => {
