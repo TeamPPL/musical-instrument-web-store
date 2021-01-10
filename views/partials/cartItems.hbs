@@ -19,11 +19,16 @@
     <td><p class="item_price">${{item.price}}</p></td>
     {{/if}}
     <!--td>{{#if item.discount}}<p class="item_discount">${{item.discount}}</p> {{/if}}</td-->
-    <td><input class="cart-quantity" id="{{item._id}}" type="number" value="{{qty}}"></td>
+    <td><input class="cart-quantity" id="{{item._id}}" type="number" min="1" max="{{item.inStock}}" value="{{qty}}">
+        <span>
+            ({{item.inStock}} in stock)
+        </span>
+        </td>
     <td><p class="item_total_price">${{price}}</p></td>
 </tr>
 {{/each}}
 <tr>
-    <th style="font-size:20px" colspan="4" scope="col">Total:</th>
+    <th style="font-size:20px" colspan="3" scope="col"></th>
+    <th style="font-size:20px" colspan="1" scope="col">Total:</th>
     <th style="font-size:20px" scope="col">${{totalPrice}}</th>
 </tr>

@@ -4,7 +4,13 @@ const checkoutModel = require('../models/checkoutModel');
 const fs = require('fs');
 
 exports.index = async (req, res, next) =>{
+    if (req.session.cart == undefined || req.app.locals.cartCount == 0 || req.app.locals.cartCount == undefined){
+        res.render('shopping-cart/emptyCart');
+        return;
+    }
+
     const cart = new Cart(req.session.cart? req.session.cart : {});
+
     await cart.updateData();
     let cartItems = cart.generateArray();
     let totalPrice = cart.totalPrice;
@@ -19,7 +25,6 @@ function Cart(oldCart) {
 
     this.updateData = async function() {
         for (var item_id in this.items){
-            console.log(item_id);
             let product = await productModel.findById(item_id);
             this.items[item_id].item = await product;
             this.items[item_id].price = (parseFloat(this.items[item_id].item.price) - parseFloat(this.items[item_id].item.discount?this.items[item_id].item.discount:0)) * parseInt(this.items[item_id].qty);
@@ -35,8 +40,6 @@ function Cart(oldCart) {
         }
         storedItem.qty++;
         await this.updateData();
-        //storedItem.item = item;
-        // storedItem.price = (parseFloat(storedItem.item.price) - parseFloat(storedItem.item.discount?storedItem.item.discount:0)) * parseInt(storedItem.qty);
         this.updateQuantity();
         console.log(this.items);
     }
@@ -103,7 +106,6 @@ exports.updateCart = async (req,res,next)=>{
     else if (mode == 1){
         const qty= req.body.qty;
         await cart.update(id,qty);
-        console.log(qty);
     }
     else {
         res.send('Error 500');
@@ -111,11 +113,25 @@ exports.updateCart = async (req,res,next)=>{
     req.session.cart = cart;
     req.app.locals.cartCount = cart.totalQty;
 
-    let cartPartial = fs.readFileSync('./views/partials/cartItems.hbs', {encoding:'utf8', flag:'r'});
     let cartItems = cart.generateArray();
 
     let cartCount = cart.totalQty;
     let totalPrice = cart.totalPrice;
 
+    if (req.session.cart == undefined || req.app.locals.cartCount == 0 || req.app.locals.cartCount == undefined){
+        let empty = 1;
+        res.send({empty});
+        return;
+    }
+    let cartPartial = fs.readFileSync('./views/partials/cartItems.hbs', {encoding:'utf8', flag:'r'});
     res.send({cartPartial, cartItems, cartCount, totalPrice});
+}
+
+
+exports.checkout = async(req, res, next) => {
+    if (req.user == undefined){
+         res.redirect('/login');
+         return;
+    }
+
 }
