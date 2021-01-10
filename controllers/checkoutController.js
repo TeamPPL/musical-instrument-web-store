@@ -128,10 +128,22 @@ exports.updateCart = async (req,res,next)=>{
 }
 
 
-exports.checkout = async(req, res, next) => {
-    if (req.user == undefined){
-         res.redirect('/login');
-         return;
-    }
+exports.billingDetail = async(req, res, next) => {              
 
+    // if (req.user == undefined){
+    //      res.redirect('/user/login');
+    //      return;
+    // }
+    const cart = new Cart(req.session.cart? req.session.cart : {});
+    cart.updateData();
+    let cartItems = cart.generateArray();
+    let totalPrice = cart.totalPrice;
+
+    let userInfo = req.user;
+    let user = {
+        name: userInfo.name,
+        phone: userInfo.phone,
+        email: userInfo.email
+    }
+    res.render('shopping-cart/checkout/billingDetail',{cartItems, User: user, totalPrice});
 }

@@ -4188,7 +4188,7 @@ i:before {
   color: #000;
 }
 
-.calculate_shoping_area .calculate_shop_inner .calculate_shoping_form .form-group input {
+.calculate_shoping_area .calculate_shop_inner .calculate_shoping_form .form-group input select{
   height: 56px;
   border: 1px solid #cccccc;
   border-radius: 0px;
@@ -4196,6 +4196,17 @@ i:before {
   box-shadow: none;
   outline: none;
   padding: 0px 22px;
+}
+
+select.form-control {
+  border: 1px solid #cccccc;
+  border-radius: 0px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  outline: none;
+  padding: 0px 22px;
+  height: 50px !important;
+  margin: 8px 0px 0px;
 }
 
 .calculate_shoping_area .calculate_shop_inner .calculate_shoping_form .form-group input.placeholder {
@@ -7012,7 +7023,38 @@ input#fakeInput {
   max-width: 150px;
   max-height: 150px;
   margin-left: auto;
-    margin-right: auto;
-    display: block;
+  margin-right: auto;
+  display: block;
 
+}
+
+.table-order {
+  width: 100%;
+}
+
+.table-order tr th{
+  padding: 5px;
+  display: block;
+}
+
+.table-order tr th {
+  border-bottom: 1px solid orange;
+  padding: 0px;
+  width: 70%;
+  font-size: 14px;
+  color: #000;
+  font-family: "Poppins", sans-serif;
+}
+
+.table-order tr td {
+  border-bottom: 1px solid orange;
+  padding: 0px;
+  width: 70%;
+  font-size: 14px;
+  color: #000;
+  font-family: "Poppins", sans-serif;
+}
+.table-2nd-col {
+  width: 30% !important;
+  text-align: center;
 }
