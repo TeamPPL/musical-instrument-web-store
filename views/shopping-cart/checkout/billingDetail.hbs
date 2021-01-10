@@ -1,0 +1,94 @@
+<section class="login_area p_100">
+    <div class="container">
+        <div class="login_inner">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="login_title">
+                        <h2>Billing Information</h2>
+                        <p>Fill in all the information needed to place an order.</p>
+                    </div>
+                    <ul id="alert-messages"></ul>
+                    <form id="billingForm" class="login_form row" action="/user/signup" method="POST">
+                        <div class="col-lg-12 form-group">
+                            <label>Full name: </label>
+                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{User.name}}" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>phone: </label>
+                            <input class="form-control" type="text" name="phone" placeholder="Phone" value="{{User.phone}}" required>
+                        </div>
+                        <div class="col-lg-6 form-group">
+                            <label>Email: </label>
+                            <input id="email" class="form-control" style="margin-top: 8px;" type="email" name="email" value="{{User.email}}" placeholder="Email" required>
+                        </div>
+
+                        <div class="col-lg-4 form-group">
+                            <label>Country: </label>
+                            <select class="form-control" type="" name="country" required>
+                                <option>
+                                    <option value="other">Other</option>
+                                    <option value="america">America</option>
+                                    <option value="vietnam">Vietnam</option>
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4 form-group">
+                            <label>State/Province: </label>
+                            <input class="form-control" type="text" name="state" placeholder="State/Province" required>
+                        </div>
+
+                        <div class="col-lg-4 form-group">
+                            <label>City: </label>
+                            <input class="form-control" type="text" name="city" placeholder="City" required>
+                        </div>
+
+                        <div class="col-lg-12 form-group">
+                            <label>Address: </label>
+                            <input class="form-control" type="text" name="address" placeholder="house number, street, town/area..." required>
+                        </div>
+
+                        
+                        <div class="col-lg-6 form-group">
+                            <button id="submitBtn" class="btn subs_btn form-control">register now</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col">
+                    <div>
+                        <div class="cart_product_list">
+                            <h3 class="cart_single_title">Your Cart</h3>
+                            <div class="table-responsive-md">
+                                <table class="table-order">
+                                    <thead>
+                                        <tr>
+                                            <td scope="col">Product</td>
+                                            <td class="table-2nd-col" scope="col">Total</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="order-cart">
+                                        {{#each cartItems}}
+                                        <tr class="cart-rows">
+                                            <td>
+                                                <a href="/products/detail/{{item._id}}">{{qty}}x {{item.title}}</a>
+                                            </td>
+                                            <td class="table-2nd-col">${{price}}</td>
+                                        </tr>
+                                        {{/each}}
+                                        <tr>
+                                            <td colspan="1" scope="col">Sumary:</td>
+                                            <td class="table-2nd-col" style="font-size:14px;font-weight:300" scope="col">${{totalPrice}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <a class="btn btn-primary" href="/cart">Back To Cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

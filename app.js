@@ -17,11 +17,17 @@ const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
 
 const app = express();
+
 app.engine( 'hbs', hbs( {
   extname: 'hbs',
   defaultView: 'index',
   layoutsDir: __dirname + '/views/layouts',
-  partialsDir: __dirname + '/views/partials/'
+  partialsDir: __dirname + '/views/partials/',
+  helpers: {
+    minus: function(a, b) {
+      return a - b;
+    }
+  }
 }));
 
 

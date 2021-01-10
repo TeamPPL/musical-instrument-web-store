@@ -189,6 +189,7 @@
         Handlebars.registerHelper("log", function(something) {
         console.log(something);
         });
+        Handlebars.registerHelper("minus", function(a,b) {return a - b;});
 
         $('.selectpicker').change(triggerAjaxFilter);
         $("#search-button").click(triggerAjaxFilter);
@@ -268,7 +269,7 @@
                                                 </ul>
                                                 <h4>\{\{title\}\}</h4>
                                                 \{\{#if discount\}\}
-                                                    <h5><del>\$\{\{price\}\}</del>  \$\{\{discount\}\}</h5>
+                                                    <h5><del>\$\{\{price\}\}</del>  \$\{\{minus price discount\}\}</h5>
                                                 \{\{else\}\}
                                                     <h5>\$\{\{price\}\}</h5>
                                                 \{\{/if\}\}
