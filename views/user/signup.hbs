@@ -1,4 +1,4 @@
-                                <!--================login Area =================-->
+<!--================login Area =================-->
         <section class="login_area p_100">
             <div class="container">
                 <div class="login_inner">
@@ -9,28 +9,81 @@
                                 <h2>create account</h2>
                                 <p>Fill in all the information needed to create an account.</p>
                             </div>
-                            <ul id="alert-messages"></ul>
                             <form id="signupForm" class="login_form row" action="/user/signup" method="POST">
                                 <div class="col-lg-6 form-group">
-                                    <input class="form-control" type="text" name="name" placeholder="Name">
+                                    <label style="margin-bottom: 0px;" for="name">Your Name: </label>
+                                    <input id="name" class="form-control" type="text" name="name" placeholder="Name">
+                                    <div id="name-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to enter your name.</span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
+                                    <label style="margin-bottom: 0px;" for="email">Email: </label>
                                     <input id="email" class="form-control" style="margin-top: 8px;" type="email" name="email" placeholder="Email">
+                                    <div id="email-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to enter your email.</span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
+                                    <label style="margin-bottom: 0px;" for="username">Username: </label>
                                     <input id="username" class="form-control" type="text" name="username" placeholder="User Name">
+                                    <div id="username-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to enter your username.</span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <input class="form-control" type="text" name="phone" placeholder="Phone">
+                                    <label for="phone">Phone number: </label>
+                                    <input id="phone" class="form-control" type="text" name="phone" placeholder="Phone">
+                                    <div id="phone-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to enter your phone number.</span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
+                                    <label for="password">Password: </label>
                                     <input id="pass" class="form-control" type="password" name="password" placeholder="Password">
+                                    <div id="pass-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to enter your password.</span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
+                                    <label for="re-password">Comfirm password: </label>
                                     <input id="repass" class="form-control" type="password" placeholder="Re-Password">
+                                    <div id="repass-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to enter your comfirm password.</span>
+                                    </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <button id="submitBtn" class="btn subs_btn form-control">register now</button>
+                                    <p id="submitBtn" class="btn subs_btn form-control">register now</p>
                                 </div>
                             </form>
                         </div>
@@ -45,107 +98,233 @@
         <script>
         $(document).ready( function(){
         
-            function validateEmail(email) {
-                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(email);
-            }
+
 /*
             $('#email').focusout(clearAlerts);
             $('#username').focusout(clearAlerts);
             $('#pass').focusout(clearAlerts);
             $('#repass').focusout(clearAlerts);
 
-
             $('#email').focusout(triggerIfAvailableEmailCheck);
             $('#email').focusout(validate);
+
             $('#username').focusout(triggerIfAvailableUsernameCheck);
-            $('#username').focusout(validate);
+            //$('#username').focusout(validate);
 
             $('#pass').focusout(checkPassword);
             $('#repass').focusout(checkPassword);
-            $('#pass').focusout(triggerValidCheck);
-            $('#repass').focusout(triggerValidCheck);
+        
             $('#pass').focusout(validate);
             $('#repass').focusout(validate);
 */
+
+            $('#name').focusout(checkName);
+            $('#email').focusout(checkEmail);
+            $('#username').focusout(checkUsername);
+            $('#phone').focusout(checkPhone);
+            $('#pass').focusout(checkPassword);
+            $('#repass').focusout(checkRePassword);
+
+            function checkName() {
+                let name = $('#name').val();
+
+                if (name === "")
+                {
+                    $('#name').addClass("error-input");
+                    $('#name-notification').css("display", "block");
+                    return false;
+                }
+                else 
+                {
+                    $('#name').removeClass("error-input");
+                    $('#name-notification').css("display", "none");
+                }
+
+                return true;
+            }
+
+            function validateEmail(email) {
+                const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+
+            async function checkEmail() {
+                let email = $('#email').val();
+                
+                if (email === "")
+                {
+                    $('#email').addClass("error-input");
+                    $('#email-notification').css("display", "block");
+                    $('#email-notification span').text("You need to enter your email.");
+                    return false;
+                }
+                else 
+                {
+                    //Check email valid
+                    if (!validateEmail(email))
+                    {
+                        $('#email').addClass("error-input");
+                        $('#email-notification').css("display", "block");
+                        $('#email-notification span').text("This email is invalid. Make sure it's written like example@email.com");
+                        return false;
+
+                    }
+                    else
+                    {
+                        let data = {
+                            email: email
+                        }
+                        let isok = false;
+                        await $.post('/user/signup/checkdata', data, (result, status) => {
+                            if (result.status === -1)
+                            {
+                                $('#email').addClass("error-input");
+                                $('#email-notification').css("display", "block");
+                                $('#email-notification span').text("You need to enter your email.");
+                                isok = false;
+
+                            } else if (result.status === 0)
+                            {
+                                $('#email').addClass("error-input");
+                                $('#email-notification').css("display", "block");
+                                $('#email-notification span').text("This email is already used by other account.");
+                                isok = false;
+                            } else if (result.status === 1)
+                            {
+                                $('#email').removeClass("error-input");
+                                $('#email-notification').css("display", "none");
+                                isok = true;
+                            }
+                            return;
+                        });
+
+                        return isok;
+                    }
+                }
+            }
+
+            async function checkUsername() {
+                let username = $('#username').val();
+                
+                if (username === "")
+                {
+                    $('#username').addClass("error-input");
+                    $('#username-notification').css("display", "block");
+                    $('#username-notification span').text("You need to enter your username.");
+                    return false;
+                }
+                else 
+                {
+                    
+                    let data = {
+                        username: username
+                    }
+                    let isok = false;
+                    await $.post('/user/signup/checkdata', data, (result, status) => {
+                        if (result.status === -1)
+                            {
+                                $('#username').addClass("error-input");
+                                $('#username-notification').css("display", "block");
+                                $('#username-notification span').text("You need to enter your username.");
+                                isok = false;
+                            } else if (result.status === 0)
+                            {
+                                $('#username').addClass("error-input");
+                                $('#username-notification').css("display", "block");
+                                $('#username-notification span').text("This username is already used by other account.");
+                                isok = false;
+                            } else if (result.status === 1)
+                            {
+                                $('#username').removeClass("error-input");
+                                $('#username-notification').css("display", "none");
+                                isok = true;
+                            }
+                            return;
+                    });
+                    return isok;
+                }
+            }
+
+            function checkPhone() {
+                let phone = $('#phone').val();
+
+                if (phone === "")
+                {
+                    $('#phone').addClass("error-input");
+                    $('#phone-notification').css("display", "block");
+                    return false;
+                }
+                else 
+                {
+                    $('#phone').removeClass("error-input");
+                    $('#phone-notification').css("display", "none");
+                }
+
+                return true;
+            }
+
             function checkPassword() {
+                let pass = $('#pass').val();
+
+                if (pass === "")
+                {
+                    $('#pass').addClass("error-input");
+                    $('#pass-notification').css("display", "block");
+                    return false;
+                }
+                else
+                {
+                    $('#pass').removeClass("error-input");
+                    $('#pass-notification').css("display", "none");
+                }
+
+                return true;
+            }
+
+            function checkRePassword() {
                 let pass = $('#pass').val();
                 let repass = $('#repass').val();
 
-                if (pass === "")
-                    insertNewAlert("Password cannot be empty!");
                 if (repass === "")
-                    insertNewAlert("Re-Password cannot be empty!");
-
-                if (pass !== repass)
-                    insertNewAlert("Re-Password doesn't match Password!");
-
-                return;
-            }
-
-            function insertNewAlert(message) {
-                let node = document.createElement("LI");
-                node.setAttribute("class", "alert alert-danger");
-                node.innerText = message;
-                $("#alert-messages").append(node);
-            }
-
-            function clearAlerts() {
-                $("#alert-messages").html("");
-                return;
-            }
-
-            function validate() {
-                let email = $('#email').val();
-
-                if(email === "")
-                    return;
-                if (validateEmail(email))
-                    return;
-                insertNewAlert("Email is not valid!");
-                return;
-            }
-
-            function triggerIfAvailableEmailCheck() {
-                let data = {
-                    email: $('#email').val()
+                {
+                    $('#repass').addClass("error-input");
+                    $('#repass-notification').css("display", "block");
+                    $('#repass-notification span').text("You need to enter your comfirm password.");
+                    return false;
                 }
-                sendRequest(data);
-                return;
-            }
-
-            function triggerIfAvailableUsernameCheck() {
-                let data = {
-                    username: $('#username').val()
+                else if (pass !== repass)
+                {
+                    $('#repass').addClass("error-input");
+                    $('#repass-notification').css("display", "block");
+                    $('#repass-notification span').text("Comfirm password don't match.");
+                    return false;
+                } else 
+                {
+                    $('#repass').removeClass("error-input");
+                    $('#repass-notification').css("display", "none");
                 }
-                sendRequest(data);
-                return;
+
+                return true;
             }
             
-            function sendRequest(data) {
-                $.post('/user/signup/checkdata', data, (result, status) => {
-                result.messageList.forEach(mess => {
-                        insertNewAlert(mess);
-                    });
-                });
-                return;
-            }
 
             $('#submitBtn').click(validateForm);
 
-            function validateForm() {
+            async function validateForm() {
                 //event.preventDefault();
-                clearAlerts();
-                checkPassword();
-                triggerIfAvailableEmailCheck();
-                triggerIfAvailableUsernameCheck();
-                validate();
+                let isCheckName = await checkName();
+                let isCheckEmail = await checkEmail();
+                let isCheckUsername = await checkUsername();
+                let isCheckPhone = await checkPhone();
+                let isCheckPass = await checkPassword();
+                let isCheckRePass = await checkRePassword();
 
-                let count = $("#alert-messages").children().length;
-                console.log(count);
-                if (count > 0 )
-                    return false;
-                $('#signupForm').submit();
+                if ( isCheckName && isCheckEmail && isCheckUsername && isCheckPhone && isCheckPass && isCheckRePass )
+                {
+                    $('#signupForm').submit();
+                    return true;
+                }
+                return false;
             }
 
         });

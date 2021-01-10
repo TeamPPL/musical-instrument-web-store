@@ -5408,6 +5408,10 @@ select.form-control {
   line-height: 50px;
 }
 
+.login_form input.error-input  {
+  border: 1px solid #dc3545;
+}
+
 .login_form .form-group input.placeholder {
   font-size: 14px;
   font-family: "Poppins", sans-serif;
