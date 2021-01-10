@@ -1,42 +1,54 @@
 
-      <!-- Sidebar Menu -->
-          <div class="container">
-            
-              <form class="login_form" action="/user/update" method="POST" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
-              <div class="row">
-              <div class="col-4">
-                <div class="avatar">
-                  <img id="avatar" style="width: 150px; height: 150px;" src="{{account.avatar}}"/>
-                </div>
-                <div class="form-group">
-                    <label class="upload-label">Upload cover image:</label>
-                    {{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> --}}
-                    <div id="fakeDiv">
-                        <input type="file" id="selectedFile" name="cover" onchange="readURL(this);"/>
-                        <input type="text" id="fakeInput" readonly="readonly"/>
-                        <span onclick="document.getElementById('selectedFile').click();" id="buttonImage" >Browse</span>
-                    </div>
-                </div>
-              </div>
-              <div class="col">
-                
-                    <div class="row form-group">
-                        <input class="form-control" type="text" name="name" value="{{account.name}}" placeholder="Name">
-                    </div>
-                    <div class="row form-group">
-                        <input class="form-control" type="email" name="email" value="{{account.email}}" placeholder="Email">
-                    </div>
-                    <div class="row form-group">
-                        <input class="form-control" type="text" name="username" value="{{account.username}}" placeholder="User Name">
-                    </div>
-                    <div class="row form-group">
-                        <input class="form-control" type="text" name="phone" value="{{account.phone}}" placeholder="Phone">
-                    </div>
-                    <div class="row form-group">
-                        <button type="submit" value="submit" class="btn subs_btn form-control">Save profile</button>
-                    </div>
-              </div>
-            </div>
+
+<style>
+  .image-container {
+    position: relative;
+    width: 100%;
+  }
+  .image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    border-radius: 10px;
+  }
+
+  .middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%)
+  }
+
+  .image-container:hover .image {
+    opacity: 0.3;
+  }
+
+  .image-container:hover .middle {
+    opacity: 1;
+  }
+
+  input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+.custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 5px;
+  }
+
+</style>
 
 <div class="container">
   <form class="login_form" action="/user/update" method="POST" enctype="multipart/form-data" onkeydown="return event.key != 'Enter';">
@@ -103,25 +115,31 @@
 </div>
             
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script>
+  $(document).ready(function() {
+    let imagesPreview = function(input, placeToInsertImagePreview) {
+      if (input.files) {
+        let filesAmount = input.files.length;
 
-$('#selectedFile').change(function () {
-  var a = $('#selectedFile').val().toString().split('\\');
-  $('#fakeInput').val(a[a.length -1]);
-});
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-
-    reader.onload = function (e) {
-      $('#avatar')
-        .attr('src', e.target.result)
-        .width(150)
-        .height(150);
+        for (i = 0; i < filesAmount; i++) {
+          let reader = new FileReader();
+          reader.onload = function(event) {
+            $($.parseHTML("<img>"))
+              .attr("src", event.target.result)
+              .appendTo(placeToInsertImagePreview);
+          };
+          reader.readAsDataURL(input.files[i]);
+        }
+      }
     };
-
-    reader.readAsDataURL(input.files[0]);
-  }
-}
+    $("#selectedFile").on("change", function() {
+      imagesPreview(this, "#avatar");
+    });
+  });
 </script>
+
+    <!--
+    <input type="text" id="fakeInput" readonly="readonly"/>
+    <span onclick="document.getElementById('selectedFile').click();" id="buttonImage" >Browse</span>
+    -->
