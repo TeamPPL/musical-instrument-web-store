@@ -128,3 +128,106 @@ exports.updateAvatar = async (temp_path) => {
   });
   return upload;
 }
+
+exports.updateToken = async (email, tokenInfos) => {
+  const accountCollection = db().collection('account');
+  let result = undefined;
+
+  try {
+      result = await accountCollection.findOneAndUpdate(
+          {
+            email: email
+          },
+          {
+            $set : tokenInfos
+          });
+  } catch (err) {
+      return console.log('Database Connection Error!', err.message);
+  }
+  return result;
+}
+
+exports.findByResetToken = async (token) => {
+  const accountCollection = db().collection('account');
+  let account = await accountCollection.findOne({
+    resetPasswordToken : token
+  });
+  
+  return account;
+}
+
+exports.findByActivateToken = async (token) => {
+  const accountCollection = db().collection('account');
+  let account = await accountCollection.findOne({
+    activateToken : token
+  });
+  
+  return account;
+}
+
+exports.updatePassword = async (identifier, hashedPass) => {
+  const accountCollection = db().collection('account');
+  let result = undefined;
+
+  try {
+      result = await accountCollection.findOneAndUpdate(
+          identifier,
+          {
+            $set : {
+              password: hashedPass
+            }
+          });
+  } catch (err) {
+      return console.log('Database Connection Error!', err.message);
+  }
+  return result;
+}
+
+exports.markTokenAsDone = async (token) => {
+  const accountCollection = db().collection('account');
+  let result = undefined;
+
+  try {
+      result = await accountCollection.findOneAndUpdate(
+          {
+            resetPasswordToken: token
+          },
+          {
+            $set : {
+              resetPasswordToken: "done"
+            }
+          });
+  } catch (err) {
+      return console.log('Database Connection Error!', err.message);
+  }
+  return result;
+}
+
+exports.markTokenAsActivated = async (token) => {
+  const accountCollection = db().collection('account');
+  let result = undefined;
+
+  try {
+      result = await accountCollection.findOneAndUpdate(
+          {
+            activateToken: token
+          },
+          {
+            $set : {
+              isActivated: true
+            }
+          });
+  } catch (err) {
+      return console.log('Database Connection Error!', err.message);
+  }
+  return result;
+}
+
+exports.removeAccount = async (query) => {
+  const accountCollection = db().collection('account');
+  let result = await accountCollection.deleteOne({
+    query
+  });
+  
+  return result;
+}
