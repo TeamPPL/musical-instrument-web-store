@@ -1,0 +1,21 @@
+{{#each Receipts}}
+<tr id="{{_id}}">
+    <th scope="row">{{@index}}</th>
+    <td>{{name}}</td>
+    <td>{{status}}</td>
+    <td>{{totalPrice}}</td>
+    <td>{{createdDate}}</td>
+    <td>
+        <button type="button" class="btn btn-light btn-circle dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: transparent; border:none;padding:0">
+            <img src="/img/icon/setting.png" style="width:30px;height:30px" />
+            </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="/detail/{{_id}}">Detail</a>
+
+        <form method="POST" action="/CANCEL">
+            <button name="id" value="{{_id}}" class="dropdown-item text-danger">Remove</button>
+        </form>
+        </div>
+    </td>
+</tr>
+{{/each}}

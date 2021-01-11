@@ -1,6 +1,6 @@
 //const { param, checkout } = require("../routes");
 const productModel = require('../models/productModel');
-const checkoutModel = require('../models/checkoutModel');
+const receiptModel = require('../models/receiptModel');
 const fs = require('fs');
 const { session } = require('passport');
 
@@ -190,42 +190,6 @@ exports.addReceipt = async (req, res, next) => {
     req.app.locals.cartCount = null;
 
     console.log(newReceipt);
-    await checkoutModel.insertOne(newReceipt);
+    await receiptModel.insertOne(newReceipt);
     res.redirect('/cart/purchase-history');
-}
-
-exports.purchaseHistory = async (req, res, next) => {
-    if (req.user == undefined){
-         res.redirect('/');
-         return;
-    }
-    let id = req.user._id;
-    let receiptList = await checkoutModel.userList(id);
-    let Receipts = [];
-    receiptList.forEach(item => {
-        console.log(item);
-        let newReceipt = {
-            _id: item._id,
-            name: item.info.name,
-            createdDate: item.createdDate,
-            totalPrice: item.totalPrice,
-            status: ""
-        }
-        let newStatus = item.status;
-        if (newStatus == 0){
-            newReceipt.status = "Pending";
-        } else if (newStatus == 1){
-            newReceipt.status = "Delivering";
-        } else if (newStatus == 2){
-            newReceipt.status = "Delivered";
-        } else if (newStatus == -1){
-            newReceipt.status = "Canceled";
-        } else {
-            newReceipt.status = "Unknown";
-        }
-        Receipts.push(newReceipt);
-    });
-        
-    
-    res.render('shopping-cart/checkout/purchaseHistory',{Receipts});
 }
