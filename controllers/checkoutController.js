@@ -199,8 +199,33 @@ exports.purchaseHistory = async (req, res, next) => {
          res.redirect('/');
          return;
     }
-    let id = req.user.id;
+    let id = req.user._id;
     let receiptList = await checkoutModel.userList(id);
-    console.log(receiptList);
-    res.render('shopping-cart/checkout/purchaseHistory',{receiptList});
+    let Receipts = [];
+    receiptList.forEach(item => {
+        console.log(item);
+        let newReceipt = {
+            _id: item._id,
+            name: item.info.name,
+            createdDate: item.createdDate,
+            totalPrice: item.totalPrice,
+            status: ""
+        }
+        let newStatus = item.status;
+        if (newStatus == 0){
+            newReceipt.status = "Pending";
+        } else if (newStatus == 1){
+            newReceipt.status = "Delivering";
+        } else if (newStatus == 2){
+            newReceipt.status = "Delivered";
+        } else if (newStatus == -1){
+            newReceipt.status = "Canceled";
+        } else {
+            newReceipt.status = "Unknown";
+        }
+        Receipts.push(newReceipt);
+    });
+        
+    
+    res.render('shopping-cart/checkout/purchaseHistory',{Receipts});
 }
