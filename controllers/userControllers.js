@@ -18,10 +18,10 @@ const resetTokenExpireTime = 3600000; //1 hours
 
 exports.index = async (req, res, next) => {
   let username = req.user.username;
-  console.log(username);
+  //console.log(username);
   let account = await accountModel.findByUsername(username);
 
-  console.log(account);
+  //console.log(account);
   res.render('user/accountInfo', {account});
 }
 
@@ -241,6 +241,8 @@ exports.updateAccountInfo = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
   req.logout();
+  req.session.cart = null;
+  req.app.locals.cartCount = null;
   res.clearCookie('remember_me');
   res.redirect(req.get('referer'));
 }

@@ -49,3 +49,18 @@ $(document).on('change', '.cart-quantity', function() {
     sendRequest(data);
     return;
 });
+
+function int(value) {
+    return parseInt(value);
+}
+
+function checkValue(sender) {
+    let min = sender.min;
+    let max = sender.max;
+    let value = int(sender.value);
+    if (value>max) {
+        sender.value = min;
+    } else if (value<min) {
+        sender.value = max;
+    }
+}

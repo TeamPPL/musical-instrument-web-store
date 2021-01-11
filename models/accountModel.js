@@ -11,7 +11,7 @@ exports.list = async () => {
 
 exports.findByUsername = async (name) => {
   const accountCollection = db().collection('account');
-  console.log(name);
+  //console.log(name);
   const account = await accountCollection.findOne({
       username: name
   });

@@ -74,7 +74,7 @@ app.use((req, res, next) => {
     danger: req.flash('message-danger'),
     error: req.flash('error'),
   }
-  console.log(message);
+  //console.log(message);
   res.locals.message = message;
   next();
 });

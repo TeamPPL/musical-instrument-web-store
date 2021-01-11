@@ -19,7 +19,7 @@
     <td><p class="item_price">${{item.price}}</p></td>
     {{/if}}
     <!--td>{{#if item.discount}}<p class="item_discount">${{item.discount}}</p> {{/if}}</td-->
-    <td><input class="cart-quantity" id="{{item._id}}" type="number" min="1" max="{{item.inStock}}" value="{{qty}}">
+    <td><input class="cart-quantity" id="{{item._id}}" type="number" min="1" max="{{item.inStock}}" value="{{qty}}" oninput="checkValue(this);">
         <span>
             ({{item.inStock}} in stock)
         </span>

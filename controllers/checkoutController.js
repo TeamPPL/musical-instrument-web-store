@@ -11,8 +11,8 @@ exports.index = async (req, res, next) =>{
     }
 
     const cart = new Cart(req.session.cart? req.session.cart : {});
-
     await cart.updateData();
+
     let cartItems = cart.generateArray();
     let totalPrice = cart.totalPrice;
 
@@ -26,9 +26,14 @@ function Cart(oldCart) {
 
     this.updateData = async function() {
         for (var item_id in this.items){
-            let product = await productModel.findById(item_id);
-            this.items[item_id].item = await product;
-            this.items[item_id].price = (parseFloat(this.items[item_id].item.price) - parseFloat(this.items[item_id].item.discount?this.items[item_id].item.discount:0)) * parseInt(this.items[item_id].qty);
+            try{
+                let product = await productModel.findById(item_id);
+                this.items[item_id].item = await product;
+                this.items[item_id].price = (parseFloat(this.items[item_id].item.price) -
+                    parseFloat(this.items[item_id].item.discount?this.items[item_id].item.discount:0)) * parseInt(this.items[item_id].qty);
+            }catch (err){
+                console.log('item in cart failed update');
+            }
         }
         //this.updateQuantity();
     }
@@ -89,9 +94,9 @@ exports.addToCart = async (req, res, next) => {
     req.app.locals.cartCount = cart.totalQty;
 
     req.session.cart = cart;
-    let cartItems = cart.generateArray();
-    let totalPrice = cart.totalPrice;
-    console.log(cartItems);
+    //let cartItems = cart.generateArray();
+    //let totalPrice = cart.totalPrice;
+    //console.log(cartItems);
     //res.render('shopping-cart/cart', {cartItems, totalPrice});
      res.redirect('/');
 }
@@ -105,12 +110,16 @@ exports.updateCart = async (req,res,next)=>{
         await cart.remove(id);
     }
     else if (mode == 1){
-        const qty= req.body.qty;
+        let qty= req.body.qty;
+        if (qty == ''){
+            qty = "1";
+        }
         await cart.update(id,qty);
     }
     else {
         res.send('Error 500');
     }
+
     req.session.cart = cart;
     req.app.locals.cartCount = cart.totalQty;
 
@@ -161,12 +170,10 @@ exports.billingDetailUpdate = (req, res, next) => {
     else if (country_index == 3) {
         shipping_fee = 3;
     }
-
-    console.log(shipping_fee);
     res.send({shipping_fee});
 }
 
-exports.addReceipt = (req, res, next) => {
+exports.addReceipt = async (req, res, next) => {
     const cart = new Cart(req.session.cart? req.session.cart : {});
     let orderItems = cart.generateArray();
     let total = cart.totalPrice;
@@ -179,8 +186,21 @@ exports.addReceipt = (req, res, next) => {
         totalPrice: total,
         detail: orderItems
     }
-  
+    req.session.cart = null;
+    req.app.locals.cartCount = null;
+
     console.log(newReceipt);
-    checkoutModel.insertOne(newReceipt);
-    redirect('/');
+    await checkoutModel.insertOne(newReceipt);
+    res.redirect('/cart/purchase-history');
+}
+
+exports.purchaseHistory = async (req, res, next) => {
+    if (req.user == undefined){
+         res.redirect('/');
+         return;
+    }
+    let id = req.user.id;
+    let receiptList = await checkoutModel.userList(id);
+    console.log(receiptList);
+    res.render('shopping-cart/checkout/purchaseHistory',{receiptList});
 }

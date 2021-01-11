@@ -13,6 +13,6 @@ function sendRequest(data) {
         document.getElementById("shipping_fee").innerHTML = '$' + shipping.toString();
         let totalPrice = document.getElementById("total_price").innerHTML;
         totalPrice = totalPrice.substring(1);
-        document.getElementById("total_payment").innerHTML ='$' + (parseFloat(totalPrice) - shipping).toString();
+        document.getElementById("total_payment").innerHTML ='$' + (parseFloat(totalPrice) + shipping).toString();
     })
 }
