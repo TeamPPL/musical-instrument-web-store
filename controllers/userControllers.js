@@ -1,4 +1,4 @@
-
+'use strict'
 const fs = require('fs');
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
@@ -18,10 +18,8 @@ const resetTokenExpireTime = 3600000; //1 hours
 
 exports.index = async (req, res, next) => {
   let username = req.user.username;
-  console.log(username);
   let account = await accountModel.findByUsername(username);
 
-  console.log(account);
   res.render('user/accountInfo', {account});
 }
 
@@ -48,7 +46,6 @@ exports.createNewAccount = async (req, res, next) => {
     const captcha = req.body.captcha;
     const checkbox = req.body.termCheck;
 
-    console.dir(captcha);
     //Is check captcha
     if (!captcha)
     {
@@ -58,7 +55,7 @@ exports.createNewAccount = async (req, res, next) => {
 
     // Verify URL
     const query = stringify({
-      secret: process.env.reCAPTCHA_SECRET_KEY,
+      secret: process.env.RECAPTCHA_SECRET_KEY,
       response: req.body.captcha,
       remoteip: req.connection.remoteAddress
     });
@@ -301,7 +298,7 @@ exports.renderForgetPassword = async (req, res, next) => {
 exports.sendEmailResetPassword = async (req, res, next) => {
   const email = req.body.email
   const user = await accountModel.findByEmail(email);
-  console.log(user);
+  
   if (!user) {
     req.flash('error', 'This email address is not exists.');
     return res.redirect('/user/forgot');

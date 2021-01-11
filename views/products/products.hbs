@@ -125,12 +125,14 @@
                         </aside>
                         <aside class="l_widgest l_fillter_widget">
                             <div class="l_w_title">
-                                <h3>Filter section</h3>
+                                <h3>Price</h3>
                             </div>
                             <div id="slider-range" class="ui_slider"></div>
                             <label for="amount">Price:</label>
-                            <input type="text" id="amount" readonly>
+                            <input width="250px" type="text" id="amount" readonly>
+                            <button id="price-range-button" class="ml-5">Filter</button>
                         </aside>
+                        <!--
                         <aside class="l_widgest l_color_widget">
                             <div class="l_w_title">
                                 <h3>Color</h3>
@@ -162,6 +164,7 @@
                                 <li><a href="#"></a></li>
                             </ul>
                         </aside>
+                        -->
                         <aside class="l_widgest l_menufacture_widget">
                             <div class="l_w_title">
                                 <h3>Manufacturer</h3>
@@ -201,6 +204,9 @@
             }
         });
 
+        $('#price-range-button').click(triggerAjaxFilter);
+
+        //Paginate
         $('#product-items-partial-displayer').on("click", '.pagination_area .pagination li a', (e) => {
             e.preventDefault();
             //Scroll to top
@@ -238,10 +244,16 @@
         });
 
         function triggerAjaxFilter() {
+            let price = $('#amount').val().split(" - ");
+            let priceMin = price[0];
+            let priceMax = price[1];
+
             let data = {
                 search: $('#search-box').val(),
                 sorted: $('#sorted').children("option:selected").val(),
                 nPerPage: $('#n-per-page').children("option:selected").val(),
+                priceMin: priceMin,
+                priceMax: priceMax,
                 pageNumber: 1
             }
             console.log(data);

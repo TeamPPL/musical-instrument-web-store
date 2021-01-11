@@ -89,6 +89,14 @@ exports.filter = async (req, res, next) => {
     let nPerPage = req.body.nPerPage;
     let pageNumber = req.body.pageNumber;
     let searchText = req.body.search;
+    let priceMin = req.body.priceMin;
+    let priceMax = req.body.priceMax;
+
+    priceMin = priceMin.split("$")[1];
+    priceMax = priceMax.split("$")[1];
+    
+    priceMin = parseInt(priceMin);
+    priceMax = parseInt(priceMax);
 
     console.log(`${sorted} ${nPerPage}`);
 
@@ -108,7 +116,7 @@ exports.filter = async (req, res, next) => {
     }
 
     //console.log(`${pageNumber}  ${nPerPage}`);
-    const productItems = await productModel.filter(sorted, nPerPage, pageNumber, searchText);
+    const productItems = await productModel.filter(sorted, nPerPage, pageNumber, searchText, priceMin, priceMax);
     const totalCount = await productModel.getTotalCount(searchText);
 
     //console.log(productItems);
