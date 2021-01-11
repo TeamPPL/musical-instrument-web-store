@@ -64,7 +64,7 @@ exports.getProductsAtPage = async (pageNumber, nPerPage) => {
     return products;
 }
 
-exports.filter = async (sorted, nPerPage, pageNumber, search) => {
+exports.filter = async (sorted, nPerPage, pageNumber, search, minPrice, maxPrice) => {
     const productsCollection = db().collection('product');
 
     let sortQuery = {};
@@ -79,12 +79,36 @@ exports.filter = async (sorted, nPerPage, pageNumber, search) => {
         sortQuery.createdDate = 1;
     }
 
-    let products = await productsCollection.find({title: {'$regex' : new RegExp(search, "i") }} )
+    if (!minPrice)
+    {
+        minPrice = 0;
+    }
+    
+    if (!maxPrice)
+    {
+        maxPrice = 0;
+    }
+
+    console.log(`${minPrice} + ${maxPrice}`);
+
+    let products = await productsCollection.find(
+        {
+            title: {
+                '$regex' : new RegExp(search, "i") 
+            },
+            $and : [
+                {sellPrice: { "$gte": minPrice}},
+                {sellPrice: { "$lte": maxPrice}}
+            ]
+        } 
+        )
         .sort(sortQuery)
         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
         .limit(nPerPage)
         .toArray();
-    //console.log(products);
+        
+        console.log(products);
+
     return products;
 }
 

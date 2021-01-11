@@ -6014,7 +6014,7 @@ select.form-control {
   border: none;
   display: inline-block;
   width: 100%;
-  max-width: 100px;
+  max-width: 120px;
 }
 
 .l_fillter_widget .ui_slider {
