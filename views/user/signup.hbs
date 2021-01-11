@@ -1,4 +1,5 @@
 <!--================login Area =================-->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <section class="login_area p_100">
             <div class="container">
                 <div class="login_inner">
@@ -47,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <label for="phone">Phone number: </label>
+                                    <label style="margin-bottom: 0px;" for="phone">Phone number: </label>
                                     <input id="phone" class="form-control" type="text" name="phone" placeholder="Phone">
                                     <div id="phone-notification" style="display: none;" class="text-danger">
                                         <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
@@ -59,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <label for="password">Password: </label>
+                                    <label style="margin-bottom: 0px;" for="password">Password: </label>
                                     <input id="pass" class="form-control" type="password" name="password" placeholder="Password">
                                     <div id="pass-notification" style="display: none;" class="text-danger">
                                         <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
@@ -71,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6 form-group">
-                                    <label for="re-password">Comfirm password: </label>
+                                    <label style="margin-bottom: 0px;" for="re-password">Comfirm password: </label>
                                     <input id="repass" class="form-control" type="password" placeholder="Re-Password">
                                     <div id="repass-notification" style="display: none;" class="text-danger">
                                         <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
@@ -82,8 +83,30 @@
                                         <span>You need to enter your comfirm password.</span>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-12 form-group">
+                                    <div class="g-recaptcha" data-sitekey="6Lf1IygaAAAAALSvxobrDtV3cjXX9UfevGkLysgx"></div>
+                                    <div id="captcha-notification" style="display: none;" class="text-danger">
+                                        <svg style="margin-top: 5px;" role="img" height="16" width="16" viewBox="0 0 24 24" aria-label="Error indicator">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke="#dc3545"></circle>
+                                            <line x1="12" y1="14" x2="12" y2="7" fill="#dc3545" stroke="#dc3545"></line>
+                                            <circle cx="12" cy="16.65" r=".35" fill="#dc3545" stroke="#dc3545"></circle>
+                                        </svg>
+                                        <span>You need to select captcha.</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 mb-5">
+                                    <input id="termCheck" name="termCheck" value="true" type="checkbox"/>
+                                    <label for="termCheck">By checking this box, you agree to our <a target="_blank" href="https://www.termsfeed.com/live/367abce2-d8a4-46e6-a330-1eb70ac544fc">Privacy Policy</a></label>
+                                </div>
+
+                                <div id="loader" class="col-lg-6 ml-3" style="visibility: hidden; position: absolute;">
+                                    <img src="/img/loading.gif"/>
+                                </div>
+
                                 <div class="col-lg-6 form-group">
-                                    <p id="submitBtn" class="btn subs_btn form-control">register now</p>
+                                    <button disabled id="submitBtn" type="submit" class="btn subs_btn form-control">register now</button>
                                 </div>
                             </form>
                         </div>
@@ -98,32 +121,13 @@
         <script>
         $(document).ready( function(){
         
-
-/*
-            $('#email').focusout(clearAlerts);
-            $('#username').focusout(clearAlerts);
-            $('#pass').focusout(clearAlerts);
-            $('#repass').focusout(clearAlerts);
-
-            $('#email').focusout(triggerIfAvailableEmailCheck);
-            $('#email').focusout(validate);
-
-            $('#username').focusout(triggerIfAvailableUsernameCheck);
-            //$('#username').focusout(validate);
-
-            $('#pass').focusout(checkPassword);
-            $('#repass').focusout(checkPassword);
-        
-            $('#pass').focusout(validate);
-            $('#repass').focusout(validate);
-*/
-
             $('#name').focusout(checkName);
             $('#email').focusout(checkEmail);
             $('#username').focusout(checkUsername);
             $('#phone').focusout(checkPhone);
             $('#pass').focusout(checkPassword);
             $('#repass').focusout(checkRePassword);
+            $('#termCheck').click(checkCheckBox);
 
             function checkName() {
                 let name = $('#name').val();
@@ -306,9 +310,21 @@
 
                 return true;
             }
+
+            function checkCheckBox() {
+                console.log(this.checked);
+                if (this.checked)
+                {
+                    console.log(this.checked);
+                    $('#submitBtn').prop("disabled", false);
+                    return true;
+                }
+
+                $('#submitBtn').prop("disabled", true);
+            }
             
 
-            $('#submitBtn').click(validateForm);
+            //$('#submitBtn').click(validateForm);
 
             async function validateForm() {
                 //event.preventDefault();
@@ -319,7 +335,7 @@
                 let isCheckPass = await checkPassword();
                 let isCheckRePass = await checkRePassword();
 
-                if ( isCheckName && isCheckEmail && isCheckUsername && isCheckPhone && isCheckPass && isCheckRePass )
+                if ( isCheckName && isCheckEmail && isCheckUsername && isCheckPhone && isCheckPass && isCheckRePass)
                 {
                     $('#signupForm').submit();
                     return true;
@@ -327,5 +343,60 @@
                 return false;
             }
 
+            document.getElementById('signupForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                $("#loader").css("visibility", "visible");
+                $("#loader").css("position", "relative");
+                $('#captcha-notification').css("display", "none");
+
+                let isCheckName = await checkName();
+                let isCheckEmail = await checkEmail();
+                let isCheckUsername = await checkUsername();
+                let isCheckPhone = await checkPhone();
+                let isCheckPass = await checkPassword();
+                let isCheckRePass = await checkRePassword();
+
+                if ( isCheckName && isCheckEmail && isCheckUsername && isCheckPhone && isCheckPass && isCheckRePass)
+                {
+                    const name = document.querySelector('#name').value;
+                    const email = document.querySelector('#email').value;
+                    const username = document.querySelector('#username').value;
+                    const phone = document.querySelector('#phone').value;
+                    const password = document.querySelector('#pass').value;
+                    const termCheck = document.querySelector('#termCheck').value;
+                    const captcha = document.querySelector('#g-recaptcha-response').value;
+
+                    if (!captcha)
+                    {
+
+                    }
+
+                    console.log(captcha);
+                    return fetch('/user/signup', {
+                        method: 'POST',
+                        headers: { 'Content-type': 'application/json' },
+                        body: JSON.stringify({ name, email, username, phone, password, captcha, termCheck })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            
+                            if (data.noCaptcha)
+                                {
+                                    $('#captcha-notification').css("display", "block");
+                                    $("#loader").css("visibility", "hidden");
+                                    $("#loader").css("position", "absolute");
+                                    return false;
+                                }
+
+                            if (data.reload) return location.reload();
+
+                            if (data.success) return window.location.href = data.path;
+                    });
+
+                }
+                return false;
+            })
+            
         });
 </script>

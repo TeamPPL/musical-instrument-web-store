@@ -3,6 +3,7 @@ const fs = require('fs');
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const fetch = require('node-fetch');
 
 const accountModel = require('../models/accountModel');
 const cloudinary = require('../cloudinary/cloudinary');
@@ -44,6 +45,40 @@ exports.createNewAccount = async (req, res, next) => {
     const password = req.body.password;
     const phone = req.body.phone;
     const email = req.body.email;
+    const captcha = req.body.captcha;
+    const checkbox = req.body.termCheck;
+
+    console.dir(captcha);
+    //Is check captcha
+    if (!captcha)
+    {
+      req.flash("error", "Please select captcha!");
+      res.send({noCaptcha: true});
+    }
+
+    // Verify URL
+    const query = stringify({
+      secret: process.env.reCAPTCHA_SECRET_KEY,
+      response: req.body.captcha,
+      remoteip: req.connection.remoteAddress
+    });
+
+    const verifyURL = `https://google.com/recaptcha/api/siteverify?${query}`;
+    // Make a request to verifyURL
+    const body = await fetch(verifyURL).then(res => res.json());
+
+    // If not successful
+    if (body.success !== undefined && !body.success)
+    {
+      req.flash("error", "Failed captcha verification!");
+      res.send({ reload: true });
+    }
+
+    if (checkbox !== "true")
+    {
+      req.flash("error", "You have to accept ours Privacy Policy to continue!");
+      res.send({ reload: true });
+    }
 
     let account = await accountModel.findByUsername(username);
 
@@ -51,7 +86,7 @@ exports.createNewAccount = async (req, res, next) => {
     {
         //Account already exist, checked with ajax but still recheck here
         req.flash("error", "Username already exist!");
-        res.redirect(req.get("referer"));
+        res.send({ reload: true });
     } else {
         //Chua co username nay
         let hash = bcrypt.hashSync(password, saltRounds);
@@ -99,10 +134,11 @@ exports.createNewAccount = async (req, res, next) => {
         accountModel.removeAccount({username: username});
 
         req.flash('error', 'Unable to send email.');
-        res.redirect('/error');
+        res.redirect({ success: true, path: "/error" });
       } else {
         req.flash('message-info', 'An e-mail has been sent to ' + email + ' with further instructions.');
-        res.redirect('/user/login');
+        //res.redirect('/user/login');
+        res.send({ success: true, path: "/user/login" });
       }
     });
   
