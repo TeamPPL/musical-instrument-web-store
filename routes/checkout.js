@@ -12,6 +12,5 @@ router.post('/', checkoutController.updateCart);
 router.get('/checkout', checkoutController.billingDetail);
 router.post('/checkout', checkoutController.billingDetailUpdate);
 router.post('/receipt', checkoutController.addReceipt);
-router.get('/purchase-history', checkoutController.purchaseHistory);
 
 module.exports = router;
