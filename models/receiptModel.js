@@ -1,3 +1,4 @@
+const ObjectId = require('mongodb').ObjectId;
 const { db } = require('../dal/db');
 
 exports.insertOne = async (receipt) => {
