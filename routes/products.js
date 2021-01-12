@@ -6,6 +6,8 @@ const detailController = require('../controllers/detailController');
 /* GET home page. */
 router.get('/', productController.index);
 router.get('/detail/:id', detailController.index);
+router.get('/detail/comment/:id', detailController.comment);
+router.post('/detail/comment/:id', detailController.comments);
 
 router.post('/', productController.filter);
 

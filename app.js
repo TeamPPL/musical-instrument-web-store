@@ -18,11 +18,23 @@ const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
 
 hbs.create({}).handlebars.registerHelper('starCmt', function(n, block) {
-  let ulBlock = "<ul>";
+  let ulBlock = '<ul  class="p_rating">';
   for(let i = 0; i < n; ++i){
     ulBlock += block.fn(i);    
   }
   return (ulBlock + "</ul>");
+});
+hbs.create({}).handlebars.registerHelper('SingularOrPlural', function(number, block) {
+  let converter = block.fn(this);
+
+  if(number == 1){
+    converter = number + converter.substring(0, converter.length - 1);
+  }
+  else {
+    converter = number + converter;
+  }
+
+  return converter;
 });
 
 const app = express();
