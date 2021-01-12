@@ -25,7 +25,9 @@
                     <img src="/img/icon/setting.png" style="width:30px;height:30px" />
                     </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/detail/{{_id}}">Detail</a>
+                <form method="POST" action="/receipt/purchase-history/detail">
+                    <button name="id" value="{{_id}}" class="dropdown-item">Detail</button>
+                </form>
 
                 <form method="POST" action="/CANCEL">
                     <button name="id" value="{{_id}}" class="dropdown-item text-danger">Remove</button>

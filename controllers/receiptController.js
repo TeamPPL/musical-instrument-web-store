@@ -164,8 +164,7 @@ exports.filter = async (req, res, next) => {
     let pageList = [];
 
     //go backward
-    for(let i = pageNumber - 1; i >= pageNumber - (leftOverPage / 2) && i > 0; --i)
-    {
+    for (let i = pageNumber - 1; i >= pageNumber - (leftOverPage / 2) && i > 0; --i) {
         pageList.push({
             index: i,
             isCurrentPage: false
@@ -179,15 +178,14 @@ exports.filter = async (req, res, next) => {
     });
 
     //go forward
-    for(let i = pageNumber + 1; i <= pageNumber + (leftOverPage / 2) && i <= totalPage; ++i)
-    {
+    for (let i = pageNumber + 1; i <= pageNumber + (leftOverPage / 2) && i <= totalPage; ++i) {
         pageList.push({
             index: i,
             isCurrentPage: false
         });
         leftOverPage--;
     }
-    
+
     let pageInfo = {
         totalCount,
         totalPage,
@@ -195,7 +193,7 @@ exports.filter = async (req, res, next) => {
         prevPage: pageNumber - 1,
         nextPage: pageNumber + 1,
         firstItemOfPage: pageNumber > 0 ? (pageNumber - 1) * nPerPage + 1 : 1,
-        lastItemOfPage: receiptList.length < nPerPage ? (pageNumber - 1) * nPerPage +  receiptList.length :  pageNumber * nPerPage - 1,
+        lastItemOfPage: receiptList.length < nPerPage ? (pageNumber - 1) * nPerPage + receiptList.length : pageNumber * nPerPage - 1,
         isFirstPage,
         isLastPage,
         pageList
@@ -228,7 +226,34 @@ exports.filter = async (req, res, next) => {
 
     console.log(Receipts);
 
-    let partials = fs.readFileSync('./views/partials/receipts.hbs', {encoding:'utf8', flag:'r'});
+    let partials = fs.readFileSync('./views/partials/receipts.hbs', { encoding: 'utf8', flag: 'r' });
     console.log(pageInfo);
-    res.send({partials, pageInfo, Receipts});
+    res.send({ partials, pageInfo, Receipts });
 };
+
+exports.detail = async (req, res, next) => {
+    let id = req.body.id;
+    let receipt = await receiptModel.findById(id);
+    let info = receipt.info;
+
+    let totalPrice = receipt.totalPrice;
+    let shipping_fee = receipt.shipping_fee;
+    let cartDetail = receipt.detail;
+    let createdDate = receipt.createdDate;
+    let status = "";
+    let itemsPrice = totalPrice - shipping_fee;
+
+    let newStatus = receipt.status;
+    if (newStatus == 0) {
+        status = "Pending";
+    } else if (newStatus == 1) {
+        status = "Delivering";
+    } else if (newStatus == 2) {
+        status = "Delivered";
+    } else if (newStatus == -1) {
+        status = "Canceled";
+    } else {
+        status = "Unknown";
+    }
+    res.render('receipt/detail/receiptDetail', {status, totalPrice, shipping_fee, cartDetail, createdDate, info, itemsPrice});
+}
