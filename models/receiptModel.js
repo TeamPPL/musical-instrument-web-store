@@ -36,7 +36,7 @@ exports.getReceiptsAtPage = async (pageNumber, nPerPage, id) => {
 
 exports.getTotalCount = async (id) => {
   const receiptCollection = db().collection('receipt')
-  let receipts = await receiptCollection.find({ userId: id })   ;
+  let receipts = await receiptCollection.find({ userId: id });
   let totalNum = receipts.count();
   return totalNum;
 }
@@ -46,19 +46,36 @@ exports.filter = async (sorted, nPerPage, pageNumber, id) => {
   let sortQuery = {};
 
   if (sorted === "alphabet-asc") {
-      sortQuery.totalPrice = 1;
+    sortQuery.totalPrice = 1;
   } else if (sorted === "alphabet-desc") {
-      sortQuery.totalPrice = -1;
+    sortQuery.totalPrice = -1;
   } else if (sorted === "lastest") {
-      sortQuery.createdDate = -1;
+    sortQuery.createdDate = -1;
   } else if (sorted === "oldest") {
-      sortQuery.createdDate = 1;
+    sortQuery.createdDate = 1;
   }
   let receipt = await receiptCollection.find({ userId: id })
-      .sort(sortQuery)
-      .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )
-      .limit(nPerPage)
-      .toArray();
-      
+    .sort(sortQuery)
+    .skip(pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0)
+    .limit(nPerPage)
+    .toArray();
+
   return receipt;
+}
+
+exports.updateStatusOne = async (id, status) => {
+  const receiptCollection = db().collection('receipt');
+  receiptCollection.findOneAndUpdate(
+    { "_id": ObjectId(id) },
+    {
+      $set: { 'status': -1 }
+    },
+    {
+      returnNewDocument: true
+    }
+    , function (error, result) {
+      return error;
+    }
+  );
+
 }
