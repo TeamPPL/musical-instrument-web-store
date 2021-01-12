@@ -160,7 +160,7 @@ exports.billingDetail = async(req, res, next) => {
 
 exports.billingDetailUpdate = (req, res, next) => {
     const country_index = req.body.country;
-    let shipping_fee = 0;
+    let shipping_fee = 31;
     if (country_index == 1){
         shipping_fee = 30;
     }
@@ -186,10 +186,25 @@ exports.addReceipt = async (req, res, next) => {
         totalPrice: total,
         detail: orderItems
     }
+
+    const country = req.body.country;
+    let shipping_fee = 31;
+    if (country == "other"){
+        shipping_fee = 30;
+    }
+    else if (country == "america") {
+        shipping_fee = 5;
+    }
+    else if (country == "vietnam") {
+        shipping_fee = 3;
+    }
+
+    newReceipt.shipping_fee = shipping_fee;
+
     req.session.cart = null;
     req.app.locals.cartCount = null;
 
     console.log(newReceipt);
     await receiptModel.insertOne(newReceipt);
-    res.redirect('/cart/purchase-history');
+    res.redirect('/receipt/purchase-history');
 }
