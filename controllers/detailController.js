@@ -6,7 +6,7 @@ exports.index = async (req, res, next) => {
     const idProduct = req.params.id;
     const productItems = await productModel.findById(idProduct);
     const allRelatedProducts = await productModel.relatedProducts(idProduct);
-
+    const comments = await productModel.getCommentOfProducts(idProduct);
     //console.log(currentProduct);
 
 /*
@@ -34,5 +34,5 @@ exports.index = async (req, res, next) => {
         return relatedProducts;
     };
 */
-    res.render('products/detail/detail', {productItems, allRelatedProducts});
+    res.render('products/detail/detail', {productItems, allRelatedProducts, comments});
 };

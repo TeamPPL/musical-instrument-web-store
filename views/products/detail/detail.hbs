@@ -5,10 +5,10 @@
         <div class="c_banner_inner">
             <h3>PRODUCT DETAILS</h3>
             <ul>
-                <li><a href="http://localhost:3000/">Home</a></li>
-                <li><a href="http://localhost:3000/products">Shop</a></li>                
-                <li><a href="http://localhost:3000/products">{{productItems.filter}}</a></li>
-                <li class="current"><a href="http://localhost:3000/products">{{productItems.title}}</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/products">Shop</a></li>                
+                <li><a href="/products">{{productItems.filter}}</a></li>
+                <li class="current"><a href="/products">{{productItems.title}}</a></li>
             </ul>
         </div>
     </div>
@@ -94,10 +94,10 @@
                     <div class="quantity">
                         <div class="custom">
                             <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;" class="reduced items-count" type="button"><i class="icon_minus-06"></i></button>
-                            <input type="text" name="qty" id="sst" maxlength="12" value="01" title="Quantity:" class="input-text qty">
+                            <input type="text" name="qty" id="sst" maxlength="12" value="01" title="Quantity:" class="input-text qty" style="margin-top: 0;">
                             <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" class="increase items-count" type="button"><i class="icon_plus"></i></button>
                         </div>
-                        <a class="add_cart_btn" href="#">add to cart</a>
+                        <a class="add_cart_btn" href="/cart/add-to-cart/{{productItems._id}}">add to cart</a>
                     </div>
                     <div class="shareing_icon">
                         <h5>share :</h5>
@@ -130,17 +130,19 @@
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.  Emo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.</p>
+                <p>{{productItems.description}}</p>
             </div>
             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                <h4>Rocky Ahmed</h4>
-                <ul>
-                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                    <li><a href="#"><i class="fa fa-star"></i></a></li>
-                </ul>
+                {{#each comments}}
+                    <hr size="0.5" width="98%" color="#AB7460">
+                    <div style="padding: 0% 5%;">
+                        <h6>{{NamePerson}}</h6>
+                        {{#starCmt Star}}
+                            <li><a href="#"><i class="fa fa-star"></i></a></li>
+                        {{/starCmt}}
+                        <p>{{Comment}}</p>
+                    </div>
+                {{/each}}
             </div>
             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.  Emo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.</p>

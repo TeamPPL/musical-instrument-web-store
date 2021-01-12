@@ -17,6 +17,14 @@ const receiptController = require('./routes/receipt')
 const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
 
+hbs.create({}).handlebars.registerHelper('starCmt', function(n, block) {
+  let ulBlock = "<ul>";
+  for(let i = 0; i < n; ++i){
+    ulBlock += block.fn(i);    
+  }
+  return (ulBlock + "</ul>");
+});
+
 const app = express();
 
 app.engine( 'hbs', hbs( {
