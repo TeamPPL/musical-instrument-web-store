@@ -14,10 +14,10 @@
     </thead>
     <tbody>
         {{#each Receipts}}
-        <tr id="{{_id}}">
+        <tr>
             <th scope="row">{{@index}}</th>
             <td>{{name}}</td>
-            <td>{{status}}</td>
+            <td id="{{_id}}">{{status}}</td>
             <td style="text-align: center">${{totalPrice}}</td>
             <td>{{createdDate}}</td>
             <td style="text-align: center">
@@ -25,13 +25,10 @@
                     <img src="/img/icon/setting.png" style="width:30px;height:30px" />
                     </button>
                 <div class="dropdown-menu">
-                <form method="POST" action="/receipt/purchase-history/detail">
-                    <button name="id" value="{{_id}}" class="dropdown-item">Detail</button>
-                </form>
-
-                <form method="POST" action="/CANCEL">
-                    <button name="id" value="{{_id}}" class="dropdown-item text-danger">Remove</button>
-                </form>
+                    <form method="POST" action="/receipt/purchase-history/detail">
+                        <button name="id" value="{{_id}}" class="dropdown-item">Detail</button>
+                    </form>
+                    <button name="id" value="{{_id}}" class="dropdown-item text-danger btn-cancel">Cancel this receipt</button>
                 </div>
             </td>
         </tr>

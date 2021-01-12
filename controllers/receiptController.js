@@ -1,3 +1,4 @@
+const { fail } = require('assert');
 const fs = require('fs');
 const receiptModel = require('../models/receiptModel');
 
@@ -10,7 +11,6 @@ exports.purchaseHistory = async (req, res, next) => {
     let receiptList = await receiptModel.userList(id);
     let Receipts = [];
     receiptList.forEach(item => {
-        console.log(item);
         let newReceipt = {
             _id: item._id,
             name: item.info.name,
@@ -47,7 +47,7 @@ exports.index = async (req, res, next) => {
     let nPerPage = 5;
 
     const receiptList = await receiptModel.getReceiptsAtPage(pageNumber, nPerPage, id);
-    const totalCount = await receiptModel.getTotalCount();
+    const totalCount = await receiptModel.getTotalCount(id);
 
     let totalPage = Math.ceil(totalCount / nPerPage);
     let isFirstPage = pageNumber === 1;
@@ -95,7 +95,6 @@ exports.index = async (req, res, next) => {
 
     let Receipts = [];
     receiptList.forEach(item => {
-        console.log(item);
         let newReceipt = {
             _id: item._id,
             name: item.info.name,
@@ -133,7 +132,7 @@ exports.filter = async (req, res, next) => {
     let nPerPage = req.body.nPerPage;
     let pageNumber = req.body.pageNumber;
 
-    console.log(`${sorted} ${nPerPage}`);
+    //console.log(`${sorted} ${nPerPage}`);
 
     if (nPerPage === "" || isNaN(nPerPage)) {
         nPerPage = 9;
@@ -152,7 +151,7 @@ exports.filter = async (req, res, next) => {
 
     //console.log(`${pageNumber}  ${nPerPage}`);
     const receiptList = await receiptModel.filter(sorted, nPerPage, pageNumber, id);
-    const totalCount = await receiptModel.getTotalCount();
+    const totalCount = await receiptModel.getTotalCount(id);
 
     //console.log(accountListItems);
 
@@ -201,7 +200,6 @@ exports.filter = async (req, res, next) => {
 
     let Receipts = [];
     receiptList.forEach(item => {
-        console.log(item);
         let newReceipt = {
             _id: item._id,
             name: item.info.name,
@@ -224,10 +222,7 @@ exports.filter = async (req, res, next) => {
         Receipts.push(newReceipt);
     });
 
-    console.log(Receipts);
-
     let partials = fs.readFileSync('./views/partials/receipts.hbs', { encoding: 'utf8', flag: 'r' });
-    console.log(pageInfo);
     res.send({ partials, pageInfo, Receipts });
 };
 
@@ -256,4 +251,23 @@ exports.detail = async (req, res, next) => {
         status = "Unknown";
     }
     res.render('receipt/detail/receiptDetail', {status, totalPrice, shipping_fee, cartDetail, createdDate, info, itemsPrice});
+}
+
+
+exports.cancel = async(req, res, next) => {
+    let id = req.body.id;
+    console.log(id);
+
+    let receipt = await receiptModel.findById(id);
+    //console.log(receipt);
+    if (receipt.status == 2 || receipt.status == -1){
+        res.send({fail: 1});
+        return;
+    }
+    
+    await receiptModel.updateStatusOne(id,-1);
+
+    //receipt = await receiptModel.findById(id);
+    //console.log(receipt);
+    res.send({fail: 0});
 }
