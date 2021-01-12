@@ -7057,3 +7057,22 @@ input#fakeInput {
   width: 30% !important;
   text-align: center;
 }
+
+
+.billing_detail_banner_inner{
+  background: url('/img/banner/money.jpg') no-repeat scroll center center;
+  background-size: cover;
+  position: relative;
+  z-index: 3;
+}
+
+.billing_detail_banner_inner:before {
+  content: "";
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}

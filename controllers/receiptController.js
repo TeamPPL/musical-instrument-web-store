@@ -47,7 +47,7 @@ exports.index = async (req, res, next) => {
     let nPerPage = 5;
 
     const receiptList = await receiptModel.getReceiptsAtPage(pageNumber, nPerPage, id);
-    const totalCount = await receiptModel.getTotalCount();
+    const totalCount = await receiptModel.getTotalCount(id);
 
     let totalPage = Math.ceil(totalCount / nPerPage);
     let isFirstPage = pageNumber === 1;
@@ -152,7 +152,7 @@ exports.filter = async (req, res, next) => {
 
     //console.log(`${pageNumber}  ${nPerPage}`);
     const receiptList = await receiptModel.filter(sorted, nPerPage, pageNumber, id);
-    const totalCount = await receiptModel.getTotalCount();
+    const totalCount = await receiptModel.getTotalCount(id);
 
     //console.log(accountListItems);
 

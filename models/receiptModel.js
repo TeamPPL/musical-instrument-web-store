@@ -34,10 +34,10 @@ exports.getReceiptsAtPage = async (pageNumber, nPerPage, id) => {
   return receipts;
 }
 
-exports.getTotalCount = async () => {
+exports.getTotalCount = async (id) => {
   const receiptCollection = db().collection('receipt')
-  let totalNum = await receiptCollection.countDocuments();
-  //console.log(totalNum);
+  let receipts = await receiptCollection.find({ userId: id })   ;
+  let totalNum = receipts.count();
   return totalNum;
 }
 
