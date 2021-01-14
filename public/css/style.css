@@ -7057,3 +7057,19 @@ input#fakeInput {
   width: 30% !important;
   text-align: center;
 }
+
+#product-filter-selector li {
+  cursor: pointer;
+}
+
+#manufacturer-selector li {
+  cursor: pointer;
+}
+
+#product-filter-selector li a.filter-selected {
+  background-color: gainsboro;
+}
+
+#manufacturer-selector li a.manufacturer-selected{
+  background-color: gainsboro;
+}

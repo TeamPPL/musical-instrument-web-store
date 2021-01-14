@@ -60,66 +60,45 @@
                             <div class="l_w_title">
                                 <h3>Categories</h3>
                             </div>
-                            <ul class="navbar-nav">
+                            <ul id="product-filter-selector" class="navbar-nav">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a title="guitar" class="nav-link dropdown-toggle
+                                        {{#if filterOption.isGuitar}} filter-selected {{/if}}
+                                    ">
                                     Guitar
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Ascoutic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Electric</a></li>
-                                    </ul>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <li class="nav-item dropdown
+                                ">
+                                    <a title="violin" class="nav-link dropdown-toggle
+                                        {{#if filterOption.isViolin}} filter-selected {{/if}}
+                                    ">
                                     Violin
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Ascoutic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Electric</a></li>
-                                    </ul>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <li class="nav-item dropdown
+                                ">
+                                    <a title="piano" class="nav-link dropdown-toggle
+                                        {{#if filterOption.isPiano}} filter-selected {{/if}}
+                                    ">
                                     Piano
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Ascoutic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Electric</a></li>
-                                    </ul>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <li class="nav-item dropdown
+                                ">
+                                    <a title="drum" class="nav-link dropdown-toggle
+                                        {{#if filterOption.isDrum}} filter-selected {{/if}}
+                                    ">
                                     Drum
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Ascoutic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Electric</a></li>
-                                    </ul>
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Other
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
+                                <li class="nav-item dropdown
+                                ">
+                                    <a title="all" class="nav-link dropdown-toggle
+                                        {{#if filterOption.isAll}} filter-selected {{/if}}
+                                    ">
+                                    All
                                     </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Ascoutic</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#">Electric</a></li>
-                                    </ul>
                                 </li>
                             </ul>
                         </aside>
@@ -169,12 +148,43 @@
                             <div class="l_w_title">
                                 <h3>Manufacturer</h3>
                             </div>
-                            <ul>
-                                <li><a href="#">Gibson</a></li>
-                                <li><a href="#">Steinway</a></li>
-                                <li><a href="#">Sennheiser</a></li>
-                                <li><a href="#">Yamaha</a></li>
-                                <li><a href="#">Roland</a></li>
+                            <ul id="manufacturer-selector">
+                                <li class="nav-item-manufacturer
+                                ">
+                                    <a title="gibson" class="
+                                        {{#if filterOption.isGibson}} manufacturer-selected {{/if}}
+                                    ">Gibson</a>
+                                </li>
+                                <li class="nav-item-manufacturer
+                                ">
+                                    <a title="steinway" class="
+                                        {{#if filterOption.isSteinway}} manufacturer-selected {{/if}}
+                                    ">Steinway</a>
+                                </li>
+                                <li class="nav-item-manufacturer
+                                ">
+                                    <a title="sennheiser" class="
+                                        {{#if filterOption.isSennheiser}} manufacturer-selected {{/if}}
+                                    ">Sennheiser</a>
+                                </li>
+                                <li class="nav-item-manufacturer
+                                ">
+                                    <a title="yamaha" class="
+                                        {{#if filterOption.isYamaha}} manufacturer-selected {{/if}}
+                                    ">Yamaha</a>
+                                </li>
+                                <li class="nav-item-manufacturer
+                                ">
+                                    <a title="roland" class="
+                                        {{#if filterOption.isRoland}} manufacturer-selected {{/if}}
+                                    ">Roland</a>
+                                </li>
+                                <li class="nav-item-manufacturer
+                                ">
+                                    <a title="all" class="
+                                        {{#if filterOption.isAllManufacturer}} manufacturer-selected {{/if}}
+                                    ">All
+                                </li>
                             </ul>
                         </aside>
                     </div>
@@ -188,6 +198,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
 <script>
     $(document).ready(function(){
+        const url = new URL(window.location);
         
         Handlebars.registerHelper("log", function(something) {
         console.log(something);
@@ -204,6 +215,26 @@
             }
         });
 
+        //Filter product
+        $('#product-filter-selector li a').click( (e) => {
+            console.log(e.target);
+            //Remove effect for previous button
+            $('#product-filter-selector li a.filter-selected').removeClass("filter-selected");
+
+            //Add effect for previous button
+            $(e.target).addClass("filter-selected");
+            triggerAjaxFilter();
+        });
+
+        //Manufacturer
+        $('#manufacturer-selector li a').click( (e) => {
+            $('#manufacturer-selector li a.manufacturer-selected').removeClass("manufacturer-selected");
+
+            $(e.target).addClass("manufacturer-selected");
+            triggerAjaxFilter();
+        });
+
+        //Price range button
         $('#price-range-button').click(triggerAjaxFilter);
 
         //Paginate
@@ -248,15 +279,36 @@
             let priceMin = price[0];
             let priceMax = price[1];
 
+            let search = $('#search-box').val();
+            let sorted = $('#sorted').children("option:selected").val();
+            let nPerPage = $('#n-per-page').children("option:selected").val();
+            let filter = $('#product-filter-selector li a.filter-selected').attr("title");
+            let manufacturer = $('#manufacturer-selector li a.manufacturer-selected').attr("title");
+            let pageNumber = 1;
+
             let data = {
-                search: $('#search-box').val(),
-                sorted: $('#sorted').children("option:selected").val(),
-                nPerPage: $('#n-per-page').children("option:selected").val(),
-                priceMin: priceMin,
-                priceMax: priceMax,
-                pageNumber: 1
+                sorted,
+                nPerPage,
+                pageNumber,
+                search,
+                priceMin,
+                priceMax,
+                filter,
+                manufacturer,
             }
-            console.log(data);
+            //console.log(data);
+
+            //Change url
+            url.searchParams.set('sorted', sorted);
+            url.searchParams.set('nPerPage', nPerPage);
+            url.searchParams.set('pageNumber', pageNumber);
+            url.searchParams.set('search', search);
+            url.searchParams.set('priceMin', priceMin);
+            url.searchParams.set('priceMax', priceMax);
+            url.searchParams.set('filter', filter);
+            url.searchParams.set('manufacturer', manufacturer);
+            window.history.pushState({}, '', url);
+
             sendRequest(data);
             return;
         }
