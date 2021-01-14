@@ -43,10 +43,46 @@ exports.lastestProducts = async (id) => {
     return lastestProducts;
 }
 
-exports.getTotalCount = async (search) => {
+exports.getTotalCount = async (search, minPrice, maxPrice, filter, manufacturer) => {
     const productsCollection = db().collection('product');
-    let products = await productsCollection.find({title: {'$regex' : new RegExp(search, "i") }})
-    //let totalNum = await productsCollection.countDocuments();
+    if (!minPrice)
+    {
+        minPrice = 0;
+    }
+    
+    if (!maxPrice)
+    {
+        maxPrice = 0;
+    }
+
+    let query = {
+        title: {
+            '$regex' : new RegExp(search, "i") 
+        },
+        $and : [
+            {sellPrice: { "$gte": minPrice}},
+            {sellPrice: { "$lte": maxPrice}}
+        ],
+    };
+
+    if (filter !== "all")
+    {
+        query.filter = {
+            '$regex' : new RegExp(filter, "i") 
+        };
+    }
+
+    if (manufacturer !== "all")
+    {
+        query.manufacturer = {
+            '$regex' : new RegExp(manufacturer, "i") 
+        };
+    }
+
+    let products = await productsCollection.find(
+        query
+    );
+    
     let totalNum = await products.count();
     //console.log(totalNum);
     return totalNum;
@@ -63,7 +99,7 @@ exports.getProductsAtPage = async (pageNumber, nPerPage) => {
     return products;
 }
 
-exports.filter = async (sorted, nPerPage, pageNumber, search, minPrice, maxPrice) => {
+exports.filter = async (sorted, nPerPage, pageNumber, search, minPrice, maxPrice, filter, manufacturer) => {
     const productsCollection = db().collection('product');
 
     let sortQuery = {};
@@ -88,18 +124,34 @@ exports.filter = async (sorted, nPerPage, pageNumber, search, minPrice, maxPrice
         maxPrice = 0;
     }
 
-    console.log(`${minPrice} + ${maxPrice}`);
+    let query = {
+        title: {
+            '$regex' : new RegExp(search, "i") 
+        },
+        $and : [
+            {sellPrice: { "$gte": minPrice}},
+            {sellPrice: { "$lte": maxPrice}}
+        ],
+    };
+
+    if (filter !== "all")
+    {
+        query.filter = {
+            '$regex' : new RegExp(filter, "i") 
+        };
+    }
+
+    if (manufacturer !== "all")
+    {
+        query.manufacturer = {
+            '$regex' : new RegExp(manufacturer, "i") 
+        };
+    }
+
+    //console.dir(manufacturer);
 
     let products = await productsCollection.find(
-        {
-            title: {
-                '$regex' : new RegExp(search, "i") 
-            },
-            $and : [
-                {sellPrice: { "$gte": minPrice}},
-                {sellPrice: { "$lte": maxPrice}}
-            ]
-        } 
+        query
         )
         .sort(sortQuery)
         .skip( pageNumber > 0 ? ( ( pageNumber - 1 ) * nPerPage ) : 0 )

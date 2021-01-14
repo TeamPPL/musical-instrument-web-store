@@ -11,10 +11,19 @@ var hbs = exphbs.create({
     partialsDir: __dirname + '/views/partials/'
 });
 
-exports.index = async (req, res, next) => {
-    let pageNumber = req.query.page;
-    let nPerPage = req.query.show;
+exports.getProductsGET = async (req, res, next) => {
 
+    let sorted = req.query.sorted;
+    let nPerPage = req.query.nPerPage;
+    let pageNumber = req.query.pageNumber;
+    let searchText = req.query.search;
+    let priceMin = req.query.priceMin;
+    let priceMax = req.query.priceMax;
+    let filter = req.query.filter;
+    let manufacturer = req.query.manufacturer;
+
+
+    //Default pageNum
     if (pageNumber === "" || isNaN(pageNumber)) {
         pageNumber = 1;
     } else {
@@ -23,6 +32,7 @@ exports.index = async (req, res, next) => {
             pageNumber = 1;
     }
 
+    //Default item per page
     if (nPerPage === "" || isNaN(nPerPage)) {
         nPerPage = 9;
     } else {
@@ -31,9 +41,46 @@ exports.index = async (req, res, next) => {
             nPerPage = 9;
     }
 
+    //Default sort type
+    if (sorted)
+    {
+        if (sorted !== "alphabet-asc" && sorted !== "alphabet-desc" && sorted !== "lastest" && sorted !== "oldest")
+        {
+            req.flash("error", "Wrong type of sorting!");
+            res.redirect("/error");
+        }
+    } else {
+        sorted = "alphabet-asc";
+    }
+
+    //Default prices
+    if (priceMin && priceMax)
+    {
+        priceMin = priceMin.split("$")[1];
+        priceMax = priceMax.split("$")[1];
+        
+        priceMin = parseInt(priceMin);
+        priceMax = parseInt(priceMax);
+    } else {
+        priceMin = 0;
+        priceMax = 9000;
+    }
+
+    //Default filter: all products
+    if (!filter || filter === "")
+    {
+        filter = "all";
+    }
+
+    //Default manufacturer: all manufacturer
+    if (!manufacturer || manufacturer === "")
+    {
+        manufacturer = "all"
+    }
+
     //console.log(`${pageNumber}  ${nPerPage}`);
-    const productItems = await productModel.getProductsAtPage(pageNumber, nPerPage);
-    const totalCount = await productModel.getTotalCount();
+    const productItems = await productModel.filter(sorted, nPerPage, pageNumber, searchText, priceMin, priceMax, filter, manufacturer);
+    const totalCount = await productModel.getTotalCount(searchText, priceMin, priceMax, filter, manufacturer);
 
     let totalPage = Math.ceil(totalCount / nPerPage);
     let isFirstPage = pageNumber === 1;
@@ -74,29 +121,80 @@ exports.index = async (req, res, next) => {
         currentPage: pageNumber,
         prevPage: pageNumber - 1,
         nextPage: pageNumber + 1,
-        firstItemOfPage: pageNumber > 0 ? (pageNumber - 1) * nPerPage + 1 : 1,
+        firstItemOfPage: totalPage > 0 ? (pageNumber - 1) * nPerPage + 1 : 0,
         lastItemOfPage: productItems.length < nPerPage ? (pageNumber - 1) * nPerPage +  productItems.length :  pageNumber * nPerPage - 1,
         isFirstPage,
         isLastPage,
         pageList
     }
-    //console.log(pageInfo);
-    res.render('products/products', {pageInfo, productItems});
+    
+    //filterOption
+    let filterOption = {};
+
+    switch (filter) {
+        case "guitar":
+            filterOption.isGuitar = true;
+            break;
+        case "violin":
+            filterOption.isViolin = true;
+            break;
+        case "piano":
+            filterOption.isPiano = true;
+            break;
+        case "drum":
+            filterOption.isDrum = true;
+            break;
+        default:
+            filterOption.isAll = true;
+            break;
+    }
+
+    switch (manufacturer) {
+        case "gibson":
+            filterOption.isGibson = true;
+            break;
+        case "steinway":
+            filterOption.isSteinway = true;
+            break;
+        case "sennheiser":
+            filterOption.isSennheiser = true;
+            break;
+        case "yamaha":
+            filterOption.isYamaha = true;
+            break;
+        case "roland":
+            filterOption.isRoland = true;
+            break;
+        default:
+            filterOption.isAllManufacturer = true;
+            break;
+    }
+
+    res.render('products/products', {pageInfo, productItems, filterOption});
 };
 
-exports.filter = async (req, res, next) => {
+exports.getProductsAjax = async (req, res, next) => {
     let sorted = req.body.sorted;
     let nPerPage = req.body.nPerPage;
     let pageNumber = req.body.pageNumber;
     let searchText = req.body.search;
     let priceMin = req.body.priceMin;
     let priceMax = req.body.priceMax;
+    let filter = req.body.filter;
+    let manufacturer = req.body.manufacturer;
 
-    priceMin = priceMin.split("$")[1];
-    priceMax = priceMax.split("$")[1];
-    
-    priceMin = parseInt(priceMin);
-    priceMax = parseInt(priceMax);
+    //console.log(`${priceMin} ${priceMax}`);
+    if (priceMin && priceMax)
+    {
+        priceMin = priceMin.split("$")[1];
+        priceMax = priceMax.split("$")[1];
+        
+        priceMin = parseInt(priceMin);
+        priceMax = parseInt(priceMax);
+    } else{
+        priceMin = 0;
+        priceMax = 9000;
+    }
 
     console.log(`${sorted} ${nPerPage}`);
 
@@ -115,9 +213,21 @@ exports.filter = async (req, res, next) => {
             pageNumber = 1;
     }
 
+    //Default filter: all products
+    if (!filter || filter === '')
+    {
+        filter = "$all";
+    }
+
+    //Default manufacturer: all manufacturer
+    if (!manufacturer || manufacturer === '')
+    {
+        manufacturer = "$all";
+    }
+
     //console.log(`${pageNumber}  ${nPerPage}`);
-    const productItems = await productModel.filter(sorted, nPerPage, pageNumber, searchText, priceMin, priceMax);
-    const totalCount = await productModel.getTotalCount(searchText);
+    const productItems = await productModel.filter(sorted, nPerPage, pageNumber, searchText, priceMin, priceMax, filter, manufacturer);
+    const totalCount = await productModel.getTotalCount(searchText, priceMin, priceMax, filter, manufacturer);
 
     //console.log(productItems);
 
