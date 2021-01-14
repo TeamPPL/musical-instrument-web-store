@@ -2576,6 +2576,13 @@ i:before {
   color: #262121;
 }
 
+.add_cart_btn:focus {
+  background: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 0px;
+}
+
 .discover_btn {
   display: inline-block;
   text-align: center;
@@ -7075,4 +7082,44 @@ input#fakeInput {
   width: 100%;
   height: 100%;
   z-index: -1;
+}
+
+#dialog {
+  font-size: 1em;
+  color: orangered;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.dialog_btn {
+  background: #333333;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 0px;
+  border: 1px solid #333333;
+  padding: 0px 35px;
+  line-height: 48px;
+  -webkit-transition: all 400ms linear 0s;
+  -o-transition: all 400ms linear 0s;
+  transition: all 400ms linear 0s;
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.dialog_btn:hover {
+  background: transparent;
+  color: #333333;
+}
+
+.ui-dialog > .ui-widget-header {
+  background: orange;
+}
+
+html {
+  scroll-behavior: smooth;
 }

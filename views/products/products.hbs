@@ -15,10 +15,11 @@
         <div class="categories_main_inner">
             <div class="row row_disable">
                 <div class="col-lg-9 float-md-right">
-                    <div id="scrolling-anchor"  class="showing_fillter">
+                    <div id="scrolling-anchor" class="showing_fillter">
                         <div class="row m0">
                             <div id="currentPageInfo" class="first_fillter">
-                                <h4>Showing {{pageInfo.firstItemOfPage}} to {{pageInfo.lastItemOfPage}} of {{pageInfo.totalCount}} total</h4>
+                                <h4>Showing {{pageInfo.firstItemOfPage}} to {{pageInfo.lastItemOfPage}} of
+                                    {{pageInfo.totalCount}} total</h4>
                             </div>
                             <div class="secand_fillter">
                                 <h4>SORT BY :</h4>
@@ -38,18 +39,20 @@
                                 </select>
                             </div>
                             <div class="search-container input-group">
-                                <input id="search-box" class="form-control" type="text" placeholder="Search.." name="searchText">
+                                <input id="search-box" class="form-control" type="text" placeholder="Search.."
+                                    name="searchText">
                                 <button id="search-button" type="submit"><i class="fa fa-search"></i></button>
                             </div>
-                    <!--================Products & Paging Area =================-->
+                            <!--================Products & Paging Area =================-->
                         </div>
                     </div>
 
-                    <div id="loader" class="row m0 d-flex justify-content-center" style="visibility: hidden; position: absolute;">
-                        <img src="/img/loading.gif"/>
+                    <div id="loader" class="row m0 d-flex justify-content-center"
+                        style="visibility: hidden; position: fixed;">
+                        <img src="/img/loading.gif" />
                     </div>
-                        
-                    <div id="product-items-partial-displayer" >
+
+                    <div id="product-items-partial-displayer">
                         {{>productItems}}
                     </div>
                     <!--================End Products & Paging Area =================-->
@@ -62,10 +65,11 @@
                             </div>
                             <ul class="navbar-nav">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Guitar
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Guitar
+                                        <i class="icon_plus" aria-hidden="true"></i>
+                                        <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
@@ -74,10 +78,11 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Violin
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Violin
+                                        <i class="icon_plus" aria-hidden="true"></i>
+                                        <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
@@ -86,10 +91,11 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Piano
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Piano
+                                        <i class="icon_plus" aria-hidden="true"></i>
+                                        <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
@@ -98,10 +104,11 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Drum
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Drum
+                                        <i class="icon_plus" aria-hidden="true"></i>
+                                        <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
@@ -110,10 +117,11 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Other
-                                    <i class="icon_plus" aria-hidden="true"></i>
-                                    <i class="icon_minus-06" aria-hidden="true"></i>
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Other
+                                        <i class="icon_plus" aria-hidden="true"></i>
+                                        <i class="icon_minus-06" aria-hidden="true"></i>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <li class="nav-item"><a class="nav-link" href="#">Classic</a></li>
@@ -184,24 +192,80 @@
     </div>
 </section>
 
+
 <script src="/js/jquery-3.2.1.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.min.js"></script>
 <script>
-    $(document).ready(function(){
-        
-        Handlebars.registerHelper("log", function(something) {
-        console.log(something);
+    $(document).ready(function () {
+        let trigger = true;
+
+        Handlebars.registerHelper("log", function (something) {
+            console.log(something);
         });
-        Handlebars.registerHelper("minus", function(a,b) {return a - b;});
+        Handlebars.registerHelper("minus", function (a, b) { return a - b; });
 
         $('.selectpicker').change(triggerAjaxFilter);
         $("#search-button").click(triggerAjaxFilter);
-        $('#search-box').bind("enterKey",triggerAjaxFilter);
-        $('#search-box').keyup(function(e){
-            if(e.keyCode == 13)
-            {
+        $('#search-box').bind("enterKey", triggerAjaxFilter);
+        $('#search-box').keyup(function (e) {
+            if (e.keyCode == 13) {
                 $(this).trigger("enterKey");
             }
+        });
+
+        $('#dialog').dialog({
+            autoOpen: false,
+            draggable: true,
+            dialogClass: "no-close",
+            title: "Cart Report",
+            show: "blind",
+            hide: "explode",
+            buttons: [
+                {
+                    class: "dialog_btn",
+                    text: "View Cart",
+                    click: function () {
+                        window.location.href = '/cart';
+
+                        $(this).dialog("close");
+                    }
+                },
+                {
+                    class: "dialog_btn",
+                    text: "Continue Shopping",
+                    click: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            ]
+        });
+
+
+        $(".btn-add-to-cart").click(function (e) {
+            trigger = true;
+            let data = {
+                id: $(this).val(),
+            }
+            $(this).html('Adding');
+            trigger = false;
+            $.post('/cart/add-to-cart', data, (result, status) => {
+
+                $(this).html('Add To Cart');
+                $(this).blur();
+
+                e.pageX += 25;
+                e.pageY += 40;
+                var pos = { my: "left top", at: "left bottom", of: e }
+
+                $("#dialog").dialog("option", "position", pos)
+                    .dialog("open");
+
+                let dialog_popup = document.getElementById("dialog");
+                if (!elementInViewport(dialog_popup)) {
+                    dialog_popup.scrollIntoView();
+                }
+                return;
+            })
         });
 
         $('#price-range-button').click(triggerAjaxFilter);
@@ -212,7 +276,7 @@
             //Scroll to top
             $('body,html').animate({
                 scrollTop: $("#scrolling-anchor").offset().top - 50,
-            }, 700);   
+            }, 700);
 
             let classList = $(e.target).attr("class");
             let classArr = classList.split(" ");
@@ -260,7 +324,7 @@
             sendRequest(data);
             return;
         }
-        
+
         function sendRequest(data) {
             $.post('/products', data, (result, status) => {
                 //console.log(status);
@@ -323,21 +387,25 @@
 
                 document.getElementById("product-items-partial-displayer").innerHTML = htmlProductsItemCompiled;
                 document.getElementById("currentPageInfo").innerHTML = htmlCurrentPageInfoCompiled;
-                
+
             });
             return;
         }
 
         $(document).ajaxStart(() => {
-            document.getElementById("product-items-partial-displayer").innerHTML = "";
-            // Show image container
-            $("#loader").css("visibility", "visible");
-            $("#loader").css("position", "relative");
+            if (trigger == true) {
+                document.getElementById("product-items-partial-displayer").innerHTML = "";
+                // Show image container
+                $("#loader").css("visibility", "visible");
+                $("#loader").css("position", "relative");
+            }
         });
         $(document).ajaxComplete(() => {
             // Hide image container
-            $("#loader").css("visibility", "hidden");
-            $("#loader").css("position", "absolute");
+            if (trigger == true) {
+                $("#loader").css("visibility", "hidden");
+                $("#loader").css("position", "absolute");
+            }
         });
     });
 </script>

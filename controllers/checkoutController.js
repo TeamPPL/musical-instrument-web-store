@@ -86,7 +86,7 @@ function Cart(oldCart) {
 }
 
 exports.addToCart = async (req, res, next) => {
-    const id = req.params.id;
+    const id = req.body.id;
     const cart = new Cart(req.session.cart? req.session.cart : {});
 
     const productItem = await productModel.findById(id);
