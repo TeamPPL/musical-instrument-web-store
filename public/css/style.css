@@ -7094,6 +7094,7 @@ input#fakeInput {
 }
 
 .dialog_btn {
+  padding: 5px;
   background: #333333;
   color: #fff;
   font-weight: 600;
@@ -7122,4 +7123,8 @@ input#fakeInput {
 
 html {
   scroll-behavior: smooth;
+}
+
+.ui-dialog .ui-dialog-buttonpane button{
+  padding: 5px;
 }
