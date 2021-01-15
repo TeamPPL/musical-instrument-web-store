@@ -185,10 +185,11 @@ exports.filter = async (sorted, nPerPage, pageNumber, search, minPrice, maxPrice
 
 exports.updateStock = async (id, qty) => {
     const productsCollection = db().collection('product');
-    productsCollection.findOneAndUpdate(
+    let sold = -qty;
+    await productsCollection.findOneAndUpdate(
       { "_id": ObjectId(id) },
       {
-        $inc: { 'inStock': qty }
+        $inc: { 'inStock': qty, 'sold': sold }
         
       },
       {
