@@ -26,6 +26,7 @@
         </div>
         {{/each}}
     </div>
+    {{#if pageInfo.isNotEmpty}}
     <nav aria-label="Page navigation example" class="pagination_area">
         <ul class="pagination" id="pagination">
             {{#if pageInfo.isFirstPage }}
@@ -49,4 +50,7 @@
             {{/if}}
         </ul>
     </nav>
+    {{else}}
+        <h6>No product available.</h6>
+    {{/if}}
 </div>
