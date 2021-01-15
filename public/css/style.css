@@ -7076,3 +7076,37 @@ input#fakeInput {
   height: 100%;
   z-index: -1;
 }
+
+.rating {
+  display: flex;
+  padding: 0;
+  margin: 10px 0px 0px 10px;
+  align-items: center;
+}
+
+.rating li {
+  list-style-type: none;
+}
+
+.rating-item {
+  border: 1px solid transparent;
+  cursor: hand;
+  font-size: 4em;
+  color: #BFBF00;
+}
+
+.rating-item::before {
+  content: "\2605";
+}
+
+.rating-item.active ~ .rating-item::before {
+  content: "\2606";
+}
+
+.rating:hover .rating-item::before {
+  content: "\2605";
+}
+
+.rating-item:hover ~ .rating-item::before {
+  content: "\2606";
+}
