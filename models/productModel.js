@@ -28,7 +28,7 @@ exports.relatedProducts = async (id) => {
     });
     let relatedProducts = await productsCollection.find({
         filter: product.filter
-    }).toArray();
+    }).limit(4).toArray();
     //console.log(id);
     //console.log(productsCollection);
     //console.log(products);
