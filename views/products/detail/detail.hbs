@@ -85,7 +85,7 @@
                         <a href="/products/detail/comment/{{productItems._id}}">Add your review</a>
                     </div>
                     {{#if productItems.discount}}
-                    <h5><del>${{price}}</del> ${{minus productItems.price productItems.discount}}</h5>
+                    <h5><del>${{productItems.price}}</del> ${{minus productItems.price productItems.discount}}</h5>
                     {{else}}
                     <h5>${{productItems.price}}</h5>
                     {{/if}}

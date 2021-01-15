@@ -163,6 +163,22 @@ exports.filter = async (sorted, nPerPage, pageNumber, search, minPrice, maxPrice
     return products;
 }
 
+exports.updateStock = async (id, qty) => {
+    const productsCollection = db().collection('product');
+    productsCollection.findOneAndUpdate(
+      { "_id": ObjectId(id) },
+      {
+        $inc: { 'inStock': qty }
+      },
+      {
+        returnNewDocument: true
+      }
+      , function (error, result) {
+        return error;
+      }
+    );
+}
+
 /*
 return [
         {

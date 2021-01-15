@@ -1,3 +1,4 @@
+const productModel = require('../models/productModel');
 const { fail } = require('assert');
 const fs = require('fs');
 const receiptModel = require('../models/receiptModel');
@@ -15,7 +16,7 @@ exports.purchaseHistory = async (req, res, next) => {
             _id: item._id,
             name: item.info.name,
             createdDate: item.createdDate,
-            totalPrice: item.totalPrice,
+            totalPrice: item.totalPrice + item.shipping_fee,
             status: ""
         }
         let newStatus = item.status;
@@ -231,12 +232,12 @@ exports.detail = async (req, res, next) => {
     let receipt = await receiptModel.findById(id);
     let info = receipt.info;
 
-    let totalPrice = receipt.totalPrice;
+    let itemsPrice = receipt.totalPrice;
     let shipping_fee = receipt.shipping_fee;
     let cartDetail = receipt.detail;
     let createdDate = receipt.createdDate;
     let status = "";
-    let itemsPrice = totalPrice - shipping_fee;
+    let totalPrice = itemsPrice + shipping_fee;
 
     let newStatus = receipt.status;
     if (newStatus == 0) {
@@ -263,6 +264,11 @@ exports.cancel = async(req, res, next) => {
     if (receipt.status == 2 || receipt.status == -1){
         res.send({fail: 1});
         return;
+    }
+
+    let items = receipt.detail;
+    for (var i in items){
+        productModel.updateStock(items[i].item._id,items[i].qty);
     }
     
     await receiptModel.updateStatusOne(id,-1);
