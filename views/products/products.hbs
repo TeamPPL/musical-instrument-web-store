@@ -478,6 +478,11 @@
                 document.getElementById("product-items-partial-displayer").innerHTML = htmlProductsItemCompiled;
                 document.getElementById("currentPageInfo").innerHTML = htmlCurrentPageInfoCompiled;
 
+                //Scroll to top
+                $('body,html').animate({
+                    scrollTop: $("#scrolling-anchor").offset().top - 50,
+                }, 700);
+
             });
             return;
         }
