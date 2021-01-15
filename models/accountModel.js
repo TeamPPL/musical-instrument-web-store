@@ -48,7 +48,9 @@ exports.findAndModifyGoogle = async (info) => {
     avatar: info._json.picture,
     provider: "google",
     createdDate: new Date(),
-    modifiedDate: new Date()
+    modifiedDate: new Date(),
+    "isActivated": true,
+    "isLocked": false,
   }
 
   //Already sign up with this email.
@@ -90,7 +92,9 @@ exports.findAndModifyFacebook = async (info) => {
     avatar: info.photos[0].value,
     provider: "facebook",
     createdDate: new Date(),
-    modifiedDate: new Date()
+    modifiedDate: new Date(),
+    "isActivated": true,
+    "isLocked": false,
   }
 
   //Already sign up with this email.

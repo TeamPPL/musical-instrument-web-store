@@ -100,7 +100,7 @@ exports.index = async (req, res, next) => {
             _id: item._id,
             name: item.info.name,
             createdDate: item.createdDate,
-            totalPrice: item.totalPrice,
+            totalPrice: item.totalPrice + item.shipping_fee,
             status: ""
         }
         let newStatus = item.status;
@@ -205,7 +205,7 @@ exports.filter = async (req, res, next) => {
             _id: item._id,
             name: item.info.name,
             createdDate: item.createdDate.toString(),
-            totalPrice: item.totalPrice,
+            totalPrice: item.totalPrice + item.shipping_fee,
             status: ""
         }
         let newStatus = item.status;
@@ -268,7 +268,7 @@ exports.cancel = async(req, res, next) => {
 
     let items = receipt.detail;
     for (var i in items){
-        productModel.updateStock(items[i].item._id,items[i].qty);
+        await productModel.updateStock(items[i].item._id,items[i].qty);
     }
     
     await receiptModel.updateStatusOne(id,-1);

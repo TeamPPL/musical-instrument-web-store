@@ -220,7 +220,8 @@ exports.addReceipt = async (req, res, next) => {
     }
 
     for (var item_id2 in cart.items){
-        productModel.updateStock(item_id2, -cart.items[item_id2].qty);
+        var qty_changed = -cart.items[item_id2].qty
+        productModel.updateStock(item_id2, qty_changed);
     }
 
     let orderItems = cart.generateArray();
