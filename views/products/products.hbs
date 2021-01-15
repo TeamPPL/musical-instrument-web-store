@@ -440,28 +440,32 @@
                                     </div>
                                     \{\{/each\}\}
                                 </div>
-                                <nav aria-label="Page navigation example" class="pagination_area">
-                                    <ul class="pagination" id="pagination">
-                                        \{\{#if pageInfo.isFirstPage \}\}
-                                            <!-- Do nothing -->
-                                        \{\{else\}\}
-                                            <li class="page-item prev"><a class="page-link prev" ><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-                                        \{\{/if\}\}
-
-                                        \{\{#each pageInfo.pageList\}\}
-                                            \{\{#if this.isCurrentPage\}\}
-                                                <li class="page-item current"><a class="page-link current" >\{\{this.index\}\}</a></li>
+                                \{\{#if pageInfo.isNotEmpty\}\}
+                                    <nav aria-label="Page navigation example" class="pagination_area">
+                                        <ul class="pagination" id="pagination">
+                                            \{\{#if pageInfo.isFirstPage \}\}
+                                                <!-- Do nothing -->
                                             \{\{else\}\}
-                                                <li class="page-item"><a class="page-link" >\{\{this.index\}\}</a></li>
+                                                <li class="page-item prev"><a class="page-link prev" ><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
                                             \{\{/if\}\}
-                                        \{\{/each\}\}
-                                        \{\{#if pageInfo.isLastPage \}\}
-                                            <!-- Do nothing -->
-                                        \{\{else\}\}
-                                            <li class="page-item next"><a class="page-link next" ><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                                        \{\{/if\}\}
-                                    </ul>
-                                </nav>
+
+                                            \{\{#each pageInfo.pageList\}\}
+                                                \{\{#if this.isCurrentPage\}\}
+                                                    <li class="page-item current"><a class="page-link current" >\{\{this.index\}\}</a></li>
+                                                \{\{else\}\}
+                                                    <li class="page-item"><a class="page-link" >\{\{this.index\}\}</a></li>
+                                                \{\{/if\}\}
+                                            \{\{/each\}\}
+                                            \{\{#if pageInfo.isLastPage \}\}
+                                                <!-- Do nothing -->
+                                            \{\{else\}\}
+                                                <li class="page-item next"><a class="page-link next" ><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                                            \{\{/if\}\}
+                                        </ul>
+                                    </nav>
+                                \{\{else\}\}
+                                    <h6>No product available.</h6>
+                                \{\{/if\}\}
                             </div>`;
                 let sourceCurrentPageInfo = `<h4>Showing \{\{pageInfo.firstItemOfPage\}\} to \{\{pageInfo.lastItemOfPage\}\} of \{\{pageInfo.totalCount\}\} total</h4>`
                 //console.log(source);

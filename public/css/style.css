@@ -7127,3 +7127,19 @@ html {
 .ui-dialog .ui-dialog-buttonpane button{
   padding: 5px;
 }
+
+#product-filter-selector li {
+  cursor: pointer;
+}
+
+#manufacturer-selector li {
+  cursor: pointer;
+}
+
+#product-filter-selector li a.filter-selected {
+  background-color: gainsboro;
+}
+
+#manufacturer-selector li a.manufacturer-selected{
+  background-color: gainsboro;
+}

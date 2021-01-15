@@ -113,7 +113,7 @@ exports.getProductsGET = async (req, res, next) => {
         });
         leftOverPage--;
     }
-
+    let isNotEmpty = totalPage > 0;
     //console.log(productItems);
     let pageInfo = {
         totalCount,
@@ -125,7 +125,8 @@ exports.getProductsGET = async (req, res, next) => {
         lastItemOfPage: productItems.length < nPerPage ? (pageNumber - 1) * nPerPage +  productItems.length :  pageNumber * nPerPage - 1,
         isFirstPage,
         isLastPage,
-        pageList
+        pageList,
+        isNotEmpty,
     }
     
     //filterOption
@@ -262,22 +263,26 @@ exports.getProductsAjax = async (req, res, next) => {
         });
         leftOverPage--;
     }
-    
+
+    //Check empty
+    let isNotEmpty = totalPage > 0;
+
     let pageInfo = {
         totalCount,
         totalPage,
         currentPage: pageNumber,
         prevPage: pageNumber - 1,
         nextPage: pageNumber + 1,
-        firstItemOfPage: pageNumber > 0 ? (pageNumber - 1) * nPerPage + 1 : 1,
+        firstItemOfPage: totalPage > 0 ? (pageNumber - 1) * nPerPage + 1 : 0,
         lastItemOfPage: productItems.length < nPerPage ? (pageNumber - 1) * nPerPage +  productItems.length :  pageNumber * nPerPage - 1,
         isFirstPage,
         isLastPage,
-        pageList
+        pageList,
+        isNotEmpty,
     }
 
     //partials = fs.readFileSync('./views/partials/productItems.hbs', {encoding:'utf8', flag:'r'});
-    //console.log(pageInfo);
+    console.log(pageInfo);
     res.send({pageInfo, productItems});
     /*
     res.render('partials/productItems', { 
