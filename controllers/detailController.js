@@ -71,11 +71,6 @@ exports.comments = async (req, res, next) => {
     const cmt = req.body.reviewuser;
     const idUser = req.user._id.toString();
 
-    console.log(idProduct);
-    console.log(star);
-    console.log(cmt);
-    console.log(idUser);
-
     let cmtDetail = {
         'ID_Product': idProduct,
         'ID_User': idUser,
@@ -83,13 +78,15 @@ exports.comments = async (req, res, next) => {
         'star': star
     };
     
+    console.log(cmtDetail);
+
     try {
-      await commentModel.insertOne(productDetail);
-      res.redirect('/products/detail/' + id);
+      await commentModel.insertOne(cmtDetail);
+      res.redirect('/products/detail/' + idProduct);
     }
     catch(error){
       
     } 
 
-    res.redirect('/products/detail/' + idProduct);
+    
 };

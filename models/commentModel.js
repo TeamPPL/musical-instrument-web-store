@@ -34,7 +34,11 @@ exports.getCommentOfProducts = async(id) => {
 
 exports.insertOne = async(objectCmt) => {
     const commentCollection = db().collection('Comments');
-    await commentCollection.insertOne(objectCmt);
+    try {
+        await commentCollection.insertOne(objectCmt);
+      } catch (err) {
+        return console.log('Database Connection Error!', err.message);
+    }
 }
 
 // function CoomentList(cmtOfProduct) {
