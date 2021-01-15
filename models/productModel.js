@@ -28,7 +28,10 @@ exports.relatedProducts = async (id) => {
     });
     let relatedProducts = await productsCollection.find({
         filter: product.filter
-    }).limit(4).toArray();
+    }).limit(5).toArray();
+
+    // for      // cần loại trừ những sản phẩm trùng
+
     //console.log(id);
     //console.log(productsCollection);
     //console.log(products);
