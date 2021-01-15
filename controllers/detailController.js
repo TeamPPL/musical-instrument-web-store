@@ -8,6 +8,9 @@ exports.index = async (req, res, next) => {
     const productItems = await productModel.findById(idProduct);
     const allRelatedProducts = await productModel.relatedProducts(idProduct);
     const comments = await commentModel.getCommentOfProducts(idProduct);
+    const countCMT = await commentModel.totalComment(idProduct);
+    const MAX_CMT_PER_PAGES = 5;
+    const totalPages = Math.ceil(countCMT / MAX_CMT_PER_PAGES);
 
     let average = 0;
     if(comments.length > 0){
@@ -21,34 +24,9 @@ exports.index = async (req, res, next) => {
         // do nothing
     }
 
-    // console.log(" ===========  " + req.user);
+    
+    console.log(countCMT);
 
-     
-/*
-    const productItems = productModel.list()[idProduct - 1];
-    const allRelatedProducts = function(){
-        let relatedProducts = [];  
-
-        let i = 0;
-        productModel.list().forEach(element => {
-            if (i < 4) {
-                // break;
-                if (((element.filter).localeCompare(productItems.filter) == 0) && (element.id != productItems.id)) {
-                    relatedProducts.push(element);
-                }
-                else {
-                    // do nothing
-                }
-            }
-            else {
-                i++;
-                // do nothing
-            }
-        });
-
-        return relatedProducts;
-    };
-*/
     res.render('products/detail/detail', {productItems, allRelatedProducts, comments, countCmt : comments.length, AverageReview : average});
 };
 

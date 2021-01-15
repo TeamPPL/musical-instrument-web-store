@@ -36,6 +36,15 @@ hbs.create({}).handlebars.registerHelper('SingularOrPlural', function(number, bl
 
   return converter;
 });
+hbs.create({}).handlebars.registerHelper('MiniImgSlider', function(nameImg, block) {
+  console.log("-------------> " + nameImg.length);
+  let converter = null;
+  if(nameImg !== undefined && nameImg.length > 0){
+    converter = block.fn(this);
+  }
+
+  return converter;
+});
 
 const app = express();
 
