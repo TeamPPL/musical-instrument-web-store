@@ -481,7 +481,7 @@ i:before {
 
 .usd_select.bootstrap-select .dropdown-menu .dropdown-menu.inner li a {
   font-family: "Poppins", sans-serif;
-  color: #000;
+  color: #000 !important;
   font-size: 13px;
   letter-spacing: .325px;
   padding-left: 5px;
@@ -489,7 +489,7 @@ i:before {
 }
 
 .usd_select.bootstrap-select .dropdown-menu .dropdown-menu.inner li:hover a {
-  background: #ebebeb;
+  background: #ebebeb !important;
 }
 
 .top_header_middle {
@@ -2574,6 +2574,13 @@ i:before {
   color: #fff;
   background: transparent;
   color: #262121;
+}
+
+.add_cart_btn:focus {
+  background: white;
+  color: black;
+  border: 1px solid black;
+  border-radius: 0px;
 }
 
 .discover_btn {
@@ -7109,4 +7116,63 @@ input#fakeInput {
 
 .rating-item:hover ~ .rating-item::before {
   content: "\2606";
+}
+#dialog {
+  font-size: 1em;
+  color: orangered;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+
+.dialog_btn {
+  padding: 5px;
+  background: #333333 !important;
+  color: #fff !important;
+  font-size: 14px;
+  border-radius: 0px !important;
+  border: 1px solid #333333 !important;
+  padding: 0px 35px;
+  line-height: 28px !important;
+  -webkit-transition: all 400ms linear 0s;
+  -o-transition: all 400ms linear 0s;
+  transition: all 400ms linear 0s;
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.dialog_btn:hover {
+  background: transparent !important  ;
+  color: #333333 !important;
+}
+
+.ui-dialog > .ui-widget-header {
+  background: orange;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.ui-dialog .ui-dialog-buttonpane button{
+  padding: 5px;
+}
+
+#product-filter-selector li {
+  cursor: pointer;
+}
+
+#manufacturer-selector li {
+  cursor: pointer;
+}
+
+#product-filter-selector li a.filter-selected {
+  background-color: gainsboro;
+}
+
+#manufacturer-selector li a.manufacturer-selected{
+  background-color: gainsboro;
 }

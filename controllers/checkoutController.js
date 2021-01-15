@@ -5,6 +5,9 @@ const fs = require('fs');
 const { session } = require('passport');
 
 exports.index = async (req, res, next) =>{
+
+  
+
     if (req.session.cart == undefined || req.app.locals.cartCount == 0 || req.app.locals.cartCount == undefined){
         res.render('shopping-cart/emptyCart');
         return;
@@ -38,6 +41,22 @@ function Cart(oldCart) {
         //this.updateQuantity();
     }
 
+    this.updateItemQuantity = async function(item,id){
+        //item = await productModel.findById(id);
+        let storedItem = this.items[id];
+        if (!storedItem){
+            storedItem = this.items[id] = {item: item, qty: 0, price: 0};
+        }
+        storedItem.qty--;
+        //await this.updateData();
+        storedItem.item = item;
+        storedItem.price = (parseFloat(storedItem.item.price) -
+            parseFloat(storedItem.item.discount?storedItem.item.discount:0)) * parseInt(storedItem.qty);
+
+        this.updateQuantity();
+        console.log(this.items);
+    }
+
     this.add = async function(item, id) {
         //item = await productModel.findById(id);
         let storedItem = this.items[id];
@@ -45,7 +64,11 @@ function Cart(oldCart) {
             storedItem = this.items[id] = {item: item, qty: 0, price: 0};
         }
         storedItem.qty++;
-        await this.updateData();
+        //await this.updateData();
+        storedItem.item = item;
+        storedItem.price = (parseFloat(storedItem.item.price) -
+            parseFloat(storedItem.item.discount?storedItem.item.discount:0)) * parseInt(storedItem.qty);
+
         this.updateQuantity();
         console.log(this.items);
     }
@@ -63,15 +86,14 @@ function Cart(oldCart) {
     }
 
     this.update = async function(id, new_quantity) {
-        await this.updateData();
+        //await this.updateData();
         this.items[id].qty = parseInt(new_quantity);
-        this.items[id].price = (parseFloat(this.items[id].item.price) - parseFloat(this.items[id].item.discount?this.items[id].item.discount:0))* this.items[id].qty;
-        this.updateData();
+        //this.items[id].price = (parseFloat(this.items[id].item.price) - parseFloat(this.items[id].item.discount?this.items[id].item.discount:0))* this.items[id].qty;
+        await this.updateData();
         this.updateQuantity();
     }
 
     this.remove = async function(id){
-        await this.updateData();
         delete this.items[id];
         this.updateQuantity();
     }
@@ -86,19 +108,32 @@ function Cart(oldCart) {
 }
 
 exports.addToCart = async (req, res, next) => {
-    const id = req.params.id;
-    const cart = new Cart(req.session.cart? req.session.cart : {});
+    const id = req.body.id;
+    let cart = new Cart(req.session.cart? req.session.cart : {});
 
     const productItem = await productModel.findById(id);
+    let item_name = productItem.title;
+
+    if (productItem.inStock <= 0) {
+        res.send({fail: 1, item_name});
+        return;
+    }
+
     await cart.add(productItem, productItem._id);
+
+    if (cart.items[id].qty > cart.items[id].item.inStock) {
+        await cart.updateItemQuantity(productItem, productItem._id);
+        res.send({fail: 1, item_name});
+        return;
+    }
+
     req.app.locals.cartCount = cart.totalQty;
 
     req.session.cart = cart;
-    //let cartItems = cart.generateArray();
-    //let totalPrice = cart.totalPrice;
-    //console.log(cartItems);
-    //res.render('shopping-cart/cart', {cartItems, totalPrice});
-     res.redirect('/');
+    //let item_name = cart.items[id].item.title;
+    let item_qty = cart.items[id].qty;
+    let item_total = cart.items[id].price;
+    res.send({cartCount: cart.totalQty, item_name, item_qty, item_total});
 }
 
 exports.updateCart = async (req,res,next)=>{
@@ -118,6 +153,7 @@ exports.updateCart = async (req,res,next)=>{
     }
     else {
         res.send('Error 500');
+        return;
     }
 
     req.session.cart = cart;
@@ -175,6 +211,18 @@ exports.billingDetailUpdate = (req, res, next) => {
 
 exports.addReceipt = async (req, res, next) => {
     const cart = new Cart(req.session.cart? req.session.cart : {});
+    await cart.updateData();
+    for (var item_id in cart.items){
+        if (cart.items[item_id].qty > cart.items[item_id].item.inStock){
+            res.send('out of stock');
+            return;
+        }
+    }
+
+    for (var item_id2 in cart.items){
+        productModel.updateStock(item_id2, -cart.items[item_id2].qty);
+    }
+
     let orderItems = cart.generateArray();
     let total = cart.totalPrice;
 

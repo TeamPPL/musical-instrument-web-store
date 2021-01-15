@@ -12,7 +12,7 @@ const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products');
 const auth = require('./authenticate/auth');
 const checkoutRouter = require('./routes/checkout');
-const receiptController = require('./routes/receipt')
+const receiptRouter = require('./routes/receipt')
 
 const { handlebars } = require('hbs');
 const hbs = require('express-handlebars');
@@ -104,7 +104,7 @@ app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/products', productsRouter);
 app.use('/cart', checkoutRouter);
-app.use('/receipt', receiptController);
+app.use('/receipt', receiptRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
