@@ -106,6 +106,11 @@ app.use('/products', productsRouter);
 app.use('/cart', checkoutRouter);
 app.use('/receipt', receiptRouter);
 
+app.use('/contact', (req, res, next) =>
+{
+  res.render('contact');
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   res.render('error404');
