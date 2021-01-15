@@ -169,6 +169,7 @@ exports.updateStock = async (id, qty) => {
       { "_id": ObjectId(id) },
       {
         $inc: { 'inStock': qty }
+        
       },
       {
         returnNewDocument: true

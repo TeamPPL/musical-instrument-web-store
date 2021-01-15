@@ -231,7 +231,7 @@ exports.updateAccountInfo = async (req, res, next) => {
         
       }  
     }
-    await console.log(upload.secure_url);
+    //await console.log(upload.secure_url);
   });
 
 }
