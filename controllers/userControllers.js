@@ -190,9 +190,9 @@ exports.updateAccountInfo = async (req, res, next) => {
         req.flash("error", "Username already exist!");
         res.redirect(req.get('referer'));
       }
-
+      //console.log(email);
       //Check email change
-      if (email !== req.user.email)
+      if (email)
       {
         req.flash("error", "You cannot change your registered email. If you wish to do so, please contact admin for help!");
         res.redirect(req.get('referer'));
@@ -224,7 +224,7 @@ exports.updateAccountInfo = async (req, res, next) => {
         let result = await accountModel.updateAAccount(updatedAccount);
         //var message="ADDED SUCCESSFULLY";
         //res.render('products/addproduct',{productDetail,message});
-        console.log(result);
+        req.flash("message-info", "Personal infos updated!");
         res.redirect('/user');
       }
       catch(err){
