@@ -1,6 +1,5 @@
 const { MongoClient } = require('mongodb');
 
-//const url = "mongodb://localhost:3000";
 
 let client = new MongoClient(
   process.env.DB_URI, 

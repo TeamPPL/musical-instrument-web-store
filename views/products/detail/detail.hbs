@@ -145,18 +145,12 @@
                 </div>
                 {{/each}}
 
-                <nav aria-label="Page navigation example" class="pagination_area">
-                    <form name="paginate-form" action="/products/detail/60018e7430a87c8e7cd88b6a" method="GET">
-                        <ul class="pagination">
-                            <li class="page-item pagination-cmt"><a class="page-link"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
-                            <li class="page-item pagination-cmt next"><a class="page-link">1</a></li>
-                            {{!-- <li class="page-item pagination-cmt"><a class="page-link">2</a></li>
-                            <li class="page-item pagination-cmt"><a class="page-link">3</a></li>
-                            <li class="page-item pagination-cmt"><a class="page-link">4</a></li>
-                            <li class="page-item pagination-cmt"><a class="page-link">5</a></li> --}}
-                            <li class="page-item pagination-cmt"><a class="page-link"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                        </ul>
-                    </form>
+                <nav aria-label="Page navigation example" class="pagination_area">                   
+                    <p id="CurrentPageLabel">1</p>
+                    {{#PageCmtInfo 9 5}}
+
+                    {{/PageCmtInfo}}
+
                 </nav>               
 
             </div>
@@ -315,15 +309,15 @@
         ////////////////
         $(".pagination-cmt").on("click", function(e){
             e.preventDefault(); // stop the click from any further action
-            var option = $("#search-option li.sel").data("option"); // get the selected option
-            //$.post("search.php",{"option":option},function(data) { // post the option
-            //    $("#result").html(data); // show the result
-            //});
         });
         $(".pagination li").on("click",function(e) { // when LI is clicked
             $(this)
                 .addClass("next")
                 .siblings().removeClass("next"); // Swap class
+
+            console.log("isPrev: " + $(this).hasClass("prev-page"));
+            console.log("isNext: " + $(this).hasClass((".next-page")));
+            console.log("=========> " + $(".pagination li.next").html() + " - " + $(".pagination li.next").text());    
         });
     });
 </script>

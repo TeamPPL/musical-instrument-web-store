@@ -45,6 +45,40 @@ hbs.create({}).handlebars.registerHelper('MiniImgSlider', function(nameImg, bloc
 
   return converter;
 });
+hbs.create({}).handlebars.registerHelper('IsNextPageCmt', function(countPage, block) {
+  let converter = null;
+  if(countPage > 1){
+    converter = block.fn(this);
+  }
+
+  return converter;
+});
+hbs.create({}).handlebars.registerHelper('PageCmtInfo', function(totalPages, currentPage, block) {
+  let converter = `<ul class="pagination" id="paginationID">`;
+  if(currentPage > 1){
+    converter = converter + `<li class="page-item pagination-cmt prev-page"><a class="page-link"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>`;
+  }
+  if(currentPage > 2){
+    converter = converter + `<li class="page-item pagination-cmt"><a class="page-link">` + (currentPage - 2) + `</a></li>`
+  }
+  if(currentPage > 1){
+    converter = converter + `<li class="page-item pagination-cmt"><a class="page-link">` + (currentPage - 1) + `</a></li>`
+  }
+  converter = converter + `<li class="page-item pagination-cmt next"><a class="page-link">` + (currentPage) + `</a></li>`  
+  if(currentPage + 1 <= totalPages){
+    converter = converter + `<li class="page-item pagination-cmt"><a class="page-link">` + (currentPage + 1) + `</a></li>`
+  }
+  if(currentPage + 2 <= totalPages){
+    converter = converter + `<li class="page-item pagination-cmt"><a class="page-link">` + (currentPage + 2) + `</a></li>`
+  }
+  if(currentPage < totalPages){
+    converter = converter + `<li class="page-item pagination-cmt next-page"><a class="page-link"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>`;
+  }
+
+  converter = converter +  ` </ul>`;
+
+  return converter;
+});
 
 const app = express();
 

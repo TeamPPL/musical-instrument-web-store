@@ -2,9 +2,9 @@ const ObjectId = require('mongodb').ObjectId;
 const {db} = require('../dal/db');
 
 
-exports.getCommentOfProducts = async(id) => {
+exports.getCommentOfProducts = async(id, limitCom) => {
     const CommentCollection = db().collection('Comments');
-    let comments = await CommentCollection.find({ID_Product : id}).toArray();
+    let comments = await CommentCollection.find({ID_Product : id}).limit(limitCom).toArray();
 
     let ArrCmt = [];
 
@@ -49,6 +49,7 @@ exports.totalComment = async(idProduct) => {
 
     return comments.length;
 }
+
 
 // exports.listPerPage(idProduct, pageIndex, itemsPerPage){
 //     const CommentCollection = db().collection('Comments');

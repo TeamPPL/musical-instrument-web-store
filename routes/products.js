@@ -8,6 +8,7 @@ router.get('/', productController.getProductsGET);
 router.get('/detail/:id', detailController.index);
 router.get('/detail/comment/:id', detailController.comment);
 router.post('/detail/comment/:id', detailController.comments);
+router.post('/detail/comment/', detailController.getCommentsAjax);
 
 router.post('/', productController.getProductsAjax);
 
